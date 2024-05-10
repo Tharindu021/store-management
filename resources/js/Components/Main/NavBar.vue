@@ -51,7 +51,6 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 

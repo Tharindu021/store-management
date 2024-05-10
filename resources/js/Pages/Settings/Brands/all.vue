@@ -199,6 +199,10 @@ const data = reactive({
     brand: []
 });
 
+onBeforeMount(()=>{
+    getBrandData();
+})
+
 const createBrand = async () => {
     await axios.post(route("item-brand.store"), data.brands);
     $("#newBrandModal").modal("hide");
@@ -207,14 +211,6 @@ const createBrand = async () => {
     getBrandData();
 
 }
-
-// function editBrand(){
-//     $("#editBrandModal").modal("show");
-// }
-
-onBeforeMount(()=>{
-    getBrandData();
-})
 
 const getBrandData = async () => {
     try {

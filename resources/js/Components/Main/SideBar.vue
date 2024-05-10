@@ -58,7 +58,6 @@ import { Link } from '@inertiajs/vue3'
 import isArray from 'lodash/isArray';
 import { reactive } from "vue";
 import { library } from '@fortawesome/fontawesome-svg-core'
-
 import { faDesktop , faUsers , faGear , faLayerGroup , faFolder} from '@fortawesome/free-solid-svg-icons'
 
 const data = reactive({
