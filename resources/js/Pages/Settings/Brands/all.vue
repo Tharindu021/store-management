@@ -204,6 +204,7 @@ const createBrand = async () => {
     $("#newBrandModal").modal("hide");
     data.brands = {};
     $("#newBrandModal").modal("hide");
+    getBrandData();
 
 }
 
@@ -222,6 +223,7 @@ const getBrandData = async () => {
     } catch (error) {
         console.error('Error fetching brand data:', error);
     }
+
 }
 
 </script>
