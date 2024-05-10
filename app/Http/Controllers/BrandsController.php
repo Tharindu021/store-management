@@ -6,8 +6,12 @@ use App\Models\Brand;
 use domain\Facades\BrandFacade\BrandFacade;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Filters\FuzzyFilter;
+use App\Http\Resources\DataResource;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
-class BrandsController extends Controller
+class BrandsController extends ParentController
 {
 
     public function index(){
@@ -18,8 +22,12 @@ class BrandsController extends Controller
         return BrandFacade::create($request->all());
     }
     public function all(){
-        $data = BrandFacade::all();
-        return response()->json($data);
+        $query = Brand::orderBy('id', 'desc');
+        $payload = QueryBuilder::for($query)
+            ->allowedSorts(['slug', 'name'])
+            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name','slug')))
+            ->paginate(request('per_page', config('basic.pagination_per_page')));
+        return DataResource::collection($payload);
 
     }
     public function delete($id){

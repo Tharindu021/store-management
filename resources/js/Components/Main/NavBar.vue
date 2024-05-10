@@ -26,8 +26,7 @@
                                 <i class="fa fa-user me-sm-1 text-white"></i>
                                 <div class="media-body  ml-2  d-none d-lg-block">
                                     <span class="mb-0 text-sm font-weight-bold text-white">
-                                        <!-- can get the username using auth user -->
-                                        UserName
+                                        {{ $page.props.auth.user.name}}
                                     </span>
                                 </div>
                             </div>
@@ -37,7 +36,7 @@
                                 <font-awesome-icon icon="fa-solid fa-user" />
                                 <span>Profile</span>
                             </a>
-                            <Link href="/logout" as="button" method="post" class="dropdown-item">
+                            <Link href="/logout" as="button" method="post" class="dropdown-item"> 
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
                             </Link>

@@ -28,11 +28,19 @@ import NavBar from '@/Components/Main/NavBar.vue';
 import LoadingBar from '@/Components/Basic/LoadingBar.vue';
 import Notification from '@/Components/Basic/Notification.vue';
 import Footer from '@/Components/Main/Footer.vue';
-
+import { ref , onMounted ,provide } from 'vue';
+ 
 const props = defineProps({
     title: String,
 });
 
+const notificationRef = ref(null);
+const loaderRef = ref(null);
+
+onMounted(() => {
+  provide("notify", notificationRef.value);
+  provide("loader", loaderRef.value);
+});
 </script>
 
 <style lang="scss">

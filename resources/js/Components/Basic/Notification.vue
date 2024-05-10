@@ -27,41 +27,43 @@
 </template>
 
 <script setup>
-// import {ref , onMounted , onBeforeUnmount } from "vue";
-// const disposerTimer = ref( null );
-// const notifications = ref( [] );
+import { reactive , onBeforeMount ,onMounted , ref} from 'vue'
 
-// onMounted(() => {
+const disposerTimer = ref( null);
+const notifications = reactive([]);
+
+// onMounted(()=> {
 //   disposerTimer.value = setInterval(() => {
-//   notifications.value = notifications.value.filter((notification) => notification.timeout > new Date().getTime())
+//       notifications.value = notifications.value.filter((notification) => notification.valuetimeout > new Date().getTime())
 //     }, 10)
 // });
 
-// onBeforeUnmount(() => {
+// onBeforeMount(() =>{
 //   clearInterval(disposerTimer.value)
-// });
+// }) 
+
 
 // function close(notify) {
 //       notifications.value = notifications.value.filter((notification) => notification.key !== notify.key)
 // }
-// function success({ title = 'Success', message, timeout = 4000 }) {
-//       notifications.push({
-//         key: Math.random(),
-//         title,
-//         message,
-//         type: 'success',
-//         timeout: new Date().getTime() + timeout,
-//       })
-// }
-// function error({ title = 'Error', message, timeout = 4000 }) {
-//       notifications.push({
-//         key: Math.random(),
-//         title,
-//         message,
-//         type: 'error',
-//         timeout: new Date().getTime() + timeout,
-//       })
-// }
+function success({ title = 'Success', message, timeout = 4000 }) {
+      notifications.push({
+        key: Math.random(),
+        title,
+        message,
+        type: 'success',
+        timeout: new Date().getTime() + timeout,
+      })
+}
+function error({ title = 'Error', message, timeout = 4000 }) {
+      notifications.push({
+        key: Math.random(),
+        title,
+        message,
+        type: 'error',
+        timeout: new Date().getTime() + timeout,
+      })
+}
 
 </script>
 
