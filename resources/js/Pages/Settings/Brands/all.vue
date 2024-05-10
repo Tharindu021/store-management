@@ -120,7 +120,7 @@
                                     <thead>
                                         <tr >
                                             <th :class="data.textClassHead">Name</th>
-                                            <th :class="data.textClassHead">Code</th>
+                                            <th :class="data.textClassHead">Slug</th>
                                             <th :class="data.textClassHead">Status</th>
                                             <th :class="data.textClassHead"></th>
                                         </tr>
@@ -239,11 +239,11 @@
                                         </div>
                                         <div class="row mb-1">
                                             <div for="code" class="col-md-3 col-form-label col-form-label">
-                                                CODE
+                                                SLUG
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control form-control-sm" name="code"
-                                                    v-model="data.brands.slug" id="slug" placeholder="Code" required />
+                                                <input type="text" class="form-control form-control-sm" name="slug"
+                                                    v-model="data.brands.slug" id="slug" placeholder="Slug" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
                                                         validationErrors.message}}
@@ -298,12 +298,12 @@
                                         </div>
                                         <div class="row mb-1">
                                             <div for="code" class="col-md-3 col-form-label col-form-label">
-                                                CODE
+                                                SLUG
                                             </div>
                                             <div class="col-md-9">
                                                 <input v-model="data.edit_brand.slug" type="text"
-                                                    class="form-control form-control-sm" name="code" id="code"
-                                                    placeholder="Code" required />
+                                                    class="form-control form-control-sm" name="slug" id="slug"
+                                                    placeholder="Slug" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
                                                         validationErrors.message
