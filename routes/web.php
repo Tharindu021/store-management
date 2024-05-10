@@ -15,6 +15,8 @@ Route::prefix('brand')->group(function () {
     Route::get('/all', [BrandsController::class, 'all'])->name('brand.all');
     Route::post('/store', [BrandsController::class, 'store'])->name('brand.store');
     Route::delete('/{brand_id}/delete', [BrandsController::class, 'delete'])->name('brand.delete');
+    Route::get('/{brand_id}/get', [BrandsController::class, 'get'])->name('brand.get');
+    Route::post('/{brand_id}/update', [BrandsController::class, 'update'])->name('brand.update');
 });
 
 require __DIR__.'/auth.php';

@@ -46,14 +46,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for=" datas in data.brand"
-                                :key="datas.id"
-                            >
+                            <tr v-for=" datas in data.brand" :key="datas.id">
                                 <td>
-                                     {{ datas.name }} 
+                                    {{ datas.name }}
                                 </td>
                                 <td>
-                                    {{ datas.slug }} 
+                                    {{ datas.slug }}
                                 </td>
                                 <td>
                                     <span v-if="datas.status == 1"
@@ -62,8 +60,8 @@
                                         class="badge bg-warning text-white fw-bold ml-3">Deactive</span>
                                 </td>
                                 <td>
-                                    <a type="button" class="p-2" href="javascript:void(0)" 
-                                        @click.prevent="editBrand()">
+                                    <a type="button" class="p-2" href="javascript:void(0)"
+                                        @click.prevent="editBrand(datas.id)">
                                         <i class="fas fa-pen"></i>
                                     </a>
                                     <a type="button" class="p-2 float-end" href="javascript:void(0)"
@@ -129,7 +127,7 @@
                 </div>
             </div>
             <div class="modal fade" id="editBrandModal" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="newBrandModal" aria-hidden="true">
+                aria-labelledby="editBrandModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -145,30 +143,32 @@
                         <div class="modal-body p-0">
                             <div class="card-plain">
                                 <div class="card-body m-2">
-                                    <form @submit.prevent="storeBrand()" role="form text-left"
+                                    <form @submit.prevent="updateBrands()" role="form text-left"
                                         enctype="multipart/form-data">
-                                        <div class="row mb-1">
-                                            <div for="code" class="col-md-3 col-form-label col-form-label">
-                                                CODE
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control form-control-sm" name="code"
-                                                    id="code" placeholder="Code" required />
-                                            </div>
-                                        </div>
                                         <div class="row mb-1">
                                             <div for="name" class="col-md-3 col-form-label col-form-label">
                                                 NAME
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control form-control-sm" name="name"
-                                                    id="name" placeholder="Name" required />
+                                                <input v-model="data.edit_brand.name" type="text"
+                                                    class="form-control form-control-sm" name="name" id="name"
+                                                    placeholder="Name" required />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <div for="code" class="col-md-3 col-form-label col-form-label">
+                                                CODE
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input v-model="data.edit_brand.slug" type="text"
+                                                    class="form-control form-control-sm" name="code" id="code"
+                                                    placeholder="Code" required />
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
                                             <button type="submit" class="btn btn-round btn-outline--info btn-sm mb-0">
                                                 <font-awesome-icon icon="fa-solid fa-floppy-disk" />
-                                                CREATE
+                                                Update
                                             </button>
                                         </div>
                                     </form>
@@ -198,21 +198,14 @@ library.add(faHouse, faPen, faTrash, faFloppyDisk, faXmark, faPlusCircle);
 
 const data = reactive({
     brands: {},
-    brand: []
+    brand: [],
+    edit_brand: {},
 });
 
-onBeforeMount(()=>{
+onBeforeMount(() => {
     getBrandData();
 })
 
-const createBrand = async () => {
-    await axios.post(route("brand.store"), data.brands);
-    $("#newBrandModal").modal("hide");
-    data.brands = {};
-    $("#newBrandModal").modal("hide");
-    getBrandData();
-
-}
 
 const getBrandData = async () => {
     try {
@@ -224,26 +217,67 @@ const getBrandData = async () => {
 
 }
 
+const createBrand = async () => {
+    await axios.post(route("brand.store"), data.brands);
+    $("#newBrandModal").modal("hide");
+    data.brands = {};
+    $("#newBrandModal").modal("hide");
+    getBrandData();
+
+}
+
+const editBrand = async (id) => {
+    try {
+        console.log(id);
+        const edit_brand = (await axios.get(route("brand.get", id)));
+        data.edit_brand = edit_brand.data;
+        $("#editBrandModal").modal("show");
+    } catch (error) {
+        console.log("Error Editing data", error);
+    }
+}
+
+const updateBrands = async (id) => {
+    try {
+        await axios.post(
+            route(
+                "brand.update",
+                data.edit_brand.id
+            ),
+            data.edit_brand
+        );
+        getBrandData();
+        $("#editBrandModal").modal("hide");
+        this.edit_brand = {};
+        // this.$root.notify.success({
+        //     title: "Success",
+        //     message: "Material Category updated successfully",
+        // });
+    } catch (error) {
+        console.log("Error Updating data", error);
+    }
+}
+
 const deleteBrand = async (id) => {
     console.log(id);
     try {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#C00202",
-      cancelButtonColor: "#6CA925",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(route("brand.delete", id));
-        getBrandData();
-        Swal.fire("Deleted!", `Record has been deleted.`, "success");
-      }
-    });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#C00202",
+            cancelButtonColor: "#6CA925",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(route("brand.delete", id));
+                getBrandData();
+                Swal.fire("Deleted!", `Record has been deleted.`, "success");
+            }
+        });
     } catch (error) {
-        console.log("Error deleting data" , error);
+        console.log("Error deleting data", error);
     }
 }
 
