@@ -27,12 +27,15 @@ class BrandsController extends Controller
         return BrandFacade::create($request->all());
         // return $this->task->create($request->all());
     }
-
-
-    public function show()
+    public function all()
     {
-        $data = BrandFacade::view();
+        $data = BrandFacade::all();
         return response()->json($data);
 
     }
+    public function delete($id)
+    {
+        return BrandFacade::delete($id);
+    }
+
 }

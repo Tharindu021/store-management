@@ -5,18 +5,22 @@ use App\Models\Brand;
 
 class BrandServices
 {
-    protected $task;
+    protected $brand;
 
     public function __construct()
     {
-        $this->task = new Brand();
+        $this->brand = new Brand();
     }
 
-    public function view(){
-        return $this->task->all();
+    public function all(){
+        return $this->brand->all();
     }
-
     public function create($data){
-        return $this->task->create($data);
+        return $this->brand->create($data);
     }
+    public function delete($id){
+        $brand = $this->brand->find($id);
+        $brand->delete();
+    }
+
 }

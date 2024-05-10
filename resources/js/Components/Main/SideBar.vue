@@ -31,7 +31,7 @@
                             <ul :class="{ 'collapse': $page.url.startsWith('/brands') || $page.url.startsWith('/category')}" class="list-unstyled" id="settingsMenu"> 
                                 <li class="nav-item">
                                     <Link :class="{ 'active': $page.url.startsWith('/brands') }"
-                                        class="nav-link active-preloader" :href="route('item-brand.show')">
+                                        class="nav-link active-preloader" :href="route('brand.index')">
                                     <font-awesome-icon icon="fa-solid fa-layer-group " class="ml-4" /><span
                                         class="ml-2 hide-menu">Brands</span>
                                     </Link>

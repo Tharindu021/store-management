@@ -62,11 +62,12 @@
                                         class="badge bg-warning text-white fw-bold ml-3">Deactive</span>
                                 </td>
                                 <td>
-                                    <a type="button" class="p-2" href="javascript:void(0)" @click.prevent="editBrand()">
+                                    <a type="button" class="p-2" href="javascript:void(0)" 
+                                        @click.prevent="editBrand()">
                                         <i class="fas fa-pen"></i>
                                     </a>
                                     <a type="button" class="p-2 float-end" href="javascript:void(0)"
-                                        @click.prevent="deleteBrand()">
+                                        @click.prevent="deleteBrand(datas.id)">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -184,6 +185,7 @@
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
+import Swal from "sweetalert2";
 import { reactive } from 'vue';
 import AppLayout from '../../../Layouts/AppLayout.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -204,7 +206,7 @@ onBeforeMount(()=>{
 })
 
 const createBrand = async () => {
-    await axios.post(route("item-brand.store"), data.brands);
+    await axios.post(route("brand.store"), data.brands);
     $("#newBrandModal").modal("hide");
     data.brands = {};
     $("#newBrandModal").modal("hide");
@@ -214,13 +216,37 @@ const createBrand = async () => {
 
 const getBrandData = async () => {
     try {
-        const res = await axios.get(route("item-brand.all"));
+        const res = await axios.get(route("brand.all"));
         data.brand = res.data;
     } catch (error) {
         console.error('Error fetching brand data:', error);
     }
 
 }
+
+const deleteBrand = async (id) => {
+    console.log(id);
+    try {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#C00202",
+      cancelButtonColor: "#6CA925",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(route("brand.delete", id));
+        getBrandData();
+        Swal.fire("Deleted!", `Record has been deleted.`, "success");
+      }
+    });
+    } catch (error) {
+        console.log("Error deleting data" , error);
+    }
+}
+
 
 </script>
 

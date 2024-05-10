@@ -11,9 +11,10 @@ Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
 
 Route::prefix('brand')->group(function () {
-    Route::get('/', [BrandsController::class, 'index'])->name('item-brand.show');
-    Route::get('/all', [BrandsController::class, 'show'])->name('item-brand.all');
-    Route::post('/store', [BrandsController::class, 'store'])->name('item-brand.store');
+    Route::get('/', [BrandsController::class, 'index'])->name('brand.index');
+    Route::get('/all', [BrandsController::class, 'all'])->name('brand.all');
+    Route::post('/store', [BrandsController::class, 'store'])->name('brand.store');
+    Route::delete('/{brand_id}/delete', [BrandsController::class, 'delete'])->name('brand.delete');
 });
 
 require __DIR__.'/auth.php';
