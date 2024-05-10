@@ -13,7 +13,6 @@ class BrandServices
     }
 
     public function view(){
-        //dd($this->task->all());
         return $this->task->all();
     }
 

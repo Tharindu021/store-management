@@ -46,18 +46,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr v-for=" datas in data.brand"
+                                :key="datas.id"
+                            >
                                 <td>
-                                    <!-- {{ brands.name }} -->21
+                                     {{ datas.name }} 
                                 </td>
                                 <td>
-                                    <!-- {{ brands.code }} -->32
+                                    {{ datas.slug }} 
                                 </td>
                                 <td>
-                                    <!-- <span v-if="brand.status == 1"
+                                    <span v-if="datas.status == 1"
                                         class="badge bg-success text-white fw-bold ml-3">Active</span>
-                                    <span v-if="vehicle.status == 0"
-                                        class="badge bg-warning text-white fw-bold ml-3">Deactive</span> -->staus
+                                    <span v-if="datas.status == 0"
+                                        class="badge bg-warning text-white fw-bold ml-3">Deactive</span>
                                 </td>
                                 <td>
                                     <a type="button" class="p-2" href="javascript:void(0)" @click.prevent="editBrand()">
@@ -216,7 +218,7 @@ onBeforeMount(()=>{
 const getBrandData = async () => {
     try {
         const res = await axios.get(route("item-brand.all"));
-        data.brand = res.data.data;
+        data.brand = res.data;
     } catch (error) {
         console.error('Error fetching brand data:', error);
     }

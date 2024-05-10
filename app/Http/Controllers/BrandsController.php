@@ -32,7 +32,6 @@ class BrandsController extends Controller
     public function show()
     {
         $data = BrandFacade::view();
-        dd($data);
         return response()->json($data);
 
     }
