@@ -193,7 +193,8 @@ import axios from 'axios';
 library.add(faHouse, faPen, faTrash, faFloppyDisk, faXmark, faPlusCircle);
 
 const data = reactive({
-    brands: {}
+    brands: {},
+    brand: []
 });
 
 const createBrand = async () => {
@@ -215,7 +216,7 @@ onBeforeMount(()=>{
 const getBrandData = async () => {
     try {
         const res = await axios.get(route("item-brand.all"));
-        data.brands = res.data;
+        data.brand = res.data.data;
     } catch (error) {
         console.error('Error fetching brand data:', error);
     }
