@@ -15,7 +15,7 @@
         </div>
         <slot name="modals" />
          <Notification ref="notification" />
-        <!-- <LoadingBar ref="loader" />  -->
+        <LoadingBar ref="loader" />
         <Footer />
     </div>
 </template>

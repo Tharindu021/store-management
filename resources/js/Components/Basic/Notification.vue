@@ -27,10 +27,10 @@
 </template>
 
 <script setup>
-import { reactive , onBeforeMount ,onMounted , ref} from 'vue'
+import { inject , onBeforeMount ,onMounted , ref} from 'vue'
 
 const disposerTimer = ref( null);
-const notifications = reactive([]);
+const notifications = inject('noitify');
 
 // onMounted(()=> {
 //   disposerTimer.value = setInterval(() => {

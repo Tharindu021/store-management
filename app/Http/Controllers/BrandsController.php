@@ -19,8 +19,9 @@ class BrandsController extends ParentController
     }
 
     public function store(Request $request){
-        return BrandFacade::create($request->all());
+        return BrandFacade::store($request->all());
     }
+
     public function all(){
         $query = Brand::orderBy('id', 'desc');
         $payload = QueryBuilder::for($query)
@@ -30,13 +31,16 @@ class BrandsController extends ParentController
         return DataResource::collection($payload);
 
     }
+
     public function delete($id){
         return BrandFacade::delete($id);
     }
+
     public function get($id){
         $data = BrandFacade::get($id);
         return response()->json($data);
     }
+
     public function update(Request $request, int $id){
         return BrandFacade::update($request->all(),$id);
     }

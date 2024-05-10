@@ -402,6 +402,7 @@ const reload = async () => {
         })).data;
         data.brand = res.data;
         data.pagination = res.meta;
+        console.log(data.pagination);
     } catch (error) {
         console.error('Error reloading brand data:', error);
     }

@@ -9,13 +9,16 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 const loading = ref(false);
 
 function start() {
-  loading.value = true;
+    loading.value = true;
 }
+
 function finish() {
-  loading.value = false;
+    loading.value = false;
 }
 </script>
 
