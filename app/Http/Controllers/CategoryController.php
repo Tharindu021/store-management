@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use domain\Facades\BrandFacade\BrandFacade;
+use domain\Facades\CategoryFacade\CategoryFacade;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Filters\FuzzyFilter;
 use App\Http\Resources\DataResource;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
-class BrandsController extends ParentController
+class CategoryController extends Controller
 {
-
     public function index(){
-        return Inertia::render('Settings/Brands/all');
+        return Inertia::render('Settings/Category/all');
     }
 
     public function store(Request $request){
         if (Auth::user()->can('read_types')) {
-            return BrandFacade::store($request->all());
+            return CategoryFacade::store($request->all());
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
@@ -31,10 +30,10 @@ class BrandsController extends ParentController
     }
 
     public function all(){
-        $query = Brand::orderBy('id', 'desc');
+        $query = Category::orderBy('id', 'asc');
         $payload = QueryBuilder::for($query)
-            ->allowedSorts(['slug', 'name'])
-            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name','slug')))
+            ->allowedSorts(['code', 'name'])
+            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name','code')))
             ->paginate(request('per_page', config('basic.pagination_per_page')));
         return DataResource::collection($payload);
     }
@@ -42,7 +41,7 @@ class BrandsController extends ParentController
     public function delete($id){
         
         if (Auth::user()->can('delete_types')) {
-            return BrandFacade::delete($id);
+            return CategoryFacade::delete($id);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
@@ -53,7 +52,7 @@ class BrandsController extends ParentController
     public function get($id){
         
         if (Auth::user()->can('read_types')) {
-            $data = BrandFacade::get($id);
+            $data = CategoryFacade::get($id);
             return response()->json($data);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
@@ -66,12 +65,11 @@ class BrandsController extends ParentController
     public function update(Request $request, int $id){
         
         if (Auth::user()->can('update_types')) {
-            return BrandFacade::update($request->all(),$id);
+            return CategoryFacade::update($request->all(),$id);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
             dd("no permission");
         }
     }
-
 }

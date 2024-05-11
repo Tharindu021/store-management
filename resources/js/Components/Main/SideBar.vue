@@ -38,7 +38,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <Link :class="{ 'active': $page.url.startsWith('/category') }"
-                                        class="nav-link active-preloader" >
+                                        class="nav-link active-preloader" :href="route('category.index')">
                                     <font-awesome-icon icon="fa-solid fa-folder " class="ml-4" /><span
                                         class="ml-2 hide-menu">Categories</span>
                                     </Link>

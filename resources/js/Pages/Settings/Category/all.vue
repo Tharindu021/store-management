@@ -6,7 +6,7 @@
                     <div class="header-body">
                         <div class="row align-items-center mb-3 mt-3">
                             <div class="col-lg-8">
-                                <h6 class="h2 text-dark d-inline-block mb-0">Brands</h6>
+                                <h6 class="h2 text-dark d-inline-block mb-0">Categories</h6>
                                 <nav aria-label="breadcrumb" class="d-none d-md-block">
                                     <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                         <li class="breadcrumb-item">
@@ -15,13 +15,13 @@
                                             </Link>
                                         </li>
                                         <li class="breadcrumb-item active breadcrumb-text" aria-current="page">
-                                             Brands Management
+                                             Categories Management
                                         </li>
                                     </ol>
                                 </nav>
                             </div>
                             <div class="col-lg-4 text-right" >
-                                <a href="javascript:void(0)" data-toggle="modal" data-target="#newBrandModal"
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#newCategoryModal"
                                     class="btn btn-sm btn-neutral float-end">
                                     <font-awesome-icon icon="fa-solid fa-circle-plus" />
                                     ADD NEW
@@ -122,21 +122,21 @@
                                             <th  class="checkArea">
                                                 <!-- <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="data.brand.length > 0" :checked="data.checkAllItems.length==this.checkBrandItems.length"  v-model="checkAllItems" />
+                                                    v-if="data.category.length > 0" :checked="data.checkAllItems.length==this.checkCategoryItems.length"  v-model="checkAllItems" />
                                                 </div> -->
                                             </th>
                                             <th :class="data.textClassHead">Name</th>
-                                            <th :class="data.textClassHead">Slug</th>
+                                            <th :class="data.textClassHead">Code</th>
                                             <th :class="data.textClassHead">Status</th>
                                             <th :class="data.textClassHead"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr  v-for=" datas in data.brand" :key="datas.id" :class="data.rowClass">
+                                        <tr  v-for=" datas in data.category" :key="datas.id" :class="data.rowClass">
                                             <td class="checkArea">
                                                 <!-- <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="checkBrandItems" v-bind:value="datas"
+                                                        v-model="checkCategoryItems" v-bind:value="datas"
                                                         v-bind:id="datas.id" />
                                                 </div> -->
                                             </td>
@@ -144,7 +144,7 @@
                                                 {{ datas.name }}
                                             </td>
                                             <td :class="data.textClassBody">
-                                                {{ datas.slug }}
+                                                {{ datas.code }}
                                             </td>
                                             <td>
                                                 <span v-if="datas.status == 1"
@@ -154,11 +154,11 @@
                                             </td>
                                             <td :class="data.iconClassBody">
                                                 <a type="button" class="p-2" href="javascript:void(0)"
-                                                    @click.prevent="editBrand(datas.id)">
+                                                    @click.prevent="editCategory(datas.id)">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <a type="button" class="p-2 float-end" href="javascript:void(0)"
-                                                    @click.prevent="deleteBrand(datas.id)">
+                                                    @click.prevent="deleteCategory(datas.id)">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -218,13 +218,13 @@
             </div>
         </template>
         <template #modals>
-            <div class="modal fade" id="newBrandModal" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="newBrandModal" aria-hidden="true">
+            <div class="modal fade" id="newCategoryModal" data-backdrop="static" tabindex="-1" role="dialog"
+                aria-labelledby="newCategoryModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bolder text-info text-gradient" id="add_brandLabel">
-                                New brand
+                            <h5 class="modal-title font-weight-bolder text-info text-gradient" id="add_categoryLabel">
+                                New category
                             </h5>
                             <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">
@@ -235,7 +235,7 @@
                         <div class="modal-body p-0">
                             <div class="card-plain">
                                 <div class="card-body m-2">
-                                    <form role="form text-left" @submit.prevent="createBrand"
+                                    <form role="form text-left" @submit.prevent="createCategory"
                                         enctype="multipart/form-data">
                                         <div class="row mb-1">
                                             <div for="name" class="col-md-3 col-form-label col-form-label">
@@ -243,7 +243,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input type="text" class="form-control form-control-sm" name="name"
-                                                    v-model="data.brands.name" id="name" placeholder="Name" required />
+                                                    v-model="data.categories.name" id="name" placeholder="Name" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
                                                     {{validationErrors.message}}
@@ -255,8 +255,8 @@
                                                 SLUG
                                             </div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control form-control-sm" name="slug"
-                                                    v-model="data.brands.slug" id="slug" placeholder="Slug" required />
+                                                <input type="text" class="form-control form-control-sm" name="code"
+                                                    v-model="data.categories.code" id="code" placeholder="Code" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
                                                         validationErrors.message}}
@@ -276,13 +276,13 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="editBrandModal" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="editBrandModal" aria-hidden="true">
+            <div class="modal fade" id="editCategoryModal" data-backdrop="static" tabindex="-1" role="dialog"
+                aria-labelledby="editCategoryModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title font-weight-bolder text-info text-gradient" id="add_brandLabel">
-                                New brand
+                            <h5 class="modal-title font-weight-bolder text-info text-gradient" id="add_categoryLabel">
+                                New category
                             </h5>
                             <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">
@@ -293,14 +293,14 @@
                         <div class="modal-body p-0">
                             <div class="card-plain">
                                 <div class="card-body m-2">
-                                    <form @submit.prevent="updateBrands()" role="form text-left"
+                                    <form @submit.prevent="updateCategorys()" role="form text-left"
                                         enctype="multipart/form-data">
                                         <div class="row mb-1">
                                             <div for="name" class="col-md-3 col-form-label col-form-label">
                                                 NAME
                                             </div>
                                             <div class="col-md-9">
-                                                <input v-model="data.edit_brand.name" type="text"
+                                                <input v-model="data.edit_category.name" type="text"
                                                     class="form-control form-control-sm" name="name" id="name"
                                                     placeholder="Name" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
@@ -314,9 +314,9 @@
                                                 SLUG
                                             </div>
                                             <div class="col-md-9">
-                                                <input v-model="data.edit_brand.slug" type="text"
-                                                    class="form-control form-control-sm" name="slug" id="slug"
-                                                    placeholder="Slug" required />
+                                                <input v-model="data.edit_category.code" type="text"
+                                                    class="form-control form-control-sm" name="code" id="code"
+                                                    placeholder="Code" required />
                                                     <!-- <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
                                                         validationErrors.message
@@ -381,32 +381,32 @@ const data = reactive({
     perPage: [25, 50, 100],
     pageCount: 25,
     pagination: {},
-    brands: {},
-    brand: [],
-    edit_brand: {},
+    categories: {},
+    category: [],
+    edit_category: {},
     checkAllItems:false,
-    checkBrandItems: [],
+    checkCategoryItems: [],
 });
 
 onBeforeMount(() => {
-    getBrandData();
+    getCategoryData();
 })
 
 // watch(data.checkAllItems,(newX) => {
-//     data.brands.forEach((item, index) => {
+//     data.categories.forEach((item, index) => {
 //         if (index !== 0) {
 //             item.selected = value;
 //         }
 //     });
-//     if (data.checkBrandItems.length == data.brands.length) {
-//         data.checkBrandItems = [];
+//     if (data.checkCategoryItems.length == data.categories.length) {
+//         data.checkCategoryItems = [];
 //     } else {
-//         data.checkBrandItems = data.brands;
+//         data.checkCategoryItems = data.categories;
 //     }
 // })
 
-// watch(data.checkBrandItems,(newX) => {
-//     if (data.checkBrandItems.length != data.brands.length) {
+// watch(data.checkCategoryItems,(newX) => {
+//     if (data.checkCategoryItems.length != data.categories.length) {
 //         data.checkAllItems = false;
 //     }
 // })
@@ -427,83 +427,84 @@ const perPageChange = async () => {
 
 const reload = async () => {
     try {
-        const res = await axios.get(route("brand.all", {
+        const res = await axios.get(route("category.all", {
             params: {
                 page: data.page,
                 per_page: data.pageCount,
                 "filter[search]": data.search,
             },
         })).data;
-        data.brand = res.data;
+        data.category = res.data;
         data.pagination = res.meta;
         console.log(data.pagination);
     } catch (error) {
-        console.error('Error reloading brand data:', error);
+        console.error('Error reloading category data:', error);
     }
 }
 
 
-const getBrandData = async () => {
+const getCategoryData = async () => {
     try {
-        const res = (await axios.get(route("brand.all"))).data;
-        data.brand = res.data;
+        const res = (await axios.get(route("category.all"))).data;
+        data.category = res.data;
         data.pagination = res.meta;
     } catch (error) {
-        console.error('Error fetching brand data:', error);
+        console.error('Error fetching category data:', error);
     }
 
 }
 
-const createBrand = async () => {
+const createCategory = async () => {
     // resetValidationErrors();
     try{
-        await axios.post(route("brand.store"), data.brands);
-        $("#newBrandModal").modal("hide");
-        data.brands = {};
-        $("#newBrandModal").modal("hide");
+        await axios.post(route("category.store"), data.categories);
+        $("#newCategoryModal").modal("hide");
+        data.categories = {};
+        $("#newCategoryModal").modal("hide");
         reload();
     } catch (error){
-        convertValidationNotification(error);
+        // convertValidationNotification(error);
     }
     
 
 }
 
-const editBrand = async (id) => {
+const editCategory = async (id) => {
     // resetValidationErrors();
     try {
         console.log(id);
-        const edit_brand = (await axios.get(route("brand.get", id)));
-        data.edit_brand = edit_brand.data;
-        $("#editBrandModal").modal("show");
+        const edit_category = (await axios.get(route("category.get", id)));
+        console.log(edit_category)
+        data.edit_category = edit_category.data;
+        $("#editCategoryModal").modal("show");
     } catch (error) {
-        convertValidationNotification(error);
+        //convertValidationNotification(error);
     }
 }
 
-const updateBrands = async (id) => {
+const updateCategorys = async (id) => {
     // resetValidationErrors();
     try {
         await axios.post(
             route(
-                "brand.update",
-                data.edit_brand.id
+                "category.update",
+                data.edit_category.id
             ),
-            data.edit_brand
+            data.edit_category
         );
         reload();
-        $("#editBrandModal").modal("hide");
-        data.edit_brand = {};
+        $("#editCategoryModal").modal("hide");
+        data.edit_category = {};
         // this.$root.notify.success({
         //     title: "Success",
         //     message: "Material Category updated successfully",
         // });
     } catch (error) {
-        convertValidationNotification(error);
+        //convertValidationNotification(error);
     }
 }
 
-const deleteBrand = async (id) => {
+const deleteCategory = async (id) => {
     console.log(id);
     try {
         Swal.fire({
@@ -516,13 +517,13 @@ const deleteBrand = async (id) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(route("brand.delete", id));
+                axios.delete(route("category.delete", id));
                 reload();
                 Swal.fire("Deleted!", `Record has been deleted.`, "success");
             }
         });
     } catch (error) {
-        convertValidationNotification(error);
+        //convertValidationNotification(error);
     }
 }
 
@@ -530,13 +531,13 @@ function selectAll() {
     if (data.checkAllItems == true) {
         checkAllItems = [];
     } else {
-        data.brand.forEach((brands) => {
-            data.checkBrandItems.push(brands.id);
+        data.category.forEach((categories) => {
+            data.checkCategoryItems.push(categories.id);
         });
     }
 }
 
-const deleteSelectedItems = async (checkBrandItems) => {
+const deleteSelectedItems = async (checkCategoryItems) => {
     try {
         Swal.fire({
             title: "Are you sure?",
@@ -548,8 +549,8 @@ const deleteSelectedItems = async (checkBrandItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = checkBrandItems.map((brand) => data.brand.id);
-                axios.post(route("brand.delete.selected", data.checkBrandItems),{ ids })
+                const ids = checkCategoryItems.map((category) => data.category.id);
+                axios.post(route("category.delete.selected", data.checkCategoryItems),{ ids })
                 .then((response) => {
                         // this.reload();
                         console.log('Items deleted successfully.')
@@ -557,25 +558,25 @@ const deleteSelectedItems = async (checkBrandItems) => {
             }
         });
     } catch (error) {
-        this.convertValidationNotification(error);
+        //this.convertValidationNotification(error);
     }
 }
 
-const outofStockSelectedItems = async (checkBrandItems) =>{
-    const ids = checkBrandItems.map((brands) => data.brands.id
+const outofStockSelectedItems = async (checkCategoryItems) =>{
+    const ids = checkCategoryItems.map((categories) => data.categories.id
     );
-    axios.post(route("brand.inactive.selected"), { ids })
-        .then((response) => {this.checkBrandItems = [];
+    axios.post(route("category.inactive.selected"), { ids })
+        .then((response) => {this.checkCategoryItems = [];
             // this.reload();
         });
 }
 
 const stockSelectedItems = async (checkMatirialTypeItems) => {
-    const ids = checkBrandItems.map((brands) => data.brands.id
+    const ids = checkCategoryItems.map((categories) => data.categories.id
     );
-    axios.post(route("brand.active.selected"), { ids })
+    axios.post(route("category.active.selected"), { ids })
         .then((response) => {
-            data.checkBrandItems = [];
+            data.checkCategoryItems = [];
             // this.reload();
         });
 }
