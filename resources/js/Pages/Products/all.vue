@@ -181,7 +181,7 @@
                                             </td>
                                             <td :class="data.iconClassBody">
                                                 <a type="button" class="p-2" href="javascript:void(0)"
-                                                    >
+                                                    @click.prevent="editProduct(products.id)">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                             </td>
@@ -527,7 +527,7 @@ const createProduct = async () => {
 }
 
 const editProduct = async (id) => {
-    //window.location.href = route("vendors.edit", vendorId);
+    window.location.href = route("product.edit", id);
 }
 
 const newVendor = () => {

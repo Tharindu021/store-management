@@ -34,9 +34,10 @@ Route::prefix('product')->group(function () {
     Route::get('/', [ProductContraller::class, 'index'])->name('product.index');
     Route::get('/all', [ProductContraller::class, 'all'])->name('product.all');
     Route::post('/store', [ProductContraller::class, 'store'])->name('product.store');
-    Route::delete('/{product_id}/delete', [ProductContraller::class, 'delete'])->name('product.delete');
+    Route::get('/{prductId}/edit', [ProductContraller::class, 'edit'])->name('product.edit');
+    Route::delete('/{product_id}/delete', [ProductContraller::class, 'delete'])->name('products.basic.delete');
     Route::get('/{product_id}/get', [ProductContraller::class, 'get'])->name('product.get');
-    Route::post('/{product_id}/update', [ProductContraller::class, 'update'])->name('product.update');
+    Route::post('/{product_id}/update', [ProductContraller::class, 'update'])->name('products.basic.update');
 });
 
 require __DIR__.'/auth.php';

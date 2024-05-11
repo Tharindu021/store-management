@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 
 class ProductContraller extends Controller
 {
@@ -93,7 +94,19 @@ class ProductContraller extends Controller
         }
         
     }
+    public function edit(int $id)
+    {
+        if (Auth::user()) {
+            $response['product'] = ProductFacade::get($id);
+            Log::info('Response:', $response);
+            return Inertia::render('Products/edit', $response);
+        } else {
+            // $response['alert-danger'] = 'You do not have permission to edit vendors.';
+            // return redirect()->route('vendors.index')->with($response);
+            dd("no permission");
+        }
 
+    }
     public function update(Request $request, int $id){
         
         if (Auth::user()->can('update_types')) {

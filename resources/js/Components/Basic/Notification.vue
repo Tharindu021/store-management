@@ -29,8 +29,9 @@
 <script setup>
 import { inject , onBeforeMount ,onMounted , ref} from 'vue'
 
-// const disposerTimer = ref( null);
-// const notifications = inject('noitify');
+const disposerTimer = ref( null);
+const notifications = inject('noitify');
+console.log(notifications)
 
 // onMounted(()=> {
 //   disposerTimer.value = setInterval(() => {
