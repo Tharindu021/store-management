@@ -120,6 +120,7 @@
                                     <thead>
                                         <tr>
                                             <th  class="checkArea">
+                                                <!-- ----------------------------------------------------------------- -->
                                                 <!-- <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
                                                     v-if="data.brand.length > 0" :checked="data.checkAllItems.length==this.checkBrandItems.length"  v-model="checkAllItems" />
@@ -132,33 +133,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr  v-for=" datas in data.brand" :key="datas.id" :class="data.rowClass">
+                                        <tr  v-for=" brands in data.brand" :key="brands.id" :class="data.rowClass">
                                             <td class="checkArea">
                                                 <!-- <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="checkBrandItems" v-bind:value="datas"
-                                                        v-bind:id="datas.id" />
+                                                        v-model="checkBrandItems" v-bind:value="brands"
+                                                        v-bind:id="brands.id" />
                                                 </div> -->
                                             </td>
                                             <td :class="data.textClassBody">
-                                                {{ datas.name }}
+                                                {{ brands.name }}
                                             </td>
                                             <td :class="data.textClassBody">
-                                                {{ datas.slug }}
+                                                {{ brands.slug }}
                                             </td>
                                             <td>
-                                                <span v-if="datas.status == 1"
+                                                <span v-if="brands.status == 1"
                                                     class="badge bg-success text-white fw-bold ml-3">Active</span>
-                                                <span v-if="datas.status == 0"
+                                                <span v-if="brands.status == 0"
                                                     class="badge bg-warning text-white fw-bold ml-3">Deactive</span>
                                             </td>
                                             <td :class="data.iconClassBody">
                                                 <a type="button" class="p-2" href="javascript:void(0)"
-                                                    @click.prevent="editBrand(datas.id)">
+                                                    @click.prevent="editBrand(brands.id)">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <a type="button" class="p-2 float-end" href="javascript:void(0)"
-                                                    @click.prevent="deleteBrand(datas.id)">
+                                                    @click.prevent="deleteBrand(brands.id)">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -282,7 +283,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title font-weight-bolder text-info text-gradient" id="add_brandLabel">
-                                New brand
+                                Update brand
                             </h5>
                             <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">
@@ -526,8 +527,8 @@ const deleteBrand = async (id) => {
     }
 }
 
-function selectAll() {
-    if (data.checkAllItems == true) {
+const selectAll = (event) => {
+    if (event.target.checked == false) {
         checkAllItems = [];
     } else {
         data.brand.forEach((brands) => {
@@ -548,7 +549,7 @@ const deleteSelectedItems = async (checkBrandItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = checkBrandItems.map((brand) => data.brand.id);
+                const ids = checkBrandItems.map((brands) => data.brands.id);
                 axios.post(route("brand.delete.selected", data.checkBrandItems),{ ids })
                 .then((response) => {
                         // this.reload();

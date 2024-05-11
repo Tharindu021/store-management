@@ -29,8 +29,8 @@
 <script setup>
 import { inject , onBeforeMount ,onMounted , ref} from 'vue'
 
-const disposerTimer = ref( null);
-const notifications = inject('noitify');
+// const disposerTimer = ref( null);
+// const notifications = inject('noitify');
 
 // onMounted(()=> {
 //   disposerTimer.value = setInterval(() => {
@@ -43,9 +43,9 @@ const notifications = inject('noitify');
 // }) 
 
 
-// function close(notify) {
-//       notifications.value = notifications.value.filter((notification) => notification.key !== notify.key)
-// }
+function close(notify) {
+      notifications.value = notifications.value.filter((notification) => notification.key !== notify.key)
+}
 function success({ title = 'Success', message, timeout = 4000 }) {
       notifications.push({
         key: Math.random(),

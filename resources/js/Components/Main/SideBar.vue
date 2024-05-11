@@ -12,20 +12,21 @@
                     <ul class="mb-3 navbar-nav">
                         <li class="nav-item">
                             <Link :class="{ 'active': route().current() == 'dashboard' }"
-                                class="nav-link" :href="route('dashboard')">
+                                class="nav-link active-preloader" :href="route('dashboard')">
                             <font-awesome-icon icon="fa-solid fa-desktop" />
                             <span class="ml-2 font-weight-400">Dashboard</span>
                             </Link>
                         </li>
                         <li>
-                            <Link :class="{ 'active': $page.url.startsWith('/products') }" class="nav-link active-preloader">
+                            <Link :class="{ 'active': $page.url.startsWith('/product') }" 
+                            class="nav-link active-preloader" :href="route('product.index')">
                             <font-awesome-icon icon="fa-solid fa-building-user" />
                             <span class="ml-2 font-weight-400">Products</span>
                             </Link>
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link" href="#settingsMenu" data-toggle="collapse" aria-expanded="true">
+                            <a class="nav-link" href="#settingsMenu" data-toggle="collapse" aria-expanded="false">
                                 <font-awesome-icon icon="fa-solid fa-gear" /><span class="ml-2">Settings</span>
                             </a>
                             <ul :class="{ 'collapse': $page.url.startsWith('/brands') || $page.url.startsWith('/category')}" class="list-unstyled" id="settingsMenu"> 

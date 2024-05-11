@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use domain\Facades\BrandFacade\BrandFacade;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Filters\FuzzyFilter;
 use App\Http\Resources\DataResource;
+use App\Models\Products;
+use domain\Facades\ProductFacade\ProductFacade;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Database\Eloquent\Builder;
 
-class BrandsController extends ParentController
+class ProductContraller extends Controller
 {
-
     public function index(){
-        return Inertia::render('Settings/Brands/all');
+        return Inertia::render('Products/all');
     }
 
     public function store(Request $request){
         if (Auth::user()->can('read_types')) {
-            return BrandFacade::store($request->all());
+            return ProductFacade::store($request->all());
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
@@ -31,10 +31,41 @@ class BrandsController extends ParentController
     }
 
     public function all(){
-        $query = Brand::orderBy('id', 'asc');
+        $query = Products::orderBy('id', 'desc');
+        if(request('search_product_code'))
+        {
+            $code = request('search_product_code');
+            $query->where('code', $code);
+        }
+        if(request('search_product_name'))
+        {
+            $name = request('search_product_name');
+            $query->where('name', 'like', "%{$name}%");
+        }
+        if(request('search_product_brand'))
+        {
+            $brand_id = request('search_product_brand');
+            $query->where('country_id', $brand_id);
+        }
+        if(request('search_product_category'))
+        {
+            $category_id = request('search_product_category');
+            $query->where('currency_id', $category_id);
+        }
         $payload = QueryBuilder::for($query)
-            ->allowedSorts(['slug', 'name'])
-            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name','slug')))
+            ->allowedSorts(['code'])
+            ->allowedFilters(
+                AllowedFilter::callback('search', function($query, $value){
+                    $query->whereHas('categories', function(Builder $query) use ($value){
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                    $query->orWhereHas('brands', function(Builder $query) use ($value){
+                        $query->where('name', 'like', "%{$value}%");
+                    });
+                    $query->orWhere('code', 'like', "%{$value}%");
+                    $query->orWhere('name', 'like', "%{$value}%");
+                })
+            )
             ->paginate(request('per_page', config('basic.pagination_per_page')));
         return DataResource::collection($payload);
     }
@@ -42,7 +73,7 @@ class BrandsController extends ParentController
     public function delete($id){
         
         if (Auth::user()->can('delete_types')) {
-            return BrandFacade::delete($id);
+            return ProductFacade::delete($id);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
@@ -53,7 +84,7 @@ class BrandsController extends ParentController
     public function get($id){
         
         if (Auth::user()->can('read_types')) {
-            $data = BrandFacade::get($id);
+            $data = ProductFacade::get($id);
             return response()->json($data);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
@@ -66,12 +97,11 @@ class BrandsController extends ParentController
     public function update(Request $request, int $id){
         
         if (Auth::user()->can('update_types')) {
-            return BrandFacade::update($request->all(),$id);
+            return ProductFacade::update($request->all(),$id);
         } else {
             // $response['alert-danger'] = 'You do not have permission to read material types.';
             // return redirect()->route('dashboard')->with($response);
             dd("no permission");
         }
     }
-
 }
