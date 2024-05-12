@@ -36,7 +36,7 @@
                             <div class="col-lg-4 text-right">
                                 <a
                                     href="javascript:void(0)"
-                                    @click.prevent="newVendor"
+                                    @click.prevent="newProduct"
                                     class="btn btn-sm btn-neutral float-end"
                                 >
                                     <font-awesome-icon
@@ -715,8 +715,8 @@ const clearFilters = async () => {
 
 const reload = async () => {
     try {
-        const res = await axios.get(
-            route("product.all", {
+        const res = (
+            await axios.get(route("product.all"), {
                 params: {
                     page: data.page,
                     per_page: data.pageCount,
@@ -779,7 +779,6 @@ const createProduct = async () => {
         data.products = {};
         data.select_brand = {};
         data.select_category = {};
-        //getProductData();
         // this.$root.notify.success({
         //     title: "Success",
         //     message: "Vendor created successfully",
@@ -794,7 +793,7 @@ const editProduct = async (id) => {
     window.location.href = route("product.edit", id);
 };
 
-const newVendor = () => {
+const newProduct = () => {
     // this.$root.loader.start();
     data.select_category = null;
     data.select_brand = null;
@@ -851,18 +850,20 @@ const deleteSelectedItems = async (checkProductItems) => {
                 const ids = checkProductItems.map(
                     (products) => data.products.id
                 );
-                console.log(ids)
-                console.log(data.checkProductItems)
+                console.log(ids);
+                console.log(data.checkProductItems);
                 axios
                     .post(
                         route(
                             "product.delete.selected",
                             data.checkProductItems
                         ),
-                        { ids }
+                        {
+                            ids,
+                        }
                     )
                     .then((response) => {
-                        // this.reload();
+                        reload();
                         console.log("Items deleted successfully.");
                     });
             }
@@ -878,7 +879,7 @@ const inactiveSelectedItems = async (checkProductItems) => {
     const ids = checkProductItems.map((products) => data.products.id);
     axios.post(route("product.inactive.selected"), { ids }).then((response) => {
         this.checkProductItems = [];
-        // this.reload();
+        reload();
     });
     //this.$root.loader.finish();
 };
@@ -888,7 +889,7 @@ const activeSelectedItems = async (checkProductItems) => {
     const ids = checkProductItems.map((products) => data.products.id);
     axios.post(route("product.active.selected"), { ids }).then((response) => {
         data.checkProductItems = [];
-        // this.reload();
+        reload();
     });
     //this.$root.loader.finish();
 };

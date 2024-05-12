@@ -697,7 +697,7 @@ onBeforeMount(() => {
 });
 
 watch(
-    ()=>data.checkAllItems,(newX,oldX) => {
+    () => data.checkAllItems,(newX,oldX) => {
     data.brands.forEach((item, index) => {
         if (index !== 0) {
             item.selected = newX;
@@ -711,7 +711,7 @@ watch(
 })
 
 watch(
-    ()=>data.checkBrandItems,(newX,oldX) => {
+    () => data.checkBrandItems,(newX,oldX) => {
     if (data.checkBrandItems.length != data.brands.length) {
         data.checkAllItems = false;
     }
@@ -733,18 +733,15 @@ const perPageChange = async () => {
 
 const reload = async () => {
     try {
-        const res = await axios.get(
-            route("brand.all", {
-                params: {
+        const res = (await axios.get(route("brand.all"),{
+            params: {
                     page: data.page,
                     per_page: data.pageCount,
                     "filter[search]": data.search,
                 },
-            })
-        );
+        })).data;
         data.brand = res.data;
         data.pagination = res.meta;
-        console.log('success')
     } catch (error) {
         console.log("Error reloading brand data:", error);
     }

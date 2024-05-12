@@ -675,10 +675,11 @@ onBeforeMount(() => {
     getCategoryData();
 });
 
-watch(data.checkAllItems,(newX) => {
+watch(
+    () => data.checkAllItems,(newX,oldX) => {
     data.categories.forEach((item, index) => {
         if (index !== 0) {
-            item.selected = value;
+            item.selected = newX;
         }
     });
     if (data.checkCategoryItems.length == data.categories.length) {
@@ -688,7 +689,8 @@ watch(data.checkAllItems,(newX) => {
     }
 })
 
-watch(data.checkCategoryItems,(newX) => {
+watch(
+    () => data.checkCategoryItems,(newX,oldX) => {
     if (data.checkCategoryItems.length != data.categories.length) {
         data.checkAllItems = false;
     }
@@ -710,18 +712,15 @@ const perPageChange = async () => {
 
 const reload = async () => {
     try {
-        const res = await axios.get(
-            route("category.all", {
-                params: {
+        const res = (await axios.get(route("category.all"),{
+            params: {
                     page: data.page,
                     per_page: data.pageCount,
                     "filter[search]": data.search,
                 },
-            })
-        ).data;
+        })).data;
         data.category = res.data;
         data.pagination = res.meta;
-        console.log(data.pagination);
     } catch (error) {
         console.error("Error reloading category data:", error);
     }
@@ -758,6 +757,7 @@ const editCategory = async (id) => {
         console.log(edit_category);
         data.edit_category = edit_category.data;
         $("#editCategoryModal").modal("show");
+        reload();
     } catch (error) {
         //convertValidationNotification(error);
     }
@@ -800,6 +800,7 @@ const deleteCategory = async (id) => {
                 Swal.fire("Deleted!", `Record has been deleted.`, "success");
             }
         });
+        reload();
     } catch (error) {
         //convertValidationNotification(error);
     }
@@ -844,6 +845,7 @@ const deleteSelectedItems = async (checkCategoryItems) => {
                     });
             }
         });
+        reload();
     } catch (error) {
         //this.convertValidationNotification(error);
     }
@@ -854,17 +856,19 @@ const outofStockSelectedItems = async (checkCategoryItems) => {
     axios
         .post(route("category.inactive.selected"), { ids })
         .then((response) => {
-            this.checkCategoryItems = [];
-            // this.reload();
+            data.checkCategoryItems = [];
+            reload();
         });
+        reload();
 };
 
 const stockSelectedItems = async (checkMatirialTypeItems) => {
     const ids = checkCategoryItems.map((categories) => data.categories.id);
     axios.post(route("category.active.selected"), { ids }).then((response) => {
         data.checkCategoryItems = [];
-        // this.reload();
+        reload();
     });
+    
 };
 </script>
 
