@@ -23,11 +23,11 @@ class ProductContraller extends ParentController
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('read_types')) {
+        if (Auth::user()->can('create_types')) {
             return ProductFacade::store($request->all());
         } else {
-            $response['alert-danger'] = 'You do not have permission to read products.';
-            return redirect()->route('product.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to create products.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -74,8 +74,8 @@ class ProductContraller extends ParentController
         if (Auth::user()->can('delete_types')) {
             return ProductFacade::delete($id);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read products.';
-            return redirect()->route('product.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to delete products.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -86,8 +86,8 @@ class ProductContraller extends ParentController
             $data = ProductFacade::get($id);
             return response()->json($data);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read products.';
-            return redirect()->route('product.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to get products.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
     public function edit(int $id)
@@ -95,10 +95,10 @@ class ProductContraller extends ParentController
         if (Auth::user()) {
             $response['product'] = ProductFacade::get($id);
             Log::info('Response:', $response);
-            return Inertia::render('Products/edit', $response);
+            return Inertia::render('dashboard', $response);
         } else {
-            $response['alert-danger'] = 'You do not have permission to edit v.';
-            return redirect()->route('product.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to edit products.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
     public function update(Request $request, int $id)
@@ -107,8 +107,8 @@ class ProductContraller extends ParentController
         if (Auth::user()->can('update_types')) {
             return ProductFacade::update($request->all(), $id);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read products.';
-            return redirect()->route('product.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to update products.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 

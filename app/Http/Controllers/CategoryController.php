@@ -21,11 +21,11 @@ class CategoryController extends ParentController
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('read_types')) {
+        if (Auth::user()->can('create_types')) {
             return CategoryFacade::store($request->all());
         } else {
             $response['alert-danger'] = 'You do not have permission to read categories.';
-            return redirect()->route('category.index')->with($response);
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -45,8 +45,8 @@ class CategoryController extends ParentController
         if (Auth::user()->can('delete_types')) {
             return CategoryFacade::delete($id);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read categories.';
-            return redirect()->route('category.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to delete categories.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -57,8 +57,8 @@ class CategoryController extends ParentController
             $data = CategoryFacade::get($id);
             return response()->json($data);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read categories.';
-            return redirect()->route('category.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to get categories.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -68,8 +68,8 @@ class CategoryController extends ParentController
         if (Auth::user()->can('update_types')) {
             return CategoryFacade::update($request->all(), $id);
         } else {
-            $response['alert-danger'] = 'You do not have permission to read categories.';
-            return redirect()->route('category.index')->with($response);
+            $response['alert-danger'] = 'You do not have permission to update categories.';
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -79,7 +79,7 @@ class CategoryController extends ParentController
             return CategoryFacade::deleteSelected($request);
         } else {
             $response['alert-danger'] = 'You do not have permission to delete categories.';
-            return redirect()->route('category.index')->with($response);
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -89,7 +89,7 @@ class CategoryController extends ParentController
             return CategoryFacade::inactive($request);
         } else {
             $response['alert-danger'] = 'You do not have permission to inactive categories.';
-            return redirect()->route('category.index')->with($response);
+            return redirect()->route('dashboard')->with($response);
         }
     }
 
@@ -99,7 +99,7 @@ class CategoryController extends ParentController
             return CategoryFacade::active($request);
         } else {
             $response['alert-danger'] = 'You do not have permission to active categories.';
-            return redirect()->route('category.index')->with($response);
+            return redirect()->route('dashboard')->with($response);
         }
     }
 }
