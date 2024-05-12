@@ -672,11 +672,11 @@ onBeforeMount(() => {
     getCategoryData();
 });
 
-watch(
-    () => data.checkAllItems,(newX,oldX) => {
-    data.categories.forEach((item, index) => {
+watch(() => data.checkAllItems, (newX, oldX) => {
+    data.category.forEach((item, index) => {
         if (index !== 0) {
-            item.selected = newX;
+            console.log('1')
+            item.selected = true;
         }
     });
     if (data.checkCategoryItems.length == data.categories.length) {
@@ -687,8 +687,8 @@ watch(
 })
 
 watch(
-    () => data.checkCategoryItems,(newX,oldX) => {
-    if (data.checkCategoryItems.length != data.categories.length) {
+    () => data.checkCategoryItems,(newX,oldX) => {    
+    if (data.checkCategoryItems.length != data.category.length) {
         data.checkAllItems = false;
     }
 })
@@ -809,6 +809,7 @@ const selectAll = (event) => {
     } else {
         data.category.forEach((categories) => {
             data.checkCategoryItems.push(categories.id);
+            console.log(data.checkCategoryItems.length)
         });
     }
 };
