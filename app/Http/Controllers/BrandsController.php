@@ -36,7 +36,7 @@ class BrandsController extends ParentController
         $query = Brand::orderBy('id');
         $payload = QueryBuilder::for($query)
             ->allowedSorts(['id', 'name'])
-            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name')))
+            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name' , 'slug')))
             ->paginate(request('per_page', config('basic.pagination_per_page')));
         return DataResource::collection($payload);
     }
