@@ -19,6 +19,9 @@ Route::prefix('brand')->group(function () {
     Route::delete('/{brand_id}/delete', [BrandsController::class, 'delete'])->name('brand.delete');
     Route::get('/{brand_id}/get', [BrandsController::class, 'get'])->name('brand.get');
     Route::post('/{brand_id}/update', [BrandsController::class, 'update'])->name('brand.update');
+    Route::post('/select/brand/delete', [BrandsController::class, 'deleteSelectedItems'])->name('brand.delete.selected');
+    Route::post('/select/brand/inactive', [BrandsController::class, 'inactiveSelectedItems'])->name('brand.inactive.selected');
+    Route::post('/select/brand/active', [BrandsController::class, 'activeSelectedItems'])->name('brand.active.selected');
 });
 
 Route::prefix('category')->group(function () {
@@ -28,6 +31,9 @@ Route::prefix('category')->group(function () {
     Route::delete('/{category_id}/delete', [CategoryController::class, 'delete'])->name('category.delete');
     Route::get('/{category_id}/get', [CategoryController::class, 'get'])->name('category.get');
     Route::post('/{category_id}/update', [CategoryController::class, 'update'])->name('category.update');
+    Route::post('/select/category/delete', [CategoryController::class, 'deleteSelectedItems'])->name('category.delete.selected');
+    Route::post('/select/categoryinactive', [CategoryController::class, 'inactiveSelectedItems'])->name('category.inactive.selected');
+    Route::post('/select/category/active', [CategoryController::class, 'activeSelectedItems'])->name('category.active.selected');
 });
 
 Route::prefix('product')->group(function () {
@@ -38,6 +44,9 @@ Route::prefix('product')->group(function () {
     Route::delete('/{product_id}/delete', [ProductContraller::class, 'delete'])->name('products.basic.delete');
     Route::get('/{product_id}/get', [ProductContraller::class, 'get'])->name('product.get');
     Route::post('/{product_id}/update', [ProductContraller::class, 'update'])->name('products.basic.update');
+    Route::post('/select/product/delete', [ProductContraller::class, 'deleteSelectedItems'])->name('product.delete.selected');
+    Route::post('/select/product/inactive', [ProductContraller::class, 'inactiveSelectedItems'])->name('product.inactive.selected');
+    Route::post('/select/product/active', [ProductContraller::class, 'activeSelectedItems'])->name('product.active.selected');
 });
 
 require __DIR__.'/auth.php';

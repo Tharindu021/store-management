@@ -14,53 +14,50 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
-class ProductContraller extends Controller
+class ProductContraller extends ParentController
 {
-    public function index(){
+    public function index()
+    {
         return Inertia::render('Products/all');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         if (Auth::user()->can('read_types')) {
             return ProductFacade::store($request->all());
         } else {
-            // $response['alert-danger'] = 'You do not have permission to read material types.';
-            // return redirect()->route('dashboard')->with($response);
-            dd("no permission");
+            $response['alert-danger'] = 'You do not have permission to read products.';
+            return redirect()->route('product.index')->with($response);
         }
-        
     }
 
-    public function all(){
+    public function all()
+    {
         $query = Products::orderBy('id', 'desc');
-        if(request('search_product_code'))
-        {
+        if (request('search_product_code')) {
             $code = request('search_product_code');
             $query->where('code', $code);
         }
-        if(request('search_product_name'))
-        {
+        if (request('search_product_name')) {
             $name = request('search_product_name');
             $query->where('name', 'like', "%{$name}%");
         }
-        if(request('search_product_brand'))
-        {
+        if (request('search_product_brand')) {
             $brand_id = request('search_product_brand');
-            $query->where('country_id', $brand_id);
+            $query->where('brand_id', $brand_id);
         }
-        if(request('search_product_category'))
-        {
+        if (request('search_product_category')) {
             $category_id = request('search_product_category');
-            $query->where('currency_id', $category_id);
+            $query->where('category_id', $category_id);
         }
         $payload = QueryBuilder::for($query)
             ->allowedSorts(['code'])
             ->allowedFilters(
-                AllowedFilter::callback('search', function($query, $value){
-                    $query->whereHas('categories', function(Builder $query) use ($value){
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->whereHas('categories', function (Builder $query) use ($value) {
                         $query->where('name', 'like', "%{$value}%");
                     });
-                    $query->orWhereHas('brands', function(Builder $query) use ($value){
+                    $query->orWhereHas('brands', function (Builder $query) use ($value) {
                         $query->where('name', 'like', "%{$value}%");
                     });
                     $query->orWhere('code', 'like', "%{$value}%");
@@ -71,28 +68,27 @@ class ProductContraller extends Controller
         return DataResource::collection($payload);
     }
 
-    public function delete($id){
-        
+    public function delete($id)
+    {
+
         if (Auth::user()->can('delete_types')) {
             return ProductFacade::delete($id);
         } else {
-            // $response['alert-danger'] = 'You do not have permission to read material types.';
-            // return redirect()->route('dashboard')->with($response);
-            dd("no permission");
+            $response['alert-danger'] = 'You do not have permission to read products.';
+            return redirect()->route('product.index')->with($response);
         }
     }
 
-    public function get($id){
-        
+    public function get($id)
+    {
+
         if (Auth::user()->can('read_types')) {
             $data = ProductFacade::get($id);
             return response()->json($data);
         } else {
-            // $response['alert-danger'] = 'You do not have permission to read material types.';
-            // return redirect()->route('dashboard')->with($response);
-            dd("no permission");
+            $response['alert-danger'] = 'You do not have permission to read products.';
+            return redirect()->route('product.index')->with($response);
         }
-        
     }
     public function edit(int $id)
     {
@@ -101,20 +97,19 @@ class ProductContraller extends Controller
             Log::info('Response:', $response);
             return Inertia::render('Products/edit', $response);
         } else {
-            // $response['alert-danger'] = 'You do not have permission to edit vendors.';
-            // return redirect()->route('vendors.index')->with($response);
-            dd("no permission");
+            $response['alert-danger'] = 'You do not have permission to edit v.';
+            return redirect()->route('product.index')->with($response);
         }
+    }
+    public function update(Request $request, int $id)
+    {
 
-    }
-    public function update(Request $request, int $id){
-        
         if (Auth::user()->can('update_types')) {
-            return ProductFacade::update($request->all(),$id);
+            return ProductFacade::update($request->all(), $id);
         } else {
-            // $response['alert-danger'] = 'You do not have permission to read material types.';
-            // return redirect()->route('dashboard')->with($response);
-            dd("no permission");
+            $response['alert-danger'] = 'You do not have permission to read products.';
+            return redirect()->route('product.index')->with($response);
         }
     }
+
 }

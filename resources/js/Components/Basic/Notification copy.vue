@@ -26,46 +26,46 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      disposerTimer: null,
-      notifications: [],
-    }
-  },
-  mounted() {
-    this.disposerTimer = setInterval(() => {
-      this.notifications = this.notifications.filter((notification) => notification.timeout > new Date().getTime())
+<script setup>
+import { inject , onBeforeMount ,onMounted , ref} from 'vue'
+
+const disposerTimer = ref( null);
+const notifications = inject('noitify');
+console.log(notifications)
+
+onMounted(()=> {
+  disposerTimer.value = setInterval(() => {
+      notifications.value = notifications.value.filter((notification) => notification.valuetimeout > new Date().getTime())
     }, 10)
-  },
-  beforeDestroy() {
-    clearInterval(this.disposerTimer)
-  },
-  methods: {
-    close(notify) {
-      this.notifications = this.notifications.filter((notification) => notification.key !== notify.key)
-    },
-    success({ title = 'Succuss', message, timeout = 4000 }) {
-      this.notifications.push({
+});
+
+onBeforeMount(() =>{
+  clearInterval(disposerTimer)
+}) 
+
+
+function close(notify) {
+      notifications.value = notifications.value.filter((notification) => notification.key !== notify.key)
+}
+function success({ title = 'Success', message, timeout = 4000 }) {
+      notifications.push({
         key: Math.random(),
         title,
         message,
         type: 'success',
         timeout: new Date().getTime() + timeout,
       })
-    },
-    error({ title = 'Error', message, timeout = 4000 }) {
-      this.notifications.push({
+}
+function error({ title = 'Error', message, timeout = 4000 }) {
+      notifications.push({
         key: Math.random(),
         title,
         message,
         type: 'error',
         timeout: new Date().getTime() + timeout,
       })
-    },
-  },
 }
+
 </script>
 
 <style lang="scss">

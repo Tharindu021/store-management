@@ -41,4 +41,48 @@ class BrandServices
         return array_merge($brand->toArray(), $data);
     }
 
+    public function deleteSelected($data)
+    {
+        
+        $ids = $data->input('ids');
+        dd($ids);
+        Brand::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function inactive($data)
+    {
+        $ids = $data->input('ids');
+
+        $brand = Brand::whereIn('id', $ids)->get();
+
+        foreach ($brand as $brands) {
+            $brands->status = 0;
+            $brands->update();
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function active($data)
+    {
+        $ids = $data->input('ids');
+
+        $brand = Brand::whereIn('id', $ids)->get();
+
+        foreach ($brand as $brands) {
+            $brands->status = 1;
+            $brands->update();
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
 }

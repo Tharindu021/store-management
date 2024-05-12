@@ -3,7 +3,7 @@
         <div class="scrollbar-inner">
             <div class="mb-4 text-center sidenav-header">
                 <Link class="navbar-brand text-primary" :href="route('dashboard')">
-                <img src="/img/logo/iMake-Indigo.png"  alt="iMake" class="home-logo mt-1" height="150">
+                <img src="/public/img/logo/iMake-Indigo.png"  alt="iMake" class="home-logo mt-1" height="150">
                 </Link>
             </div>
             <br>
@@ -65,11 +65,8 @@ const data = reactive({
    materialTypes: [],
 }) 
 
-library.add(faDesktop)
-library.add(faLayerGroup)
-library.add(faFolder)
-library.add(faGear)
-library.add(faUsers)
+library.add(faDesktop , faLayerGroup , faFolder, faGear , faUsers)
+
 </script>
 
 <style lang="css">
