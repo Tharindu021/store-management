@@ -41,4 +41,45 @@ class CategoryServices
         return array_merge($category->toArray(), $data);
     }
 
+    public function deleteSelected($data)
+    {
+        
+        $ids = $data->input('ids');
+        Category::whereIn('id', $ids)->delete();
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function inactive($data)
+    {
+        $ids = $data->input('ids');
+        $category = Category::whereIn('id', $ids)->get();
+
+        foreach ($category as $categories) {
+            $categories->status = 0;
+            $categories->update();
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+    public function active($data)
+    {
+        $ids = $data->input('ids');
+
+        $category = Category::whereIn('id', $ids)->get();
+
+        foreach ($category as $categories) {
+            $categories->status = 1;
+            $categories->update();
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
 }

@@ -45,7 +45,6 @@ class BrandServices
     {
         
         $ids = $data->input('ids');
-        dd($ids);
         Brand::whereIn('id', $ids)->delete();
 
         return response()->json([
@@ -56,7 +55,6 @@ class BrandServices
     public function inactive($data)
     {
         $ids = $data->input('ids');
-
         $brand = Brand::whereIn('id', $ids)->get();
 
         foreach ($brand as $brands) {

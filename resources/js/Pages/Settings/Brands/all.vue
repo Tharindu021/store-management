@@ -137,7 +137,7 @@
                                                 />
                                             </a>
                                         </div>
-                                        <div class="p-2 border icon_item">
+                                        <div class="p-2 border icon_item" >
                                             <!-- v-if="can('inactive_types')" -->
                                             <a
                                                 @click.prevent="
@@ -846,9 +846,9 @@ const deleteSelectedItems = async (checkBrandItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(data.checkBrandItems);
+                // console.log(data.checkBrandItems.data);
                 const ids = data.checkBrandItems.map(
-                    (brands) => data.brands.id
+                    (brands) => brands.id
                 );
                 console.log(ids);
                 axios
@@ -857,7 +857,7 @@ const deleteSelectedItems = async (checkBrandItems) => {
                         { ids }
                     )
                     .then((response) => {
-                        // this.reload();
+                        reload();
                         console.log("Items deleted successfully.");
                     });
             }
@@ -868,18 +868,18 @@ const deleteSelectedItems = async (checkBrandItems) => {
 };
 
 const inactiveSelectedItems = async (checkBrandItems) => {
-    const ids = data.checkBrandItems.map((brands) => data.brands.id);
+    const ids = data.checkBrandItems.map((brands) => brands.id);
     axios.post(route("brand.inactive.selected"), { ids }).then((response) => {
         data.checkBrandItems = [];
-        // this.reload();
+        reload();
     });
 };
 
 const activeSelectedItems = async (checkMatirialTypeItems) => {
-    const ids = data.checkBrandItems.map((brands) => data.brands.id);
+    const ids = data.checkBrandItems.map((brands) => brands.id);
     axios.post(route("brand.active.selected"), { ids }).then((response) => {
         data.checkBrandItems = [];
-        // this.reload();
+        reload();
     });
 };
 </script>

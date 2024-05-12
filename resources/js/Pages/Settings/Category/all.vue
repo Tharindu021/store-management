@@ -122,11 +122,10 @@
                                             />
                                         </div>
                                         <div class="p-2 border icon_item">
-                                            <!-- <a @click.prevent="
+                                            <!-- v-if="can('active_types')" -->
+                                            <a @click.prevent="
                                                 activeSelectedItems(checkMatirialTypeItems)
-                                                v-if="can('active_types')"
-                                                "> -->
-                                            <a>
+                                                ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-circle-check"
@@ -135,11 +134,10 @@
                                             </a>
                                         </div>
                                         <div class="p-2 border icon_item">
-                                            <!-- <a @click.prevent="
+                                            <!-- v-if="can('inactive_types')"  -->
+                                            <a @click.prevent="
                                                 inactiveSelectedItems(checkMatirialTypeItems)
-                                                v-if="can('inactive_types')" 
-                                                "> -->
-                                            <a>
+                                                ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-circle-minus"
@@ -149,10 +147,9 @@
                                         </div>
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('delete_types') && this.checkMatirialTypeItems.length > 0" -->
-                                            <!-- <a href="javascript:void(0)" @click.prevent="
+                                            <a href="javascript:void(0)" @click.prevent="
                                                 deleteSelectedItems(checkMatirialTypeItems)
-                                                "> -->
-                                            <a>
+                                                ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-trash"
@@ -175,10 +172,10 @@
                                     <thead>
                                         <tr>
                                             <th class="checkArea">
-                                                <!-- <div class="form-check mb-4">
+                                                <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="data.category.length > 0" :checked="data.checkAllItems.length==this.checkCategoryItems.length"  v-model="checkAllItems" />
-                                                </div> -->
+                                                    v-if="data.category.length > 0" :checked="data.checkAllItems.length==data.checkCategoryItems.length"  v-model="data.checkAllItems" />
+                                                </div>
                                             </th>
                                             <th :class="data.textClassHead">
                                                 Name
@@ -201,11 +198,11 @@
                                             :class="data.rowClass"
                                         >
                                             <td class="checkArea">
-                                                <!-- <div class="form-check mb-4">
+                                                <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="checkCategoryItems" v-bind:value="categories"
+                                                        v-model="data.checkCategoryItems" v-bind:value="categories"
                                                         v-bind:id="categories.id" />
-                                                </div> -->
+                                                </div>
                                             </td>
                                             <td :class="data.textClassBody">
                                                 {{ categories.name }}
@@ -828,8 +825,8 @@ const deleteSelectedItems = async (checkCategoryItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = checkCategoryItems.map(
-                    (categories) => data.categories.id
+                const ids = data.checkCategoryItems.map(
+                    (categories) => categories.id
                 );
                 axios
                     .post(
@@ -840,7 +837,7 @@ const deleteSelectedItems = async (checkCategoryItems) => {
                         { ids }
                     )
                     .then((response) => {
-                        // this.reload();
+                        reload();
                         console.log("Items deleted successfully.");
                     });
             }
@@ -851,8 +848,8 @@ const deleteSelectedItems = async (checkCategoryItems) => {
     }
 };
 
-const outofStockSelectedItems = async (checkCategoryItems) => {
-    const ids = checkCategoryItems.map((categories) => data.categories.id);
+const inactiveSelectedItems = async (checkCategoryItems) => {
+    const ids = data.checkCategoryItems.map((categories) => categories.id);
     axios
         .post(route("category.inactive.selected"), { ids })
         .then((response) => {
@@ -862,8 +859,8 @@ const outofStockSelectedItems = async (checkCategoryItems) => {
         reload();
 };
 
-const stockSelectedItems = async (checkMatirialTypeItems) => {
-    const ids = checkCategoryItems.map((categories) => data.categories.id);
+const activeSelectedItems = async (checkMatirialTypeItems) => {
+    const ids = data.checkCategoryItems.map((categories) => categories.id);
     axios.post(route("category.active.selected"), { ids }).then((response) => {
         data.checkCategoryItems = [];
         reload();
