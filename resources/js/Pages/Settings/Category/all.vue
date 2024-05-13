@@ -739,6 +739,7 @@ const reload = async () => {
         })).data;
         data.category = res.data;
         data.pagination = res.meta;
+        data.checkCategoryItems = [];
         loading_bar.value.finish();
     } catch (error) {
         console.error("Error reloading category data:", error);

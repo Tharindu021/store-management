@@ -2,8 +2,8 @@
     <nav class="bg-white sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light" id="sidenav-main">
         <div class="scrollbar-inner">
             <div class="mb-4 text-center sidenav-header">
-                <Link class="navbar-brand text-primary" :href="route('dashboard')">
-                <img src="/public/img/logo/iMake-Indigo.png"  alt="iMake" class="home-logo mt-1" height="150">
+                <Link class="navbar-brand" :href="route('dashboard')">
+                <img :src="'img/logo/iMake-Indigo.png'"  alt="iMake" class="home-logo mt-1" height="150">
                 </Link>
             </div>
             <br>
@@ -70,6 +70,13 @@ library.add(faDesktop , faLayerGroup , faFolder, faGear , faUsers)
 </script>
 
 <style lang="css">
+
+.sidenav {
+    width: 250px; /* Adjust the width as needed */
+    height: 100%; /* Set the height to fill the viewport */
+    overflow-y: auto; /* Make the sidebar scrollable */
+}
+
 .navbar-vertical .navbar-brand-img,
 .navbar-vertical .navbar-brand>img {
     max-width: 100%;

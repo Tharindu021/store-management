@@ -723,16 +723,16 @@ watch(
     }
 })
 
-const selectAll = (event) => {
-    if (event.target.checked == false) {
-        data.checkBrandItems = [];
-    } else {
-        data.brand.forEach((brands) => {
-            data.checkBrandItems.push(brands.id);
-            //console.log("3",data.checkBrandItems.length)
-        });
-    }
-};
+// const selectAll = (event) => {
+//     if (event.target.checked == false) {
+//         data.checkBrandItems = [];
+//     } else {
+//         data.brand.forEach((brands) => {
+//             data.checkBrandItems.push(brands.id);
+//             //console.log("3",data.checkBrandItems.length)
+//         });
+//     }
+// };
 
 const setPage = async (page) => {
     data.page = page;
@@ -770,7 +770,7 @@ const reload = async () => {
         })).data;
         data.brand = res.data;
         data.pagination = res.meta;
-        data.checkAllItems = false;
+        data.checkBrandItems = [];
         nextTick(()=>{
         loading_bar.value.finish();
     });
@@ -840,6 +840,7 @@ const updateBrands = async (id) => {
         convertValidationNotification(error)
     }
 };
+
 
 const deleteBrand = async (id) => {
     console.log(id);
