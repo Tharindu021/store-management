@@ -20,12 +20,12 @@
                             v-model="data.products.code"
                             required
                         />
-                        <small
+                        <!-- <small
               v-if="data.validationErrors.code"
               id="msg_code"
               class="text-danger form-text text-error-msg error"
-              >{{ data.validationErrors.code }}</small
-            >
+              >{{ data.validationErrors.co }}</small
+            > -->
                     </div>
                 </div>
                 <div class="row mb-1">

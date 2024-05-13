@@ -20,6 +20,7 @@ function start() {
 function finish() {
     loading.value = false;
 }
+
 </script>
 
 <style scoped>

@@ -14,8 +14,8 @@
             </div>
         </div>
         <slot name="modals" />
-        <Notification ref="notification" />
-        <LoadingBar ref="loader" />
+        <!-- <Notification ref="notification" /> -->
+        <slot name="loader" />
         <Footer />
     </div>
 </template>
@@ -25,8 +25,7 @@
 import { Head, Link } from '@inertiajs/vue3'
 import SideBar from '@/Components/Main/SideBar.vue';
 import NavBar from '@/Components/Main/NavBar.vue';
-import LoadingBar from '@/Components/Basic/LoadingBar.vue';
-import Notification from '@/Components/Basic/Notification.vue';
+//import Notification from '@/Components/Basic/Notification.vue';
 import Footer from '@/Components/Main/Footer.vue';
 import { ref , onMounted ,provide } from 'vue';
  
@@ -34,13 +33,15 @@ const props = defineProps({
     title: String,
 });
 
-const notificationRef = ref(null);
-const loaderRef = ref(null);
+// const notificationRef = ref(null);
+// const loaderRef = ref(null);
 
-onMounted(() => {
-  provide("notify", notificationRef.value);
-  provide("loader", loaderRef.value);
-});
+// onMounted(() => {
+//     //this.$root.notify = this.$refs.notification
+//     //this.$root.loader = this.$refs.loader
+//     provide("notify", notificationRef.value);
+//     provide("loader", loaderRef.value);
+// });
 </script>
 
 <style lang="scss">

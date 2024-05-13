@@ -36,7 +36,7 @@ class ProductContraller extends ParentController
         $query = Products::orderBy('id', 'desc');
         if (request('search_product_code')) {
             $code = request('search_product_code');
-            $query->where('code', $code);
+            $query->where('code', 'like', "%{$code}%");
         }
         if (request('search_product_name')) {
             $name = request('search_product_name');
@@ -95,7 +95,7 @@ class ProductContraller extends ParentController
         if (Auth::user()) {
             $response['product'] = ProductFacade::get($id);
             Log::info('Response:', $response);
-            return Inertia::render('dashboard', $response);
+            return Inertia::render('Products/edit', $response);
         } else {
             $response['alert-danger'] = 'You do not have permission to edit products.';
             return redirect()->route('dashboard')->with($response);

@@ -566,13 +566,16 @@
                 </div>
             </div>
         </template>
+        <template #loader>
+            <LoadingBar ref="loading_bar" />
+        </template>
     </AppLayout>
 </template>
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import { reactive } from "vue";
+import { reactive , nextTick , ref } from "vue";
 import AppLayout from "../../Layouts/AppLayout.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -614,7 +617,7 @@ library.add(
     faPenToSquare,
     faPen
 );
-
+const loading_bar = ref(null);
 const data = reactive({
     textClassHead: "text-start text-uppercase",
     textClassBody: "text-start",
@@ -654,29 +657,29 @@ onBeforeMount(() => {
 });
 
 watch(
-    () => data.checkAllItems,
-    (newX, oldX) => {
-        data.products.forEach((item, index) => {
-            if (index !== 0) {
-                item.selected = newX;
-            }
-        });
-        if (data.checkProductItems.length == data.products.length) {
-            data.checkProductItems = [];
-        } else {
-            data.checkProductItems = data.products;
+    () => data.checkAllItems,(newX,oldX) => {
+    data.product.forEach((item, index) => {
+        if (index !== 0) {
+            item.selected = newX;
         }
+    });
+    if (data.checkProductItems.length == data.product.length) {
+        data.checkProductItems = [];
+        console.log("1.1",data.checkProductItems.length)
+    } else {
+        //console.log("1.2",data.checkBrandItems.length)
+        data.checkProductItems = data.product;
+        console.log("1.2",data.checkProductItems.length)
     }
-);
+})
 
 watch(
-    () => data.checkProductItems,
-    (newX, oldX) => {
-        if (newX.length != data.products.length) {
-            data.checkAllItems = false;
-        }
+    () => data.checkProductItems,(newX,oldX) => {
+    if (data.checkProductItems.length != data.product.length) {
+        data.checkAllItems = false;
+        console.log("2",data.checkProductItems.length)
     }
-);
+})
 
 watch(
     () => data.select_search_brand,
@@ -693,6 +696,19 @@ watch(
         getSearch();
     }
 );
+
+
+const selectAll = (event) => {
+    if (event.target.checked == false) {
+        data.checkProductItems = [];
+    } else {
+        data.product.forEach((products) => {
+            data.checkProductItems.push(products.id);
+            console.log("3",data.checkProductItems.length)
+        });
+    }
+};
+
 
 const setPage = async (page) => {
     data.page = page;
@@ -724,6 +740,9 @@ const clearFilters = async () => {
 };
 
 const reload = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (
             await axios.get(route("product.all"), {
@@ -740,15 +759,20 @@ const reload = async () => {
         ).data;
         data.product = res.data;
         data.pagination = res.meta;
+        loading_bar.value.finish();
     } catch (error) {
         console.log("Error reloading product data:", error);
     }
 };
 
 const getBrandData = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (await axios.get(route("brand.all"))).data;
         data.brands = res.data;
+        loading_bar.value.finish();
     } catch (error) {
         console.log("Error fetching Brands data:", error);
     }
@@ -831,16 +855,6 @@ const deleteProduct = async (id) => {
         });
     } catch (error) {
         convertValidationNotification(error);
-    }
-};
-
-const selectAll = (event) => {
-    if (event.target.checked == false) {
-        checkAllItems = [];
-    } else {
-        data.product.forEach((products) => {
-            data.checkProductItems.push(products.id);
-        });
     }
 };
 

@@ -602,13 +602,16 @@
                 </div>
             </div>
         </template>
+        <template #loader>
+            <LoadingBar ref="loading_bar" />
+        </template>
     </AppLayout>
 </template>
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import { reactive } from "vue";
+import { reactive , ref , nextTick } from "vue";
 import AppLayout from "../../../Layouts/AppLayout.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -649,7 +652,7 @@ library.add(
     faPenToSquare,
     faPen
 );
-
+const loading_bar = ref(null);
 const data = reactive({
     textClassHead: "text-start text-uppercase",
     textClassBody: "text-start",
@@ -677,7 +680,7 @@ watch(
     () => data.checkAllItems,(newX,oldX) => {
     data.category.forEach((item, index) => {
         if (index !== 0) {
-            console.log(item)
+            //console.log(item)
             item.selected = newX;
         }
     });
@@ -699,16 +702,6 @@ watch(
     }
 })
 
-const selectAll = (event) => {
-    if (event.target.checked == false) {
-        data.checkBrandItems = [];
-    } else {
-        data.brand.forEach((categories) => {
-            data.checkCategoryItems.push(categories.id);
-            //console.log("3",data.checkCategoryItems.length)
-        });
-    }
-};
 
 const setPage = async (page) => {
     data.page = page;
@@ -733,6 +726,9 @@ const convertValidationNotification = (error) =>{
 }
 
 const reload = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (await axios.get(route("category.all"),{
             params: {
@@ -743,16 +739,21 @@ const reload = async () => {
         })).data;
         data.category = res.data;
         data.pagination = res.meta;
+        loading_bar.value.finish();
     } catch (error) {
         console.error("Error reloading category data:", error);
     }
 };
 
 const getCategoryData = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (await axios.get(route("category.all"))).data;
         data.category = res.data;
         data.pagination = res.meta;
+        loading_bar.value.finish();
     } catch (error) {
         console.error("Error fetching category data:", error);
     }
@@ -795,10 +796,12 @@ const updateCategorys = async (id) => {
         reload();
         $("#editCategoryModal").modal("hide");
         data.edit_category = {};
-        // this.$root.notify.success({
-        //     title: "Success",
-        //     message: "Material Category updated successfully",
-        // });
+        Swal.fire({
+            title: "Category updated successfully",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#6CA925", // Green,
+        });
     } catch (error) {
         convertValidationNotification(error);
     }

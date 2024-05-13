@@ -121,7 +121,7 @@
                                                 color="#505050"
                                             />
                                         </div>
-                                        <div class="p-2 border icon_item">
+                                        <div class="p-2 border icon_item" >
                                             <!-- v-if="can('active_types')" -->
                                             <a
                                                 @click.prevent="
@@ -137,7 +137,7 @@
                                                 />
                                             </a>
                                         </div>
-                                        <div class="p-2 border icon_item" >
+                                        <div class="p-2 border icon_item"  >
                                             <!-- v-if="can('inactive_types')" -->
                                             <a
                                                 @click.prevent="
@@ -153,8 +153,12 @@
                                                 />
                                             </a>
                                         </div>
-                                        <div class="p-2 border icon_item">
-                                            <!-- v-if="can('delete_types') && this.checkMatirialTypeItems.length > 0" -->
+                                         <!-- {{ can('active_types')}};
+                                        {{ can('inactive_types') }}
+                                        {{ can('create_types') }};
+                                        {{ can('delete_types') }}; -->
+                                        <div class="p-2 border icon_item" >
+                                            <!--  v-if="can('delete_types')"&& this.checkMatirialTypeItems.length > 0" -->
                                             <a
                                                 href="javascript:void(0)"
                                                 @click.prevent="
@@ -616,18 +620,23 @@
                 </div>
             </div>
         </template>
+        <template #loader>
+            <LoadingBar ref="loading_bar" />
+        </template>
     </AppLayout>
 </template>
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import { reactive } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import AppLayout from "../../../Layouts/AppLayout.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { onBeforeMount, watch } from "vue";
 import axios from "axios";
+import LoadingBar from "@/Components/Basic/LoadingBar.vue"
+
 import {
     faHouse,
     faFloppyDisk,
@@ -663,7 +672,7 @@ library.add(
     faPenToSquare,
     faPen
 );
-
+const loading_bar = ref(null);
 const data = reactive({
     textClassHead: "text-start text-uppercase",
     textClassBody: "text-start",
@@ -680,11 +689,12 @@ const data = reactive({
     edit_brand: {},
     checkAllItems: false,
     checkBrandItems: [],
-    validationErrors: {}
+    validationErrors: {},
 });
 
 onBeforeMount(() => {
     getBrandData();
+    reload();
 });
 
 watch(
@@ -747,6 +757,9 @@ const convertValidationNotification = (error) =>{
 }
 
 const reload = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (await axios.get(route("brand.all"),{
             params: {
@@ -758,16 +771,25 @@ const reload = async () => {
         data.brand = res.data;
         data.pagination = res.meta;
         data.checkAllItems = false;
+        nextTick(()=>{
+        loading_bar.value.finish();
+    });
     } catch (error) {
         console.log("Error reloading brand data:", error);
     }
 };
 
 const getBrandData = async () => {
+    nextTick(()=>{
+        loading_bar.value.start();
+    });
     try {
         const res = (await axios.get(route("brand.all"))).data;
         data.brand = res.data;
         data.pagination = res.meta;
+        nextTick(()=>{
+        loading_bar.value.finsh();
+    });
     } catch (error) {
         console.log("Error fetching brand data:", error);
     }
@@ -808,20 +830,21 @@ const updateBrands = async (id) => {
         reload();
         $("#editBrandModal").modal("hide");
         data.edit_brand = {};
-        $root.notify.success({
-            title: "Success",
-            message: "Brand is updated successfully",
+        Swal.fire({
+            title: "Brand updated successfully",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#6CA925", // Green,
         });
     } catch (error) {
         convertValidationNotification(error)
     }
 };
 
-
 const deleteBrand = async (id) => {
-    //console.log(id);
+    console.log(id);
     try {
-        Swa.fire({
+        Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
@@ -857,7 +880,7 @@ const deleteSelectedItems = async (checkBrandItems) => {
                 const ids = data.checkBrandItems.map(
                     (brands) => brands.id
                 );
-                console.log(ids);
+                //console.log(ids);
                 axios
                     .post(
                         route("brand.delete.selected", data.checkBrandItems),
