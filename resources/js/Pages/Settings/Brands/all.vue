@@ -191,19 +191,9 @@
                                                         class="form-check-input"
                                                         type="checkbox"
                                                         @click="selectAll"
-                                                        v-if="
-                                                            data.brand.length >
-                                                            0
-                                                        "
-                                                        :checked="
-                                                            data.checkAllItems
-                                                                .length ==
-                                                            data.checkBrandItems
-                                                                .length
-                                                        "
-                                                        v-model="
-                                                            data.checkAllItems
-                                                        "
+                                                        v-if="data.brand.length >0"
+                                                        :checked="data.checkAllItems.length ==data.checkBrandItems.length"
+                                                        v-model="data.checkAllItems"
                                                     />
                                                 </div>
                                             </th>
@@ -699,24 +689,40 @@ onBeforeMount(() => {
 
 watch(
     () => data.checkAllItems,(newX,oldX) => {
-    data.brands.forEach((item, index) => {
+    data.brand.forEach((item, index) => {
         if (index !== 0) {
+            console.log(item)
             item.selected = newX;
         }
     });
-    if (data.checkBrandItems.length == data.brands.length) {
+    if (data.checkBrandItems.length == data.brand.length) {
         data.checkBrandItems = [];
+        //console.log("1.1",data.checkBrandItems.length)
     } else {
-        data.checkBrandItems = data.brands;
+        //console.log("1.2",data.checkBrandItems.length)
+        data.checkBrandItems = data.brand;
+        //console.log("1.2",data.checkBrandItems.length)
     }
 })
 
 watch(
     () => data.checkBrandItems,(newX,oldX) => {
-    if (data.checkBrandItems.length != data.brands.length) {
+    if (data.checkBrandItems.length != data.brand.length) {
         data.checkAllItems = false;
+        //console.log("2",data.checkBrandItems.length)
     }
 })
+
+const selectAll = (event) => {
+    if (event.target.checked == false) {
+        data.checkBrandItems = [];
+    } else {
+        data.brand.forEach((brands) => {
+            data.checkBrandItems.push(brands.id);
+            //console.log("3",data.checkBrandItems.length)
+        });
+    }
+};
 
 const setPage = async (page) => {
     data.page = page;
@@ -751,6 +757,7 @@ const reload = async () => {
         })).data;
         data.brand = res.data;
         data.pagination = res.meta;
+        data.checkAllItems = false;
     } catch (error) {
         console.log("Error reloading brand data:", error);
     }
@@ -831,16 +838,6 @@ const deleteBrand = async (id) => {
         });
     } catch (error) {
         convertValidationNotification(error);
-    }
-};
-
-const selectAll = (event) => {
-    if (event.target.checked == false) {
-        checkAllItems = [];
-    } else {
-        data.brand.forEach((brands) => {
-            data.checkBrandItems.push(brands.id);
-        });
     }
 };
 

@@ -673,26 +673,42 @@ onBeforeMount(() => {
     getCategoryData();
 });
 
-watch(() => data.checkAllItems, (newX, oldX) => {
+watch(
+    () => data.checkAllItems,(newX,oldX) => {
     data.category.forEach((item, index) => {
         if (index !== 0) {
-            console.log('1')
-            item.selected = true;
+            console.log(item)
+            item.selected = newX;
         }
     });
-    if (data.checkCategoryItems.length == data.categories.length) {
+    if (data.checkCategoryItems.length == data.category.length) {
         data.checkCategoryItems = [];
+        //console.log("1.1",data.checkBrandItems.length)
     } else {
-        data.checkCategoryItems = data.categories;
+        //console.log("1.2",data.checkBrandItems.length)
+        data.checkCategoryItems = data.category;
+        //console.log("1.2",data.checkBrandItems.length)
     }
 })
 
 watch(
-    () => data.checkCategoryItems,(newX,oldX) => {    
+    () => data.checkCategoryItems,(newX,oldX) => {
     if (data.checkCategoryItems.length != data.category.length) {
         data.checkAllItems = false;
+        //console.log("2",data.checkBrandItems.length)
     }
 })
+
+const selectAll = (event) => {
+    if (event.target.checked == false) {
+        data.checkBrandItems = [];
+    } else {
+        data.brand.forEach((categories) => {
+            data.checkCategoryItems.push(categories.id);
+            //console.log("3",data.checkCategoryItems.length)
+        });
+    }
+};
 
 const setPage = async (page) => {
     data.page = page;
@@ -809,17 +825,6 @@ const deleteCategory = async (id) => {
         reload();
     } catch (error) {
         convertValidationNotification(error);
-    }
-};
-
-const selectAll = (event) => {
-    if (event.target.checked == false) {
-        checkAllItems = [];
-    } else {
-        data.category.forEach((categories) => {
-            data.checkCategoryItems.push(categories.id);
-            console.log(data.checkCategoryItems.length)
-        });
     }
 };
 

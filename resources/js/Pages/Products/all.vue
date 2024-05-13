@@ -201,10 +201,10 @@
                                     <thead>
                                         <tr>
                                             <th class="checkArea">
-                                                <!-- <div class="form-check mb-4">
+                                                <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="data.product.length > 0" :checked="data.checkAllItems.length==this.checkProductItems.length"  v-model="checkAllItems" />
-                                                </div> -->
+                                                    v-if="data.product.length > 0" :checked="data.checkAllItems.length==data.checkProductItems.length"  v-model="data.checkAllItems" />
+                                                </div>
                                             </th>
                                             <th :class="data.textClassHead">
                                                 Code
@@ -233,11 +233,11 @@
                                             :class="data.rowClass"
                                         >
                                             <td class="checkArea">
-                                                <!-- <div class="form-check mb-4">
+                                                <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="checkProductItems" v-bind:value="products"
+                                                        v-model="data.checkProductItems" v-bind:value="products"
                                                         v-bind:id="products.id" />
-                                                </div> -->
+                                                </div>
                                             </td>
                                             <td :class="data.textClassBody">
                                                 {{ products.code }}
