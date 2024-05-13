@@ -442,10 +442,10 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{validationErrors.message}}
-                                                </small> -->
+                                                    {{data.validationErrors.message}}
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -467,10 +467,10 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message}}
-                                                        </small> -->
+                                                        data.validationErrors.message}}
+                                                        </small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
