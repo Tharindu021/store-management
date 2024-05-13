@@ -463,10 +463,10 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{validationErrors.message}}
-                                                </small> -->
+                                                    {{data.validationErrors.message}}
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -486,10 +486,10 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message}}
-                                                        </small> -->
+                                                        data.validationErrors.message}}
+                                                        </small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -514,9 +514,9 @@
                                                     track-by="id"
                                                 />
 
-                                                <!-- <small v-if="validationErrors.country_id" id="msg_country_id"
+                                                <small v-if="data.validationErrors.country_id" id="msg_country_id"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.country_id }}</small> -->
+                                                        data.validationErrors.country_id }}</small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -542,9 +542,9 @@
                                                     name="category"
                                                     track-by="id"
                                                 />
-                                                <!-- <small v-if="validationErrors.currency_id" id="msg_currency_id"
+                                                <small v-if="data.validationErrors.currency_id" id="msg_currency_id"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.currency_id }}</small> -->
+                                                        data.validationErrors.currency_id }}</small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -642,6 +642,8 @@ const data = reactive({
 
     checkAllItems: false,
     checkProductItems: [],
+
+    validationErrors:{}
 });
 
 onBeforeMount(() => {
@@ -706,6 +708,14 @@ const perPageChange = async () => {
     reload();
 };
 
+const resetValidationErrors = () => {
+    data.validationErrors = []
+}
+
+const convertValidationNotification = (error) =>{
+    data.validationErrors.message = error.message;
+}
+
 const clearFilters = async () => {
     data.select_search_brand = null;
     data.select_search_category = null;
@@ -764,7 +774,7 @@ const getProductData = async () => {
 };
 
 const createProduct = async () => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         if (data.select_brand) {
             data.products.brand_id = data.select_brand.id;
@@ -785,7 +795,7 @@ const createProduct = async () => {
         // });
         reload();
     } catch (error) {
-        console.log("Error store product data:", error);
+        convertValidationNotification(error);
     }
 };
 
@@ -870,7 +880,7 @@ const deleteSelectedItems = async (checkProductItems) => {
         });
         this.$root.loader.finish();
     } catch (error) {
-        this.convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 

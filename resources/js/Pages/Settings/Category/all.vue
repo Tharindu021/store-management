@@ -552,10 +552,10 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message
-                                                    }}</small> -->
+                                                        data.validationErrors.message
+                                                    }}</small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -577,10 +577,10 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message
-                                                    }}</small> -->
+                                                        data.validationErrors.message
+                                                    }}</small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -666,6 +666,7 @@ const data = reactive({
     edit_category: {},
     checkAllItems: false,
     checkCategoryItems: [],
+    validationErrors:{},
 });
 
 onBeforeMount(() => {
@@ -707,6 +708,14 @@ const perPageChange = async () => {
     reload();
 };
 
+const resetValidationErrors = () => {
+    data.validationErrors = []
+}
+
+const convertValidationNotification = (error) =>{
+    data.validationErrors.message = error.message;
+}
+
 const reload = async () => {
     try {
         const res = (await axios.get(route("category.all"),{
@@ -734,7 +743,7 @@ const getCategoryData = async () => {
 };
 
 const createCategory = async () => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         await axios.post(route("category.store"), data.categories);
         $("#newCategoryModal").modal("hide");
@@ -742,12 +751,12 @@ const createCategory = async () => {
         $("#newCategoryModal").modal("hide");
         reload();
     } catch (error) {
-        // convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 
 const editCategory = async (id) => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         console.log(id);
         const edit_category = await axios.get(route("category.get", id));
@@ -756,12 +765,12 @@ const editCategory = async (id) => {
         $("#editCategoryModal").modal("show");
         reload();
     } catch (error) {
-        //convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 
 const updateCategorys = async (id) => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         await axios.post(
             route("category.update", data.edit_category.id),
@@ -775,7 +784,7 @@ const updateCategorys = async (id) => {
         //     message: "Material Category updated successfully",
         // });
     } catch (error) {
-        //convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 
@@ -799,7 +808,7 @@ const deleteCategory = async (id) => {
         });
         reload();
     } catch (error) {
-        //convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 
@@ -845,7 +854,7 @@ const deleteSelectedItems = async (checkCategoryItems) => {
         });
         reload();
     } catch (error) {
-        //this.convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 

@@ -468,10 +468,10 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{validationErrors.message}}
-                                                </small> -->
+                                                    {{data.validationErrors.message}}
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -491,10 +491,10 @@
                                                     placeholder="Slug"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message}}
-                                                        </small> -->
+                                                        data.validationErrors.message}}
+                                                        </small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -576,10 +576,10 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message
-                                                    }}</small> -->
+                                                        data.validationErrors.message
+                                                    }}</small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -601,10 +601,10 @@
                                                     placeholder="Slug"
                                                     required
                                                 />
-                                                <!-- <small v-if="validationErrors.message" id="msg_code"
+                                                <small v-if="data.validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message
-                                                    }}</small> -->
+                                                        data.validationErrors.message
+                                                    }}</small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -690,6 +690,7 @@ const data = reactive({
     edit_brand: {},
     checkAllItems: false,
     checkBrandItems: [],
+    validationErrors: {}
 });
 
 onBeforeMount(() => {
@@ -731,6 +732,14 @@ const perPageChange = async () => {
     reload();
 };
 
+const resetValidationErrors = () => {
+    data.validationErrors = []
+}
+
+const convertValidationNotification = (error) =>{
+    data.validationErrors.message = error.message;
+}
+
 const reload = async () => {
     try {
         const res = (await axios.get(route("brand.all"),{
@@ -758,7 +767,7 @@ const getBrandData = async () => {
 };
 
 const createBrand = async () => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         await axios.post(route("brand.store"), data.brands);
         $("#newBrandModal").modal("hide");
@@ -771,7 +780,7 @@ const createBrand = async () => {
 };
 
 const editBrand = async (id) => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         console.log(id);
         const edit_brand = await axios.get(route("brand.get", id));
@@ -783,7 +792,7 @@ const editBrand = async (id) => {
 };
 
 const updateBrands = async (id) => {
-    // resetValidationErrors();
+    resetValidationErrors();
     try {
         await axios.post(
             route("brand.update", data.edit_brand.id),
@@ -792,19 +801,20 @@ const updateBrands = async (id) => {
         reload();
         $("#editBrandModal").modal("hide");
         data.edit_brand = {};
-        // this.$root.notify.success({
-        //     title: "Success",
-        //     message: "Material Category updated successfully",
-        // });
+        $root.notify.success({
+            title: "Success",
+            message: "Brand is updated successfully",
+        });
     } catch (error) {
-        convertValidationNotification(error);
+        convertValidationNotification(error)
     }
 };
 
+
 const deleteBrand = async (id) => {
-    console.log(id);
+    //console.log(id);
     try {
-        Swal.fire({
+        Swa.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
@@ -863,7 +873,7 @@ const deleteSelectedItems = async (checkBrandItems) => {
             }
         });
     } catch (error) {
-        this.convertValidationNotification(error);
+        convertValidationNotification(error);
     }
 };
 

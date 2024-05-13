@@ -26,46 +26,55 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      disposerTimer: null,
-      notifications: [],
-    }
-  },
-  mounted() {
-    this.disposerTimer = setInterval(() => {
-      this.notifications = this.notifications.filter((notification) => notification.timeout > new Date().getTime())
-    }, 10)
-  },
-  beforeDestroy() {
-    clearInterval(this.disposerTimer)
-  },
-  methods: {
-    close(notify) {
-      this.notifications = this.notifications.filter((notification) => notification.key !== notify.key)
-    },
-    success({ title = 'Succuss', message, timeout = 4000 }) {
-      this.notifications.push({
+<script setup>
+import { inject , onBeforeMount ,onMounted , reactive, ref} from 'vue'
+
+const disposerTimer = ref( null);
+const notifications = reactive([]);
+console.log(notifications.value)
+
+//array_splice($fruits, 0, 1);
+onMounted(()=> {
+  disposerTimer.value = setInterval(() => {
+    notifications.forEach((item, index) => {
+        if (item.timeout > new Date().getTime()) {
+            array_splice(notifications, index, 1)
+        }
+    })
+  }, 10)
+});
+
+onBeforeMount(() =>{
+  clearInterval(disposerTimer)
+}) 
+
+
+function close(notify) {
+      notifications.value = notifications.forEach((item, index) => {
+        if (item.key !== notify.key) {
+            array_splice(notifications, index, 1)
+        }
+    })
+}
+function success({ title = 'Success', message, timeout = 4000 }) {
+      notifications.push({
         key: Math.random(),
         title,
         message,
         type: 'success',
         timeout: new Date().getTime() + timeout,
       })
-    },
-    error({ title = 'Error', message, timeout = 4000 }) {
-      this.notifications.push({
+}
+function error({ title = 'Error', message, timeout = 4000 }) {
+      notifications.push({
         key: Math.random(),
         title,
         message,
         type: 'error',
         timeout: new Date().getTime() + timeout,
       })
-    },
-  },
 }
+
 </script>
 
 <style lang="scss">

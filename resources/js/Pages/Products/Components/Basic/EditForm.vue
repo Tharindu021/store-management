@@ -20,12 +20,12 @@
                             v-model="data.products.code"
                             required
                         />
-                        <!-- <small
-              v-if="validationErrors.code"
+                        <small
+              v-if="data.validationErrors.code"
               id="msg_code"
               class="text-danger form-text text-error-msg error"
-              >{{ validationErrors.code }}</small
-            > -->
+              >{{ data.validationErrors.code }}</small
+            >
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -45,10 +45,10 @@
                             track-by="id"
                         />
                         <!-- <small
-              v-if="validationErrors.brand_id"
+              v-if="data.validationErrors.brand_id"
               id="msg_brand_id"
               class="text-danger form-text text-error-msg error"
-              >{{ validationErrors.brand_id }}</small
+              >{{ data.validationErrors.brand_id }}</small
             > -->
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                             track-by="id"
                         />
                         <!-- <small
-              v-if="validationErrors.category_id"
+              v-if="data.validationErrors.category_id"
               id="msg_category_id"
               class="text-danger form-text text-error-msg error"
               >{{ validationErrors.category_id }}</small
