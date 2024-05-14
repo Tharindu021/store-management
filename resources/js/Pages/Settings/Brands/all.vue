@@ -153,10 +153,10 @@
                                                 />
                                             </a>
                                         </div>
-                                         <!-- {{ can('active_types')}};
-                                        {{ can('inactive_types') }}
+                                        <!-- {{ can('inactive_types') }}
                                         {{ can('create_types') }};
-                                        {{ can('delete_types') }}; -->
+                                        {{ can('delete_types') }};
+                                        {{ can('read_types') }}; -->
                                         <div class="p-2 border icon_item" >
                                             <!--  v-if="can('delete_types')"&& this.checkMatirialTypeItems.length > 0" -->
                                             <a
