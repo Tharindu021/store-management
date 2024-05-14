@@ -102,7 +102,9 @@ import { onBeforeMount, reactive ,ref } from "vue";
 
 library.add(faCirclePlus, faFloppyDisk , faXmark);
 
-const fileInput = ref(null);
+onBeforeMount(() => {
+    getProductImagedata();
+});
 
 const props = defineProps({
     productId: {
@@ -119,6 +121,15 @@ const data = reactive({
     validationErrors: []
 });
 
+const getProductImagedata = async () => {
+    try {
+        const res = (await axios.get(route("product.image.get", props.productId))).data;
+        data.productImages = res.data;
+        console.log(data.productImages)
+    } catch (error) {
+        console.error("Error fetching Brands data:", error);
+    }
+};
 const onFileChange = (event) => {
     let selectedFiles = event.target.files;
 

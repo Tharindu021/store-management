@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductContraller;
+use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,7 @@ Route::prefix('product')->group(function () {
     Route::post('/select/product/inactive', [ProductContraller::class, 'inactiveSelectedItems'])->name('product.inactive.selected');
     Route::post('/select/product/active', [ProductContraller::class, 'activeSelectedItems'])->name('product.active.selected');
     Route::post('/{product_id}/product/image/store', [ImageController::class, 'store'])->name('product.image.store');
+    Route::get('/{product_id}/product/image/get', [ProductImageController::class, 'get'])->name('product.image.get');
 });
 
 require __DIR__.'/auth.php';

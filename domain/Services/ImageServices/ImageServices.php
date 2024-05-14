@@ -36,6 +36,6 @@ class ImageServices
                 'image_id' => $data,
             ]);
         } 
-        }
+    }
 
 }
