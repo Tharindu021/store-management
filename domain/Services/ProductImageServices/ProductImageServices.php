@@ -2,6 +2,7 @@
 
 namespace domain\Services\ProductImageServices;
 
+use App\Http\Resources\DataResource;
 use App\Models\ProductImages;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,11 +16,16 @@ class ProductImageServices
         $this->productImage = new ProductImages();
     }
     
-    public function getProduct($id){
-        $product = $this->productImage->where('product_id', $id)->get();
-        //dd($imageNames);
-        return $product;
+    public function store($image_ids,$product_id){
+
+        foreach ($image_ids as $data) {
+            $this->productImage->create([
+                'product_id' => $product_id,
+                'image_id' => $data,
+            ]);
+        } 
     }
+
     public function getImage($id){
         $productImages = $this->productImage->where('product_id', $id)->get();
         $imageNames = [];
@@ -29,8 +35,7 @@ class ProductImageServices
                 $imageNames[] = $image;
             }
         }
-        //dd($imageNames);
-        return $imageNames;
+        return  DataResource::collection($imageNames);
     }
 
 }

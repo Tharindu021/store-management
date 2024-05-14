@@ -21,6 +21,10 @@
         </div>
         <div class="row justify-content-center ">
             <div 
+                v-for="productData in data.productDetails"
+                :key="productData.id"
+            >
+            <div 
                 v-for="image in data.productImages"
                 :key="image.id"
             >
@@ -32,9 +36,11 @@
                             </div>
                         </div>
                     </div>
+                    {{productData.product_id}}
                     {{image.name}}
                 </div>
                 
+            </div>
             </div>
         </div>
             

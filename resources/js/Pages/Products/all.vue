@@ -43,6 +43,7 @@
                                         icon="fa-solid fa-circle-plus"
                                     />
                                     ADD NEW
+                                    
                                 </a>
                             </div>
                         </div>
@@ -758,6 +759,7 @@ const reload = async () => {
             })
         ).data;
         data.product = res.data;
+        console.log(data.product);
         data.pagination = res.meta;
         loading_bar.value.finish();
     } catch (error) {

@@ -8,11 +8,9 @@ use Illuminate\Http\Request;
 
 class ImageController extends ParentController
 {
-    public function store(Request $request , $product_id)
-    {
-       
-        $image = ImageFacade::store($request->all(),$product_id);
+    // public function store(Request $request , $product_id)
+    // {
+    //     $image = ImageFacade::store($request->all(),$product_id);
         
-    }
-
+    // }
 }

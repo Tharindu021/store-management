@@ -49,8 +49,8 @@ Route::prefix('product')->group(function () {
     Route::post('/select/product/delete', [ProductContraller::class, 'deleteSelectedItems'])->name('product.delete.selected');
     Route::post('/select/product/inactive', [ProductContraller::class, 'inactiveSelectedItems'])->name('product.inactive.selected');
     Route::post('/select/product/active', [ProductContraller::class, 'activeSelectedItems'])->name('product.active.selected');
-    Route::post('/{product_id}/product/image/store', [ImageController::class, 'store'])->name('product.image.store');
-    Route::get('/{product_id}/product/image/getProduct', [ProductImageController::class, 'getProduct'])->name('product.image.getProduct');
+    Route::post('/{product_id}/product/image/store', [ProductImageController::class, 'store'])->name('product.image.store');
+    Route::get('/product/image/getProduct', [ProductImageController::class, 'getProduct'])->name('product.image.getProduct');
     Route::get('/{product_id}/product/image/getImage', [ProductImageController::class, 'getImage'])->name('product.image.getImage');
 });
 
