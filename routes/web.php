@@ -50,7 +50,8 @@ Route::prefix('product')->group(function () {
     Route::post('/select/product/inactive', [ProductContraller::class, 'inactiveSelectedItems'])->name('product.inactive.selected');
     Route::post('/select/product/active', [ProductContraller::class, 'activeSelectedItems'])->name('product.active.selected');
     Route::post('/{product_id}/product/image/store', [ImageController::class, 'store'])->name('product.image.store');
-    Route::get('/{product_id}/product/image/get', [ProductImageController::class, 'get'])->name('product.image.get');
+    Route::get('/{product_id}/product/image/getProduct', [ProductImageController::class, 'getProduct'])->name('product.image.getProduct');
+    Route::get('/{product_id}/product/image/getImage', [ProductImageController::class, 'getImage'])->name('product.image.getImage');
 });
 
 require __DIR__.'/auth.php';

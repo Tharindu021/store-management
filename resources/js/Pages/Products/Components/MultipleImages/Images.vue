@@ -19,6 +19,25 @@
                 </a>
             </div>
         </div>
+        <div class="row justify-content-center ">
+            <div 
+                v-for="image in data.productImages"
+                :key="image.id"
+            >
+                <div class="col-md-6 mt-5">
+                    <div class="card product-box">
+                        <div class="card-body">
+                            <div class="row" >
+
+                            </div>
+                        </div>
+                    </div>
+                    {{image.name}}
+                </div>
+                
+            </div>
+        </div>
+            
         <div
             class="modal fade"
             id="newImage"
@@ -103,7 +122,8 @@ import { onBeforeMount, reactive ,ref } from "vue";
 library.add(faCirclePlus, faFloppyDisk , faXmark);
 
 onBeforeMount(() => {
-    getProductImagedata();
+    getProductdata();
+    getImagedata();
 });
 
 const props = defineProps({
@@ -115,15 +135,25 @@ const props = defineProps({
 
 const data = reactive({
     form: new FormData(),
-    productImages: {},
+    productImages: [],
+    productDetails: [],
     images: [],
     files:[],
     validationErrors: []
 });
 
-const getProductImagedata = async () => {
+const getProductdata = async () => {
     try {
-        const res = (await axios.get(route("product.image.get", props.productId))).data;
+        const res = (await axios.get(route("product.image.getProduct", props.productId))).data;
+        data.productDetails = res.data;
+        console.log(data.productImages)
+    } catch (error) {
+        console.error("Error fetching Brands data:", error);
+    }
+};
+const getImagedata = async () => {
+    try {
+        const res = (await axios.get(route("product.image.getImage", props.productId))).data;
         data.productImages = res.data;
         console.log(data.productImages)
     } catch (error) {

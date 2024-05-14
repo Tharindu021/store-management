@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class ProductImageController extends Controller
 {
-    public function get($product_id)
+    public function getProduct($product_id)
     {
-       $data = ProductImageFacade::get($product_id);
+       $data = ProductImageFacade::getProduct($product_id);
+       return response()->json($data);
+        
+    }
+    public function getImage($product_id)
+    {
+       $data = ProductImageFacade::getImage($product_id);
        return response()->json($data);
         
     }

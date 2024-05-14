@@ -15,9 +15,22 @@ class ProductImageServices
         $this->productImage = new ProductImages();
     }
     
-    public function get($id){
+    public function getProduct($id){
+        $product = $this->productImage->where('product_id', $id)->get();
+        //dd($imageNames);
+        return $product;
+    }
+    public function getImage($id){
         $productImages = $this->productImage->where('product_id', $id)->get();
-        return $productImages;
+        $imageNames = [];
+        foreach ($productImages as $productImage) {
+            $image = $productImage->images()->first();
+            if ($image) {
+                $imageNames[] = $image;
+            }
+        }
+        //dd($imageNames);
+        return $imageNames;
     }
 
 }
