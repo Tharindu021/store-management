@@ -1,10 +1,10 @@
 <template>
-    <div id="basic-info">
+    <div class="container" id="basic-info">
         <div class="card-header">
             <h5>Images</h5>
         </div>
         <div class="card-body pt-0 mt-3">
-            <div class="col-lg-4 text-right">
+            <div class="col-lg-12 text-right">
                 <a
                     href="javascript:void(0)"
                     data-toggle="modal"
@@ -12,38 +12,64 @@
                     @click.prevent="newImage"
                     class="btn btn-sm btn-neutral float-end"
                 >
-                    <font-awesome-icon
-                        icon="fa-solid fa-circle-plus"
-                    />
+                    <font-awesome-icon icon="fa-solid fa-circle-plus" />
                     ADD NEW
                 </a>
             </div>
         </div>
-        <div class="row justify-content-center ">
-            <div 
-                v-for="productData in data.productDetails"
-                :key="productData.id"
-            >
-            <div 
+        <div class="row">
+            <div
+                class="col-md-4"
                 v-for="image in data.productImages"
                 :key="image.id"
             >
-                <div class="col-md-6 mt-5">
-                    <div class="card product-box">
-                        <div class="card-body">
-                            <div class="row" >
-
-                            </div>
+                <div class="thumbnail">
+                    <div v-if="image.status != 0 && image.status != 2">
+                        <div>
+                            <Link @click.prevent="deleteImage(image.id)">
+                                <a
+                                    class="badge bg-danger text-white fw-bold ml-4"
+                                    >Delete
+                                </a>
+                            </Link>
+                            <Link @click.prevent="primaryImageStatus(image.id)">
+                                <a
+                                    class="badge bg-success text-white fw-bold ml-5"
+                                    >Primary
+                                </a>
+                            </Link>
+                            <Link
+                                @click.prevent="deactiveImageStatus(image.id)"
+                            >
+                                <a
+                                    class="badge bg-warning text-white fw-bold ml-5"
+                                    >Deactive
+                                </a>
+                            </Link>
                         </div>
                     </div>
-                    {{productData.product_id}}
-                    {{image.name}}
+                    <div v-if="image.status == 2">
+                        <div>
+                            <Link @click.prevent="activeImageStatus(image.id)">
+                                <a
+                                    class="badge bg-success text-white fw-bold ml-8"
+                                    >Active
+                                </a>
+                            </Link>
+                        </div>
+                    </div>
+                    <img
+                        :src="image.name"
+                        alt="Product"
+                        class="product-img mt-1"
+                        height="200"
+                        width="300"
+                    />
+                    <div class="caption"></div>
                 </div>
-                
-            </div>
             </div>
         </div>
-            
+
         <div
             class="modal fade"
             id="newImage"
@@ -72,9 +98,7 @@
                             aria-label="Close"
                         >
                             <span aria-hidden="true">
-                                <font-awesome-icon
-                                    icon="fa-solid fa-xmark"
-                                />
+                                <font-awesome-icon icon="fa-solid fa-xmark" />
                             </span>
                         </button>
                     </div>
@@ -90,11 +114,14 @@
                                         <div
                                             for="name"
                                             class="col-md-3 col-form-label col-form-label"
-                                        >
-                                        
-                                        </div>
+                                        ></div>
                                         <div class="col-md-9">
-                                            <input type="file" multiple @change="onFileChange" id="image-upload"/>
+                                            <input
+                                                type="file"
+                                                multiple
+                                                @change="onFileChange"
+                                                id="image-upload"
+                                            />
                                         </div>
                                     </div>
                                     <div class="text-right mt-2">
@@ -122,10 +149,14 @@
 import { Link, router } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import {faCirclePlus , faFloppyDisk , faXmark} from "@fortawesome/free-solid-svg-icons";
-import { onBeforeMount, reactive ,ref } from "vue";
+import {
+    faCirclePlus,
+    faFloppyDisk,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { onBeforeMount, reactive, ref } from "vue";
 
-library.add(faCirclePlus, faFloppyDisk , faXmark);
+library.add(faCirclePlus, faFloppyDisk, faXmark);
 
 onBeforeMount(() => {
     getProductdata();
@@ -139,29 +170,43 @@ const props = defineProps({
     },
 });
 
+const reload = async () => {
+    getProductdata();
+    getImagedata();
+};
+
 const data = reactive({
     form: new FormData(),
     productImages: [],
     productDetails: [],
     images: [],
-    files:[],
-    validationErrors: []
+    files: [],
+    validationErrors: [],
 });
 
 const getProductdata = async () => {
     try {
-        const res = (await axios.get(route("product.image.getProduct", props.productId))).data;
+        const res = (
+            await axios.get(route("product.image.getProduct", props.productId))
+        ).data;
         data.productDetails = res.data;
-        console.log(data.productImages)
     } catch (error) {
         console.error("Error fetching Brands data:", error);
     }
 };
 const getImagedata = async () => {
     try {
-        const res = (await axios.get(route("product.image.getImage", props.productId))).data;
+        const res = (
+            await axios.get(route("product.image.getImage", props.productId))
+        ).data;
         data.productImages = res.data;
-        console.log(data.productImages)
+        //put status values to the productImages
+        for (let i = 0; i < data.productDetails.length; i++) {
+            if (data.productDetails[i].image_id == data.productImages[i].id) {
+                data.productImages[i].status = data.productDetails[i].status;
+            }
+            //console.log(data.productImages[i].status)
+        }
     } catch (error) {
         console.error("Error fetching Brands data:", error);
     }
@@ -169,41 +214,125 @@ const getImagedata = async () => {
 const onFileChange = (event) => {
     let selectedFiles = event.target.files;
 
-    for(let i = 0; i < selectedFiles.length; i++) {
+    for (let i = 0; i < selectedFiles.length; i++) {
         data.images.push(selectedFiles[i]);
     }
     //console.log(data.images);
-}
+};
 
 const addImage = async () => {
     const formData = new FormData();
 
-    for(let i = 0; i < data.images.length; i++) {
-        formData.append('images[]', data.images[i]);
+    for (let i = 0; i < data.images.length; i++) {
+        formData.append("images[]", data.images[i]);
     }
 
     const config = {
         headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+            "Content-Type": "multipart/form-data",
+        },
     };
 
     try {
-        document.getElementById('image-upload').value= [];
+        document.getElementById("image-upload").value = [];
         await axios.post(
             route("product.image.store", props.productId),
             formData,
             config
         );
-        
+
         $("#newImage").modal("hide");
-        console.log(formData);
+        reload();
     } catch (error) {
-        console.error('Upload failed:', error);
+        console.error("Upload failed:", error);
     }
-}
+};
 
+const deleteImage = async (id) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want Delete this image.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#C00202",
+        cancelButtonColor: "#6CA925",
+        confirmButtonText: "Yes Delete it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.delete(route("product.productImage.deleteImage", id));
+            axios.delete(route("product.image.deleteImage", id));
+            window.location.reload();
+            //reload();
+            Swal.fire("Update!", `Primary Image has been deleted.`, "success");
+        }
+    });
+};
 
+const primaryImageStatus = async (id) => {
+    //console.log(id);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want change Primary Image to this.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#C00202",
+        cancelButtonColor: "#6CA925",
+        confirmButtonText: "Yes, Change it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(route("product.productImage.updateStatus", id));
+            window.location.reload();
+            //reload();
+            Swal.fire("Update!", `Primary Image has been updated.`, "success");
+        }
+    });
+};
+const deactiveImageStatus = async (id) => {
+    //console.log(id);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want Deactivate.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#C00202",
+        cancelButtonColor: "#6CA925",
+        confirmButtonText: "Yes, Deactive it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(route("product.productImage.deactiveStatus", id));
+            window.location.reload();
+            //reload();
+            Swal.fire(
+                "Update!",
+                `Primary Image has been deactivated.`,
+                "success"
+            );
+        }
+    });
+};
+const activeImageStatus = async (id) => {
+    //console.log(id);
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want Activate.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#C00202",
+        cancelButtonColor: "#6CA925",
+        confirmButtonText: "Yes, Activate it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(route("product.productImage.activeStatus", id));
+            window.location.reload();
+            //reload();
+            Swal.fire(
+                "Update!",
+                `Primary Image has been Activated.`,
+                "success"
+            );
+        }
+    });
+};
 </script>
 
 <style lang="scss" scoped>

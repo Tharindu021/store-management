@@ -43,14 +43,9 @@
                                     Basic Data</a>
                             </li>
                             <li class="mb-2 nav-item">
-                                <a class="nav-link active" id="image-management-tab" data-toggle="tab" href="#image-management"
+                                <a class="nav-link" id="image-management-tab" data-toggle="tab" href="#image-management"
                                     role="tab" aria-controls="image-management" aria-selected="true">
                                     Images</a>
-                            </li>
-                            <li class="mb-2 nav-item">
-                                <a class="nav-link" id="tax-records-tab" data-toggle="tab" href="#tax-records" role="tab"
-                                    aria-controls="tax-records" aria-selected="true">
-                                    Tax Records</a>
                             </li>
                             <li hidden></li>
                         </ul>

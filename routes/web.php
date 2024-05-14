@@ -52,6 +52,11 @@ Route::prefix('product')->group(function () {
     Route::post('/{product_id}/product/image/store', [ProductImageController::class, 'store'])->name('product.image.store');
     Route::get('/product/image/getProduct', [ProductImageController::class, 'getProduct'])->name('product.image.getProduct');
     Route::get('/{product_id}/product/image/getImage', [ProductImageController::class, 'getImage'])->name('product.image.getImage');
+    Route::delete('/{image_id}/product/productImage/deleteImage', [ProductImageController::class, 'deleteImage'])->name('product.productImage.deleteImage');
+    Route::delete('/{image_id}/product/image/deleteImage', [ImageController::class, 'deleteImage'])->name('product.image.deleteImage');
+    Route::get('/{image_id}/product/image/updateStatus', [ProductImageController::class, 'updateStatus'])->name('product.productImage.updateStatus');
+    Route::get('/{image_id}/product/image/deactiveStatus', [ProductImageController::class, 'deactiveStatus'])->name('product.productImage.deactiveStatus');
+    Route::get('/{image_id}/product/image/activeStatus', [ProductImageController::class, 'activeStatus'])->name('product.productImage.activeStatus');
 });
 
 require __DIR__.'/auth.php';

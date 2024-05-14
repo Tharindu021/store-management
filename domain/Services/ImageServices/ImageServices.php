@@ -1,6 +1,7 @@
 <?php
 
 namespace domain\Services\ImageServices;
+
 use App\Models\Images;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,28 +17,32 @@ class ImageServices
 
     public function store($data)
     {
-        //dd($data);
         if (isset($data['images'])) {
-            
+
             $imageIdArray = [];
             $storeImage = $data['images'];
             foreach ($storeImage as $file) {
-            //dd($file->getClientOriginalName());
-            $filePath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
-            $data = config('filesystems.disks.do.public_url').'/'.$filePath;
-            
-            $image = $this->image->create([
-                     'name' => $data
-            ]);
-            $imageId = $image->id;
-            $imageIdArray[] =$imageId;
+                $filePath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
+                $data = config('filesystems.disks.do.public_url') . '/' . $filePath;
 
-            } 
+                $image = $this->image->create([
+                    'name' => $data
+                ]);
+                $imageId = $image->id;
+                $imageIdArray[] = $imageId;
+            }
             return $imageIdArray;
         }
-        
-        
-        
     }
 
+    public function delete($id)
+    {
+        $image = $this->image->find($id);
+        if (isset($image)) {
+            $filePath = str_replace(config('filesystems.disks.do.public_url') . '/', '', $image);
+            Storage::disk('do')->delete($filePath);
+
+            $image->delete();
+        }
+    }
 }
