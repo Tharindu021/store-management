@@ -24,6 +24,7 @@
                 :key="image.id"
             >
                 <div class="thumbnail">
+                    {{ image.status }}
                     <div v-if="image.status != 0 && image.status != 2">
                         <div>
                             <Link @click.prevent="deleteImage(image.id)">
@@ -96,6 +97,8 @@
                             class="close btn"
                             data-dismiss="modal"
                             aria-label="Close"
+                            @click.prevent="clearImageField"
+
                         >
                             <span aria-hidden="true">
                                 <font-awesome-icon icon="fa-solid fa-xmark" />
@@ -184,10 +187,15 @@ const data = reactive({
     validationErrors: [],
 });
 
+const clearImageField = async () => {
+    document.getElementById("image-upload").value = [];
+    data.images = [];
+}
+
 const getProductdata = async () => {
     try {
         const res = (
-            await axios.get(route("product.image.getProduct", props.productId))
+            await axios.get(route("product.image.getProducts", props.productId))
         ).data;
         data.productDetails = res.data;
     } catch (error) {
@@ -197,7 +205,7 @@ const getProductdata = async () => {
 const getImagedata = async () => {
     try {
         const res = (
-            await axios.get(route("product.image.getImage", props.productId))
+            await axios.get(route("product.image.getImages", props.productId))
         ).data;
         data.productImages = res.data;
         //put status values to the productImages
@@ -263,7 +271,7 @@ const deleteImage = async (id) => {
             axios.delete(route("product.image.deleteImage", id));
             window.location.reload();
             //reload();
-            Swal.fire("Update!", `Primary Image has been deleted.`, "success");
+            Swal.fire("Deleted!", `Image has been deleted.`, "success");
         }
     });
 };
@@ -304,7 +312,7 @@ const deactiveImageStatus = async (id) => {
             //reload();
             Swal.fire(
                 "Update!",
-                `Primary Image has been deactivated.`,
+                `Image has been deactivated.`,
                 "success"
             );
         }
@@ -327,7 +335,7 @@ const activeImageStatus = async (id) => {
             //reload();
             Swal.fire(
                 "Update!",
-                `Primary Image has been Activated.`,
+                `Image has been Activated.`,
                 "success"
             );
         }

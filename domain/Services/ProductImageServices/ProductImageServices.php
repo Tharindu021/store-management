@@ -18,7 +18,6 @@ class ProductImageServices
 
     public function store($image_ids, $product_id)
     {
-
         foreach ($image_ids as $data) {
             $this->productImage->create([
                 'product_id' => $product_id,
@@ -27,7 +26,13 @@ class ProductImageServices
         }
     }
 
-    public function getImage($id)
+    public function getProdoucts($id)
+    {
+        $productImages = $this->productImage->where('product_id', $id)->get();
+        return  $productImages;
+    }
+
+    public function getImages($id)
     {
         $productImages = $this->productImage->where('product_id', $id)->get();
         $imageNames = [];
@@ -37,7 +42,7 @@ class ProductImageServices
                 $imageNames[] = $image;
             }
         }
-        return  DataResource::collection($imageNames);
+        return  $imageNames;
     }
 
     public function delete($id)

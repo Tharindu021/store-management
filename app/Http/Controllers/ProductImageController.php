@@ -19,26 +19,34 @@ class ProductImageController extends Controller
     {
         $this->productImage = new ProductImages();
     }
+
     public function store(Request $request, $product_id)
     {
+        $data = ($request->all());
+        
+        if (isset($data['images'])) {
 
-        $image = ImageFacade::store($request->all());
-        //dd($image);
-        return ProductImageFacade::store($image, $product_id);
+            $imageIdArray = [];
+            $storeImage = $data['images'];
+            foreach ($storeImage as $image) {
+                $imageId = ImageFacade::store($image);
+                $imageIdArray[] = $imageId;
+            };
+        return ProductImageFacade::store($imageIdArray, $product_id);
+
+        }
     }
 
-    public function getProduct()
+    public function getProducts($product_id)
     {
-        $code = request('search_product_id');
-        $productDetails = QueryBuilder::for(ProductImages::class)
-            ->allowedFilters(AllowedFilter::exact('name', $code))
-            ->get();
-        return DataResource::collection($productDetails);
+        $productsData = ProductImageFacade::getProdoucts($product_id);
+        return DataResource::collection($productsData);
     }
 
-    public function getImage($product_id)
+    public function getImages($product_id)
     {
-        return ProductImageFacade::getImage($product_id);
+        $productImage = ProductImageFacade::getImages($product_id);
+        return DataResource::collection($productImage);
     }
 
     public function deleteImage($image_id)

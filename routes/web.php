@@ -50,8 +50,8 @@ Route::prefix('product')->group(function () {
     Route::post('/select/product/inactive', [ProductContraller::class, 'inactiveSelectedItems'])->name('product.inactive.selected');
     Route::post('/select/product/active', [ProductContraller::class, 'activeSelectedItems'])->name('product.active.selected');
     Route::post('/{product_id}/product/image/store', [ProductImageController::class, 'store'])->name('product.image.store');
-    Route::get('/product/image/getProduct', [ProductImageController::class, 'getProduct'])->name('product.image.getProduct');
-    Route::get('/{product_id}/product/image/getImage', [ProductImageController::class, 'getImage'])->name('product.image.getImage');
+    Route::get('/{product_id}/product/image/getProducts', [ProductImageController::class, 'getProducts'])->name('product.image.getProducts');
+    Route::get('/{product_id}/product/image/getImages', [ProductImageController::class, 'getImages'])->name('product.image.getImages');
     Route::delete('/{image_id}/product/productImage/deleteImage', [ProductImageController::class, 'deleteImage'])->name('product.productImage.deleteImage');
     Route::delete('/{image_id}/product/image/deleteImage', [ImageController::class, 'deleteImage'])->name('product.image.deleteImage');
     Route::get('/{image_id}/product/image/updateStatus', [ProductImageController::class, 'updateStatus'])->name('product.productImage.updateStatus');

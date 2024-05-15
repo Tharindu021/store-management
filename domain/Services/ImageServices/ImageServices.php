@@ -15,23 +15,16 @@ class ImageServices
         $this->image = new Images();
     }
 
-    public function store($data)
+    public function store($file)
     {
-        if (isset($data['images'])) {
+        if(isset($file)){
+            $filePath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
+            $data = config('filesystems.disks.do.public_url') . '/' . $filePath;
 
-            $imageIdArray = [];
-            $storeImage = $data['images'];
-            foreach ($storeImage as $file) {
-                $filePath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
-                $data = config('filesystems.disks.do.public_url') . '/' . $filePath;
-
-                $image = $this->image->create([
-                    'name' => $data
-                ]);
-                $imageId = $image->id;
-                $imageIdArray[] = $imageId;
-            }
-            return $imageIdArray;
+            $image = $this->image->create([
+                'name' => $data
+            ]);
+            return $image->id;
         }
     }
 
