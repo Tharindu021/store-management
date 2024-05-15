@@ -17,9 +17,9 @@ class ImageServices
 
     public function store($file)
     {
-        if(isset($file)){
-            $filePath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
-            $data = config('filesystems.disks.do.public_url') . '/' . $filePath;
+        if (isset($file)) {
+            $filepath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
+            $data = config('filesystems.disks.do.public_url') . '/' . $filepath;
 
             $image = $this->image->create([
                 'name' => $data
@@ -32,8 +32,8 @@ class ImageServices
     {
         $image = $this->image->find($id);
         if (isset($image)) {
-            $filePath = str_replace(config('filesystems.disks.do.public_url') . '/', '', $image);
-            Storage::disk('do')->delete($filePath);
+            $filepath = str_replace(config('filesystems.disks.do.public_url') . '/', '', $image);
+            Storage::disk('do')->delete($filepath);
 
             $image->delete();
         }

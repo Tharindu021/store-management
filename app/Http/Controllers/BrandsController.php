@@ -36,7 +36,7 @@ class BrandsController extends ParentController
         $query = Brand::orderBy('id');
         $payload = QueryBuilder::for($query)
             ->allowedSorts(['id', 'name'])
-            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name' , 'slug')))
+            ->allowedFilters(AllowedFilter::custom('search', new FuzzyFilter('name', 'slug')))
             ->paginate(request('per_page', config('basic.pagination_per_page')));
         return DataResource::collection($payload);
     }
@@ -49,7 +49,6 @@ class BrandsController extends ParentController
         } else {
             $response['alert-danger'] = 'You do not have permission to delete brands.';
             return redirect()->route('dashboard')->with($response);
-            
         }
     }
 
@@ -78,7 +77,7 @@ class BrandsController extends ParentController
 
     public function deleteSelectedItems(Request $request)
     {
-        if (Auth::user()->can('delete_types')) { 
+        if (Auth::user()->can('delete_types')) {
             return BrandFacade::deleteSelected($request);
         } else {
             $response['alert-danger'] = 'You do not have permission to delete brands.';

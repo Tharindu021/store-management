@@ -43,7 +43,6 @@
                                         icon="fa-solid fa-circle-plus"
                                     />
                                     ADD NEW
-                                    
                                 </a>
                             </div>
                         </div>
@@ -203,28 +202,33 @@
                                         <tr>
                                             <th class="checkArea">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="product.length > 0" :checked="checkAllItems.length==checkProductItems.length"  v-model="checkAllItems" />
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        @click="selectAll"
+                                                        v-if="
+                                                            product.length > 0
+                                                        "
+                                                        :checked="
+                                                            checkAllItems.length ==
+                                                            checkProductItems.length
+                                                        "
+                                                        v-model="checkAllItems"
+                                                    />
                                                 </div>
                                             </th>
-                                            <th :class="textClassHead">
-                                                Code
-                                            </th>
+                                            <th :class="textClassHead">Code</th>
                                             <th :class="textClassHead">
                                                 Brand Name
                                             </th>
                                             <th :class="textClassHead">
                                                 Category Name
                                             </th>
-                                            <th :class="textClassHead">
-                                                Name
-                                            </th>
+                                            <th :class="textClassHead">Name</th>
                                             <th :class="textClassHead">
                                                 Status
                                             </th>
-                                            <th
-                                                :class="textClassHead"
-                                            ></th>
+                                            <th :class="textClassHead"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -235,9 +239,15 @@
                                         >
                                             <td class="checkArea">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        v-model="checkProductItems" v-bind:value="products"
-                                                        v-bind:id="products.id" />
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        v-model="
+                                                            checkProductItems
+                                                        "
+                                                        v-bind:value="products"
+                                                        v-bind:id="products.id"
+                                                    />
                                                 </div>
                                             </td>
                                             <td :class="textClassBody">
@@ -309,8 +319,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    pagination
-                                                        .current_page == 1
+                                                    pagination.current_page == 1
                                                         ? 'disabled'
                                                         : ''
                                                 "
@@ -320,8 +329,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            pagination
-                                                                .current_page -
+                                                            pagination.current_page -
                                                                 1
                                                         )
                                                     "
@@ -332,18 +340,18 @@
                                                 </a>
                                             </li>
                                             <template
-                                                v-for="(page, index) in pagination.last_page"
+                                                v-for="(
+                                                    page, index
+                                                ) in pagination.last_page"
                                             >
                                                 <template
                                                     v-if="
                                                         page == 1 ||
                                                         page ==
-                                                            pagination
-                                                                .last_page ||
+                                                            pagination.last_page ||
                                                         Math.abs(
                                                             page -
-                                                                pagination
-                                                                    .current_page
+                                                                pagination.current_page
                                                         ) < 5
                                                     "
                                                 >
@@ -351,8 +359,7 @@
                                                         class="page-item"
                                                         :key="index"
                                                         :class="
-                                                            pagination
-                                                                .current_page ==
+                                                            pagination.current_page ==
                                                             page
                                                                 ? 'active'
                                                                 : ''
@@ -371,8 +378,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    pagination
-                                                        .current_page ==
+                                                    pagination.current_page ==
                                                     pagination.last_page
                                                         ? 'disabled'
                                                         : ''
@@ -383,8 +389,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            pagination
-                                                                .current_page +
+                                                            pagination.current_page +
                                                                 1
                                                         )
                                                     "
@@ -463,9 +468,16 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">
-                                                    {{validationErrors.message}}
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                >
+                                                    {{
+                                                        validationErrors.message
+                                                    }}
                                                 </small>
                                             </div>
                                         </div>
@@ -486,10 +498,16 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message}}
-                                                        </small>
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -514,9 +532,16 @@
                                                     track-by="id"
                                                 />
 
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message }}</small>
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}</small
+                                                >
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -528,9 +553,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <Multiselect
-                                                    v-model="
-                                                        select_category
-                                                    "
+                                                    v-model="select_category"
                                                     :options="categories"
                                                     :showLabels="false"
                                                     :close-on-select="true"
@@ -542,9 +565,16 @@
                                                     name="category"
                                                     track-by="id"
                                                 />
-                                                <small v-if="validationErrors.message" id="message"
-                                                    class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message }}</small>
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="message"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}</small
+                                                >
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -575,7 +605,7 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import { reactive , nextTick , ref } from "vue";
+import { reactive, nextTick, ref } from "vue";
 import AppLayout from "../../Layouts/AppLayout.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -643,7 +673,6 @@ const checkAllItems = ref(false);
 const checkProductItems = ref([]);
 const validationErrors = ref({});
 
-
 onBeforeMount(() => {
     getProductData();
     getBrandData();
@@ -652,29 +681,33 @@ onBeforeMount(() => {
 });
 
 watch(
-    () => checkAllItems.value,(newX,oldX) => {
-    product.value.forEach((item, index) => {
-        if (index !== 0) {
-            item.selected = newX;
+    () => checkAllItems.value,
+    (newX, oldX) => {
+        product.value.forEach((item, index) => {
+            if (index !== 0) {
+                item.selected = newX;
+            }
+        });
+        if (checkProductItems.value.length == product.value.length) {
+            checkProductItems.value = [];
+            console.log("1.1", checkProductItems.value.length);
+        } else {
+            //console.log("1.2",checkBrandItems.length)
+            checkProductItems.value = product.value;
+            console.log("1.2", checkProductItems.value.length);
         }
-    });
-    if (checkProductItems.value.length == product.value.length) {
-        checkProductItems.value = [];
-        console.log("1.1",checkProductItems.value.length)
-    } else {
-        //console.log("1.2",checkBrandItems.length)
-        checkProductItems.value = product.value;
-        console.log("1.2",checkProductItems.value.length)
     }
-})
+);
 
 watch(
-    () => checkProductItems.value,(newX,oldX) => {
-    if (checkProductItems.value.length != product.value.length) {
-        checkAllItems.value = false;
-        console.log("2",checkProductItems.value.length)
+    () => checkProductItems.value,
+    (newX, oldX) => {
+        if (checkProductItems.value.length != product.value.length) {
+            checkAllItems.value = false;
+            console.log("2", checkProductItems.value.length);
+        }
     }
-})
+);
 
 watch(
     () => select_search_brand.value,
@@ -692,18 +725,16 @@ watch(
     }
 );
 
-
 const selectAll = (event) => {
     if (event.target.checked == false) {
         checkProductItems.value = [];
     } else {
         product.value.forEach((products) => {
             checkProductItems.push(products.id);
-            console.log("3",checkProductItems.length)
+            console.log("3", checkProductItems.length);
         });
     }
 };
-
 
 const setPage = async (page) => {
     page.value = page;
@@ -720,12 +751,12 @@ const perPageChange = async () => {
 };
 
 const resetValidationErrors = () => {
-    validationErrors.value = []
-}
+    validationErrors.value = [];
+};
 
-const convertValidationNotification = (error) =>{
+const convertValidationNotification = (error) => {
     validationErrors.message = error.message;
-}
+};
 
 const clearFilters = async () => {
     select_search_brand.value = null;
@@ -735,8 +766,8 @@ const clearFilters = async () => {
 };
 
 const reload = async () => {
-    nextTick(()=>{
-        loading_bar.value.start();
+    nextTick(() => {
+        //loading_bar.value.start();
     });
     try {
         const response = (
@@ -755,20 +786,20 @@ const reload = async () => {
         product.value = response.data;
         //console.log(product.value);
         pagination.value = response.meta;
-        loading_bar.value.finish();
+        //loading_bar.value.finish();
     } catch (error) {
         console.log("Error reloading product data:", error);
     }
 };
 
 const getBrandData = async () => {
-    nextTick(()=>{
-        loading_bar.value.start();
+    nextTick(() => {
+        //loading_bar.value.start();
     });
     try {
         const response = (await axios.get(route("brand.all"))).data;
         brands.value = response.data;
-        loading_bar.value.finish();
+        //loading_bar.value.finish();
     } catch (error) {
         console.log("Error fetching Brands data:", error);
     }
@@ -802,8 +833,9 @@ const createProduct = async () => {
         if (select_category.value) {
             products.value.category_id = select_category.value.id;
         }
-        const vendor = (await axios.post(route("product.store"), products.value))
-            .data;
+        const vendor = (
+            await axios.post(route("product.store"), products.value)
+        ).data;
         //window.location.href = route("vendors.edit", vendor.id);
         $("#newProductModal").modal("hide");
         products.value = {};
@@ -867,9 +899,7 @@ const deleteSelectedItems = async (checkProductItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = checkProductItems.map(
-                    (products) => products.id
-                );
+                const ids = checkProductItems.map((products) => products.id);
                 console.log(ids);
                 console.log(checkProductItems.value);
                 axios

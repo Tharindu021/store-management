@@ -111,5 +111,4 @@ class ProductContraller extends ParentController
             return redirect()->route('dashboard')->with($response);
         }
     }
-
 }

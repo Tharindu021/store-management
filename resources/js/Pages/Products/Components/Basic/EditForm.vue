@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-10">
                         <Multiselect
-                            v-model= select_category
+                            v-model="select_category"
                             :options="categories"
                             :close-on-select="true"
                             :showLabels="false"
@@ -138,7 +138,6 @@ const select_category = ref(null);
 const brands = ref([]);
 const categories = ref([]);
 
-
 onBeforeMount(() => {
     getCategorytData();
     getBrandData();
@@ -196,7 +195,6 @@ const updateBasicData = async () => {
             showCancelButton: true,
             confirmButtonColor: "#6CA925", // Green,
         });
-
     } catch (error) {
         //convertValidationError(error);
     }

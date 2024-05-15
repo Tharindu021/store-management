@@ -7,11 +7,11 @@ use domain\Facades\ProductImageFacade\ProductImageFacade;
 use Illuminate\Http\Request;
 
 
-class ProductImageController extends Controller
+class ProductImageController extends ParentController
 {
     public function store(Request $request, $product_id)
     {
-        $data= $request->all();
+        $data = $request->all();
         return ProductImageFacade::store($data, $product_id);
     }
 

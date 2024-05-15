@@ -33,7 +33,9 @@
                                     >Delete
                                 </a>
                             </Link>
-                            <Link @click.prevent="primaryImageStatus(product.id)">
+                            <Link
+                                @click.prevent="primaryImageStatus(product.id)"
+                            >
                                 <a
                                     class="badge bg-success text-white fw-bold ml-5"
                                     >Primary
@@ -51,7 +53,9 @@
                     </div>
                     <div v-if="product.status == 2">
                         <div>
-                            <Link @click.prevent="activeImageStatus(product.id)">
+                            <Link
+                                @click.prevent="activeImageStatus(product.id)"
+                            >
                                 <a
                                     class="badge bg-success text-white fw-bold ml-8"
                                     >Active
@@ -99,7 +103,6 @@
                             data-dismiss="modal"
                             aria-label="Close"
                             @click.prevent="clearImageField"
-
                         >
                             <span aria-hidden="true">
                                 <font-awesome-icon icon="fa-solid fa-xmark" />
@@ -178,7 +181,7 @@ const props = defineProps({
 // };
 
 const productDetails = ref([]);
-const product =  ref([]);
+const product = ref([]);
 
 const state = reactive({
     images: [],
@@ -187,7 +190,7 @@ const state = reactive({
 const clearImageField = async () => {
     document.getElementById("image-upload").value = [];
     state.images = [];
-}
+};
 
 const getProductdata = async () => {
     try {
@@ -290,11 +293,7 @@ const deactiveImageStatus = async (id) => {
             axios.get(route("product.productImage.deactiveStatus", id));
             window.location.reload();
             //reload();
-            Swal.fire(
-                "Update!",
-                `Image has been deactivated.`,
-                "success"
-            );
+            Swal.fire("Update!", `Image has been deactivated.`, "success");
         }
     });
 };
@@ -311,13 +310,9 @@ const activeImageStatus = async (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             axios.get(route("product.productImage.activeStatus", id));
-             window.location.reload();
+            window.location.reload();
             //reload();
-            Swal.fire(
-                "Update!",
-                `Image has been Activated.`,
-                "success"
-            );
+            Swal.fire("Update!", `Image has been Activated.`, "success");
         }
     });
 };

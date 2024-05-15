@@ -123,9 +123,13 @@
                                         </div>
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('active_types')" -->
-                                            <a @click.prevent="
-                                                activeSelectedItems(checkCategoryItems)
-                                                ">
+                                            <a
+                                                @click.prevent="
+                                                    activeSelectedItems(
+                                                        checkCategoryItems
+                                                    )
+                                                "
+                                            >
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-circle-check"
@@ -135,9 +139,13 @@
                                         </div>
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('inactive_types')"  -->
-                                            <a @click.prevent="
-                                                inactiveSelectedItems(checkCategoryItems)
-                                                ">
+                                            <a
+                                                @click.prevent="
+                                                    inactiveSelectedItems(
+                                                        checkCategoryItems
+                                                    )
+                                                "
+                                            >
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-circle-minus"
@@ -147,9 +155,14 @@
                                         </div>
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('delete_types') && this.checkMatirialTypeItems.length > 0" -->
-                                            <a href="javascript:void(0)" @click.prevent="
-                                                deleteSelectedItems(checkCategoryItems)
-                                                ">
+                                            <a
+                                                href="javascript:void(0)"
+                                                @click.prevent="
+                                                    deleteSelectedItems(
+                                                        checkCategoryItems
+                                                    )
+                                                "
+                                            >
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
                                                     icon="fa-solid fa-trash"
@@ -173,55 +186,63 @@
                                         <tr>
                                             <th class="checkArea">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="category.length > 0" :checked="checkAllItems.length==checkCategoryItems.length"  v-model="checkAllItems" />
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        @click="selectAll"
+                                                        v-if="
+                                                            categories.length >
+                                                            0
+                                                        "
+                                                        :checked="
+                                                            checkAllItems.length ==
+                                                            checkCategoryItems.length
+                                                        "
+                                                        v-model="checkAllItems"
+                                                    />
                                                 </div>
                                             </th>
-                                            <th :class="textClassHead">
-                                                Name
-                                            </th>
-                                            <th :class="textClassHead">
-                                                Code
-                                            </th>
+                                            <th :class="textClassHead">Name</th>
+                                            <th :class="textClassHead">Code</th>
                                             <th :class="textClassHead">
                                                 Status
                                             </th>
-                                            <th
-                                                :class="textClassHead"
-                                            ></th>
+                                            <th :class="textClassHead"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="categories in category"
-                                            :key="categories.id"
+                                            v-for="category in categories"
+                                            :key="category.id"
                                             :class="rowClass"
                                         >
                                             <td class="checkArea">
                                                 <div class="form-check mb-4">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        v-model="checkCategoryItems" v-bind:value="categories"
-                                                        v-bind:id="categories.id" />
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        v-model="
+                                                            checkCategoryItems
+                                                        "
+                                                        v-bind:value="category"
+                                                        v-bind:id="category.id"
+                                                    />
                                                 </div>
                                             </td>
                                             <td :class="textClassBody">
-                                                {{ categories.name }}
+                                                {{ category.name }}
                                             </td>
                                             <td :class="textClassBody">
-                                                {{ categories.code }}
+                                                {{ category.code }}
                                             </td>
                                             <td>
                                                 <span
-                                                    v-if="
-                                                        categories.status == 1
-                                                    "
+                                                    v-if="category.status == 1"
                                                     class="badge bg-success text-white fw-bold ml-3"
                                                     >Active</span
                                                 >
                                                 <span
-                                                    v-if="
-                                                        categories.status == 0
-                                                    "
+                                                    v-if="category.status == 0"
                                                     class="badge bg-warning text-white fw-bold ml-3"
                                                     >Deactive</span
                                                 >
@@ -233,7 +254,7 @@
                                                     href="javascript:void(0)"
                                                     @click.prevent="
                                                         editCategory(
-                                                            categories.id
+                                                            category.id
                                                         )
                                                     "
                                                 >
@@ -245,7 +266,7 @@
                                                     href="javascript:void(0)"
                                                     @click.prevent="
                                                         deleteCategory(
-                                                            categories.id
+                                                            category.id
                                                         )
                                                     "
                                                 >
@@ -285,8 +306,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    pagination
-                                                        .current_page == 1
+                                                    pagination.current_page == 1
                                                         ? 'disabled'
                                                         : ''
                                                 "
@@ -296,8 +316,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            pagination
-                                                                .current_page -
+                                                            pagination.current_page -
                                                                 1
                                                         )
                                                     "
@@ -308,18 +327,18 @@
                                                 </a>
                                             </li>
                                             <template
-                                                v-for="(page, index) in pagination.last_page"
+                                                v-for="(
+                                                    page, index
+                                                ) in pagination.last_page"
                                             >
                                                 <template
                                                     v-if="
                                                         page == 1 ||
                                                         page ==
-                                                            pagination
-                                                                .last_page ||
+                                                            pagination.last_page ||
                                                         Math.abs(
                                                             page -
-                                                                pagination
-                                                                    .current_page
+                                                                pagination.current_page
                                                         ) < 5
                                                     "
                                                 >
@@ -327,8 +346,7 @@
                                                         class="page-item"
                                                         :key="index"
                                                         :class="
-                                                            pagination
-                                                                .current_page ==
+                                                            pagination.current_page ==
                                                             page
                                                                 ? 'active'
                                                                 : ''
@@ -347,8 +365,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    pagination
-                                                        .current_page ==
+                                                    pagination.current_page ==
                                                     pagination.last_page
                                                         ? 'disabled'
                                                         : ''
@@ -359,8 +376,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            pagination
-                                                                .current_page +
+                                                            pagination.current_page +
                                                                 1
                                                         )
                                                     "
@@ -434,16 +450,21 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="name"
-                                                    v-model="
-                                                        categories.name
-                                                    "
+                                                    v-model="category.name"
                                                     id="name"
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">
-                                                    {{validationErrors.message}}
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                >
+                                                    {{
+                                                        validationErrors.message
+                                                    }}
                                                 </small>
                                             </div>
                                         </div>
@@ -459,17 +480,21 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="code"
-                                                    v-model="
-                                                        categories.code
-                                                    "
+                                                    v-model="category.code"
                                                     id="code"
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">{{
-                                                        validationErrors.message}}
-                                                        </small>
+                                                <small
+                                                    v-if="
+                                                        validationErrors.message
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -551,10 +576,16 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">{{
+                                                <small
+                                                    v-if="
                                                         validationErrors.message
-                                                    }}</small>
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}</small
+                                                >
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -576,10 +607,16 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="validationErrors.message" id="msg_code"
-                                                    class="text-danger form-text text-error-msg error">{{
+                                                <small
+                                                    v-if="
                                                         validationErrors.message
-                                                    }}</small>
+                                                    "
+                                                    id="msg_code"
+                                                    class="text-danger form-text text-error-msg error"
+                                                    >{{
+                                                        validationErrors.message
+                                                    }}</small
+                                                >
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -610,7 +647,7 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import { reactive , ref , nextTick } from "vue";
+import { reactive, ref, nextTick } from "vue";
 import AppLayout from "../../../Layouts/AppLayout.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -667,44 +704,46 @@ const page = ref(1);
 const perPage = ref([25, 50, 100]);
 const pageCount = ref(25);
 const pagination = ref({});
-const categories = ref({});
-//category data fetching from the tabl
-const category = ref([]);
+const category = ref({});
+//categories data fetching
+const categories = ref([]);
 const checkAllItems = ref(false);
-const checkCategoryItems = ref([]); 
+const checkCategoryItems = ref([]);
 const validationErrors = ref({});
-
 
 onBeforeMount(() => {
     getCategoryData();
 });
 
 watch(
-    () => checkAllItems.value,(newX,oldX) => {
-    category.value.forEach((item, index) => {
-        if (index !== 0) {
-            //console.log(item)
-            item.selected = newX;
+    () => checkAllItems.value,
+    (newX, oldX) => {
+        categories.value.forEach((item, index) => {
+            if (index !== 0) {
+                //console.log(item)
+                item.selected = newX;
+            }
+        });
+        if (checkCategoryItems.value.length == categories.value.length) {
+            checkCategoryItems.value = [];
+            //console.log("1.1",checkBrandItems.length)
+        } else {
+            //console.log("1.2",checkBrandItems.length)
+            checkCategoryItems.value = categories.value;
+            //console.log("1.2",checkBrandItems.length)
         }
-    });
-    if (checkCategoryItems.value.length == category.value.length) {
-        checkCategoryItems.value = [];
-        //console.log("1.1",checkBrandItems.length)
-    } else {
-        //console.log("1.2",checkBrandItems.length)
-        checkCategoryItems.value = category.value;
-        //console.log("1.2",checkBrandItems.length)
     }
-})
+);
 
 watch(
-    () => checkCategoryItems.value,(newX,oldX) => {
-    if (checkCategoryItems.value.length != category.value.length) {
-        checkAllItems.value = false;
-        //console.log("2",checkBrandItems.length)
+    () => checkCategoryItems.value,
+    (newX, oldX) => {
+        if (checkCategoryItems.value.length != categories.value.length) {
+            checkAllItems.value = false;
+            //console.log("2",checkBrandItems.length)
+        }
     }
-})
-
+);
 
 const setPage = async (page) => {
     page.value = page;
@@ -721,43 +760,45 @@ const perPageChange = async () => {
 };
 
 const resetValidationErrors = () => {
-    validationErrors.value = []
-}
+    validationErrors.value = [];
+};
 
-const convertValidationNotification = (error) =>{
+const convertValidationNotification = (error) => {
     validationErrors.value.message = error.message;
-}
+};
 
 const reload = async () => {
-    nextTick(()=>{
-        loading_bar.value.start();
+    nextTick(() => {
+        //loading_bar.value.start();
     });
     try {
-        const res = (await axios.get(route("category.all"),{
-            params: {
+        const res = (
+            await axios.get(route("category.all"), {
+                params: {
                     page: page.value,
                     per_page: pageCount.value,
                     "filter[search]": search.value,
                 },
-        })).data;
-        category.value = res.data;
+            })
+        ).data;
+        categories.value = res.data;
         pagination.value = res.meta;
         checkCategoryItems.value = [];
-        loading_bar.value.finish();
+        //loading_bar.value.finish();
     } catch (error) {
         console.error("Error reloading category data:", error);
     }
 };
 
 const getCategoryData = async () => {
-    nextTick(()=>{
-        loading_bar.value.start();
+    nextTick(() => {
+        //loading_bar.value.start();
     });
     try {
         const res = (await axios.get(route("category.all"))).data;
-        category.value = res.data;
+        categories.value = res.data;
         pagination.value = res.meta;
-        loading_bar.value.finish();
+        //loading_bar.value.finish();
     } catch (error) {
         console.error("Error fetching category data:", error);
     }
@@ -766,9 +807,9 @@ const getCategoryData = async () => {
 const createCategory = async () => {
     resetValidationErrors();
     try {
-        await axios.post(route("category.store"), categories.value);
+        await axios.post(route("category.store"), category.value);
         $("#newCategoryModal").modal("hide");
-        categories.value = {};
+        category.value = {};
         $("#newCategoryModal").modal("hide");
         reload();
     } catch (error) {
@@ -793,10 +834,7 @@ const editCategory = async (id) => {
 const updateCategorys = async (id) => {
     resetValidationErrors();
     try {
-        await axios.post(
-            route("category.update", state.edit.id),
-            state.edit
-        );
+        await axios.post(route("category.update", state.edit.id), state.edit);
         reload();
         $("#editCategoryModal").modal("hide");
         state.editForm = {};
@@ -847,9 +885,7 @@ const deleteSelectedItems = async (checkCategoryItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = checkCategoryItems.map(
-                    (categories) => categories.id
-                );
+                const ids = checkCategoryItems.map((category) => category.id);
                 axios
                     .post(
                         route(
@@ -871,23 +907,22 @@ const deleteSelectedItems = async (checkCategoryItems) => {
 };
 
 const inactiveSelectedItems = async (checkCategoryItems) => {
-    const ids = checkCategoryItems.map((categories) => categories.id);
+    const ids = checkCategoryItems.map((category) => category.id);
     axios
         .post(route("category.inactive.selected"), { ids })
         .then((response) => {
             checkCategoryItems.value = [];
             reload();
         });
-        reload();
+    reload();
 };
 
 const activeSelectedItems = async (checkCategoryItems) => {
-    const ids = checkCategoryItems.map((categories) => categories.id);
+    const ids = checkCategoryItems.map((category) => category.id);
     axios.post(route("category.active.selected"), { ids }).then((response) => {
         checkCategoryItems.value = [];
         reload();
     });
-    
 };
 </script>
 
