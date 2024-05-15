@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-md-10">
                         <Multiselect
-                            v-model="select_brands"
+                            v-model="select_brands.name"
                             :options="brands"
                             :close-on-select="true"
                             :showLabels="false"
@@ -129,11 +129,8 @@ const props = defineProps({
     },
 });
 
-// const state = reactive({
-//     edit: {},
-// });
 const editForm = ref({});
-const select_brands = ref(null);
+const select_brands = ref([]);
 const select_category = ref(null);
 const brands = ref([]);
 const categories = ref([]);

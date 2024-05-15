@@ -81,9 +81,6 @@ import Swal from "sweetalert2";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faHouse,
-    faCircleInfo,
-    faCartPlus,
-    faDiamond,
 } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -92,7 +89,7 @@ const props = defineProps({
     product: {},
 })
  
-library.add(faCircleInfo, faCartPlus , faDiamond ,faHouse);
+library.add(faHouse);
 
 const deleteProduct = async () => {
     try {
