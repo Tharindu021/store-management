@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductImageServices
 {
-    protected $productimage;
+    protected $product_image;
 
     public function __construct()
     {
-        $this->productimage = new ProductImages();
+        $this->product_image = new ProductImages();
     }
 
     public function store($data, $product_id)
@@ -25,41 +25,41 @@ class ProductImageServices
             foreach ($storeimage as $image) {
 
                 $imageid = ImageFacade::store($image);
-
-                $this->productimage->create([
+                $this->product_image->create([
                     'product_id' => $product_id,
                     'image_id' => $imageid,
                 ]);
-                
+
             };
+            
         }
     }
 
     public function getProdoucts($id)
     {
-        $productimages = $this->productimage->where('product_id', $id)->get();
-        $productimages->load('images');
-        return  $productimages;
+        $product_image = $this->product_image->where('product_id', $id)->get();
+        $product_image->load('images');
+        return  $product_image;
     }
 
     public function delete($id)
     {
-        ProductImages::where('id', $id)->delete();
+        return ProductImages::where('id', $id)->delete();
     }
 
-    public function update($id){
-        $this->productimage->where('status', 0)->update(['status' => 1]);
-        return $this->productimage->where('id', $id)->update(['status' => 0]);
+    public function updatePrimary($id)
+    {
+        $this->product_image->where('status', 0)->update(['status' => 1]);
+        return $this->product_image->where('id', $id)->update(['status' => 0]);
     }
 
     public function deactive($id)
     {
-         
-        return $this->productimage->where('id', $id)->update(['status' => 2]);
+        return $this->product_image->where('id', $id)->update(['status' => 2]);
     }
 
     public function active($id)
     {
-        return $this->productimage->where('id', $id)->update(['status' => 1]);
+        return $this->product_image->where('id', $id)->update(['status' => 1]);
     }
 }

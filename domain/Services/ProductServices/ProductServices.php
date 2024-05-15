@@ -13,25 +13,30 @@ class ProductServices
         $this->product = new Products();
     }
 
-    public function all(){
+    public function all()
+    {
         return $this->product->all();
     }
 
-    public function store($data){
+    public function store($data)
+    {
         return $this->product->create($data);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $product = $this->product->find($id);
         $product->delete();
     }
 
-    public function get($id){
+    public function get($id)
+    {
         $product = $this->product->find($id);
         return $product;
     }
 
-    public function update(array $data , int $id){
+    public function update(array $data, $id)
+    {
         $product = $this->product->find($id);
         return $product ->update($this->edit($product, $data));
     }

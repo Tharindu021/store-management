@@ -618,15 +618,10 @@ import {
     faCirclePlus,
     faClone,
     faCloudArrowDown,
-    faSquarePlus,
     faPrint,
     faWrench,
-    faCircleCheck,
-    faCircleMinus,
-    faTrash,
     faArrowUpFromBracket,
     faXmark,
-    faPenToSquare,
     faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -636,15 +631,10 @@ library.add(
     faCirclePlus,
     faClone,
     faCloudArrowDown,
-    faSquarePlus,
     faPrint,
     faWrench,
-    faCircleCheck,
-    faCircleMinus,
-    faTrash,
     faArrowUpFromBracket,
     faXmark,
-    faPenToSquare,
     faPen
 );
 

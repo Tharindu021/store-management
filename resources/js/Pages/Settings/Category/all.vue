@@ -659,7 +659,6 @@ import {
     faCirclePlus,
     faClone,
     faCloudArrowDown,
-    faSquarePlus,
     faPrint,
     faWrench,
     faCircleCheck,
@@ -667,7 +666,6 @@ import {
     faTrash,
     faArrowUpFromBracket,
     faXmark,
-    faPenToSquare,
     faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -677,7 +675,6 @@ library.add(
     faCirclePlus,
     faClone,
     faCloudArrowDown,
-    faSquarePlus,
     faPrint,
     faWrench,
     faCircleCheck,
@@ -685,8 +682,7 @@ library.add(
     faTrash,
     faArrowUpFromBracket,
     faXmark,
-    faPenToSquare,
-    faPen
+    faPen,
 );
 
 const editForm = ref({});

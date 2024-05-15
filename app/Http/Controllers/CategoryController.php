@@ -21,12 +21,8 @@ class CategoryController extends ParentController
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('create_types')) {
-            return CategoryFacade::store($request->all());
-        } else {
-            $response['alert-danger'] = 'You do not have permission to read categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = $request->all();
+        return CategoryFacade::store($data);
     }
 
     public function all()
@@ -41,65 +37,35 @@ class CategoryController extends ParentController
 
     public function delete($id)
     {
-
-        if (Auth::user()->can('delete_types')) {
-            return CategoryFacade::delete($id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to delete categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        return CategoryFacade::delete($id);
     }
 
     public function get($id)
     {
-
-        if (Auth::user()->can('read_types')) {
-            $data = CategoryFacade::get($id);
-            return response()->json($data);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to get categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = CategoryFacade::get($id);
+        return response()->json($data);
     }
 
     public function update(Request $request, int $id)
     {
-
-        if (Auth::user()->can('update_types')) {
-            return CategoryFacade::update($request->all(), $id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to update categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        return CategoryFacade::update($request->all(),$id);
     }
 
     public function deleteSelectedItems(Request $request)
     {
-        if (Auth::user()->can('delete_types')) {
-            return CategoryFacade::deleteSelected($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to delete categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return CategoryFacade::deleteSelected($ids);
     }
 
     public function inactiveSelectedItems(Request $request)
     {
-        if (Auth::user()->can('update_types')) {
-            return CategoryFacade::inactive($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to inactive categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return CategoryFacade::inactive($ids);
     }
 
     public function activeSelectedItems(Request $request)
     {
-        if (Auth::user()->can('update_types')) {
-            return CategoryFacade::active($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to active categories.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return CategoryFacade::active($ids);
     }
 }

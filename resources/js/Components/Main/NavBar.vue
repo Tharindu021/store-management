@@ -33,7 +33,6 @@
                         </a>
                         <div class="dropdown-menu  dropdown-menu-right">
                             <a class="dropdown-item border-radius-md" href="#">
-                                <font-awesome-icon icon="fa-solid fa-user" />
                                 <span>Profile</span>
                             </a>
                             <Link href="/logout" as="button" method="post" class="dropdown-item"> 

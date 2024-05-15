@@ -17,10 +17,10 @@ class ImageServices
 
     public function store($file)
     {
-        if (isset($file)) {
-            $filepath = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
-            $data = config('filesystems.disks.do.public_url') . '/' . $filepath;
-
+        if (isset($file)) 
+        {
+            $file_path = Storage::disk('do')->putFile(config('filesystems.disks.do.folder'), $file, 'public');
+            $data = config('filesystems.disks.do.public_url') . '/' . $file_path;
             $image = $this->image->create([
                 'name' => $data
             ]);
@@ -31,10 +31,10 @@ class ImageServices
     public function delete($id)
     {
         $image = $this->image->find($id);
-        if (isset($image)) {
-            $filepath = str_replace(config('filesystems.disks.do.public_url') . '/', '', $image);
-            Storage::disk('do')->delete($filepath);
-
+        if (isset($image)) 
+        {
+            $file_path = str_replace(config('filesystems.disks.do.public_url') . '/', '', $image);
+            Storage::disk('do')->delete($file_path);
             $image->delete();
         }
     }

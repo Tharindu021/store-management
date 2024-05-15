@@ -3,7 +3,6 @@
 namespace domain\Services\BrandServices;
 use App\Models\Brand;
 
-
 class BrandServices
 {
     protected $brand;
@@ -41,46 +40,29 @@ class BrandServices
         return array_merge($brand->toArray(), $data);
     }
 
-    public function deleteSelected($data)
+    public function deleteSelected($ids)
     {
-        
-        $ids = $data->input('ids');
         Brand::whereIn('id', $ids)->delete();
-
-        return response()->json([
-            'success' => true,
-        ]);
     }
 
-    public function inactive($data)
+    public function inactive($ids)
     {
-        $ids = $data->input('ids');
         $brand = Brand::whereIn('id', $ids)->get();
-
-        foreach ($brand as $brands) {
+        foreach ($brand as $brands) 
+        {
             $brands->status = 0;
             $brands->update();
         }
-
-        return response()->json([
-            'success' => true,
-        ]);
     }
 
-    public function active($data)
+    public function active($ids)
     {
-        $ids = $data->input('ids');
-
         $brand = Brand::whereIn('id', $ids)->get();
-
-        foreach ($brand as $brands) {
+        foreach ($brand as $brands) 
+        {
             $brands->status = 1;
             $brands->update();
         }
-
-        return response()->json([
-            'success' => true,
-        ]);
     }
 
 }

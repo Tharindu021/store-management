@@ -8,7 +8,6 @@ use App\Filters\FuzzyFilter;
 use App\Http\Resources\DataResource;
 use App\Models\Products;
 use domain\Facades\ProductFacade\ProductFacade;
-use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,12 +22,8 @@ class ProductContraller extends ParentController
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('create_types')) {
-            return ProductFacade::store($request->all());
-        } else {
-            $response['alert-danger'] = 'You do not have permission to create products.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = $request->all();
+        return ProductFacade::store($data);
     }
 
     public function all()
@@ -70,45 +65,24 @@ class ProductContraller extends ParentController
 
     public function delete($id)
     {
-
-        if (Auth::user()->can('delete_types')) {
-            return ProductFacade::delete($id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to delete products.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        return ProductFacade::delete($id);
     }
 
     public function get($id)
     {
-
-        if (Auth::user()->can('read_types')) {
-            $data = ProductFacade::get($id);
-            return response()->json($data);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to get products.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = ProductFacade::get($id);
+        return response()->json($data);
     }
-    public function edit(int $id)
-    {
-        if (Auth::user()) {
-            $response['product'] = ProductFacade::get($id);
-            Log::info('Response:', $response);
-            return Inertia::render('Products/edit', $response);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to edit products.';
-            return redirect()->route('dashboard')->with($response);
-        }
-    }
-    public function update(Request $request, int $id)
-    {
 
-        if (Auth::user()->can('update_types')) {
-            return ProductFacade::update($request->all(), $id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to update products.';
-            return redirect()->route('dashboard')->with($response);
-        }
+    public function edit($id)
+    {
+        $response['product'] = ProductFacade::get($id);
+        Log::info('Response:', $response);
+        return Inertia::render('Products/edit', $response);
+    }
+
+    public function update(Request $request,$id)
+    {
+        return ProductFacade::update($request->all(),$id);
     }
 }

@@ -175,9 +175,9 @@ const props = defineProps({
     },
 });
 
-// const reload = async () => {
-//     getProductdata();
-// };
+const reload = async () => {
+    getProductdata();
+};
 
 const productDetails = ref([]);
 const product = ref([]);
@@ -251,8 +251,8 @@ const deleteImage = async (id) => {
         if (result.isConfirmed) {
             axios.delete(route("product.productImage.deleteImage", id));
             axios.delete(route("product.image.deleteImage", id));
-            window.location.reload();
-            //reload();
+            //window.location.reload();
+            reload();
             Swal.fire("Deleted!", `Image has been deleted.`, "success");
         }
     });
@@ -271,7 +271,7 @@ const primaryImageStatus = async (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             axios.get(route("product.productImage.updateStatus", id));
-            window.location.reload();
+            //window.location.reload();
             //reload();
             Swal.fire("Update!", `Primary Image has been updated.`, "success");
         }
@@ -290,7 +290,7 @@ const deactiveImageStatus = async (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             axios.get(route("product.productImage.deactiveStatus", id));
-            window.location.reload();
+            //window.location.reload();
             //reload();
             Swal.fire("Update!", `Image has been deactivated.`, "success");
         }
@@ -309,7 +309,7 @@ const activeImageStatus = async (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             axios.get(route("product.productImage.activeStatus", id));
-            window.location.reload();
+            //window.location.reload();
             //reload();
             Swal.fire("Update!", `Image has been Activated.`, "success");
         }

@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Filters\FuzzyFilter;
 use App\Http\Resources\DataResource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -23,12 +21,8 @@ class BrandsController extends ParentController
 
     public function store(Request $request)
     {
-        if (Auth::user()->can('create_types')) {
-            return BrandFacade::store($request->all());
-        } else {
-            $response['alert-danger'] = 'You do not have permission to read brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = $request->all();
+        return BrandFacade::store($data);
     }
 
     public function all()
@@ -43,65 +37,35 @@ class BrandsController extends ParentController
 
     public function delete($id)
     {
-
-        if (Auth::user()->can('delete_types')) {
-            return BrandFacade::delete($id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to delete brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        return BrandFacade::delete($id);
     }
 
     public function get($id)
     {
-
-        if (Auth::user()->can('read_types')) {
-            $data = BrandFacade::get($id);
-            return response()->json($data);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to get brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $data = BrandFacade::get($id);
+        return response()->json($data);
     }
 
     public function update(Request $request, int $id)
     {
-
-        if (Auth::user()->can('update_types')) {
-            return BrandFacade::update($request->all(), $id);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to update brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        return BrandFacade::update($request->all(), $id);
     }
 
     public function deleteSelectedItems(Request $request)
     {
-        if (Auth::user()->can('delete_types')) {
-            return BrandFacade::deleteSelected($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to delete brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return BrandFacade::deleteSelected($ids);
     }
 
     public function inactiveSelectedItems(Request $request)
     {
-        if (Auth::user()->can('update_types')) {
-            return BrandFacade::inactive($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to inactive brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return BrandFacade::inactive($ids);
     }
 
     public function activeSelectedItems(Request $request)
     {
-        if (Auth::user()->can('update_types')) {
-            return BrandFacade::active($request);
-        } else {
-            $response['alert-danger'] = 'You do not have permission to active brands.';
-            return redirect()->route('dashboard')->with($response);
-        }
+        $ids = request('ids');
+        return BrandFacade::active($ids);
     }
 }

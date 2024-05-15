@@ -11,8 +11,7 @@ class ProductImageController extends ParentController
 {
     public function store(Request $request, $product_id)
     {
-        $data = $request->all();
-        return ProductImageFacade::store($data, $product_id);
+        return ProductImageFacade::store($request->all(), $product_id);
     }
 
     public function getProducts($product_id)
@@ -23,21 +22,21 @@ class ProductImageController extends ParentController
 
     public function deleteImage($image_id)
     {
-        ProductImageFacade::delete($image_id);
+        return ProductImageFacade::delete($image_id);
     }
 
     public function updateStatus($image_id)
     {
-        ProductImageFacade::update($image_id);
+        return ProductImageFacade::updatePrimary($image_id);
     }
 
     public function deactiveStatus($image_id)
     {
-        ProductImageFacade::deactive($image_id);
+        return ProductImageFacade::deactive($image_id);
     }
 
     public function activeStatus($image_id)
     {
-        ProductImageFacade::active($image_id);
+        return ProductImageFacade::active($image_id);
     }
 }

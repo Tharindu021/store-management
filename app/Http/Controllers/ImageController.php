@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class ImageController extends ParentController
 {
-    public function deleteImage($id){
+    public function deleteImage($id)
+    {
         return ImageFacade::delete($id);
     }
 }
