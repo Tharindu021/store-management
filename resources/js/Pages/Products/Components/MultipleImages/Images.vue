@@ -20,27 +20,27 @@
         <div class="row">
             <div
                 class="col-md-4"
-                v-for="image in data.productImages"
-                :key="image.id"
+                v-for="product in productDetails"
+                :key="product.id"
             >
                 <div class="thumbnail">
-                    {{ image.status }}
-                    <div v-if="image.status != 0 && image.status != 2">
+                    {{ product.images.name }}
+                    <div v-if="product.status != 0 && product.status != 2">
                         <div>
-                            <Link @click.prevent="deleteImage(image.id)">
+                            <Link @click.prevent="deleteImage(product.id)">
                                 <a
                                     class="badge bg-danger text-white fw-bold ml-4"
                                     >Delete
                                 </a>
                             </Link>
-                            <Link @click.prevent="primaryImageStatus(image.id)">
+                            <Link @click.prevent="primaryImageStatus(product.id)">
                                 <a
                                     class="badge bg-success text-white fw-bold ml-5"
                                     >Primary
                                 </a>
                             </Link>
                             <Link
-                                @click.prevent="deactiveImageStatus(image.id)"
+                                @click.prevent="deactiveImageStatus(product.id)"
                             >
                                 <a
                                     class="badge bg-warning text-white fw-bold ml-5"
@@ -49,9 +49,9 @@
                             </Link>
                         </div>
                     </div>
-                    <div v-if="image.status == 2">
+                    <div v-if="product.status == 2">
                         <div>
-                            <Link @click.prevent="activeImageStatus(image.id)">
+                            <Link @click.prevent="activeImageStatus(product.id)">
                                 <a
                                     class="badge bg-success text-white fw-bold ml-8"
                                     >Active
@@ -60,11 +60,12 @@
                         </div>
                     </div>
                     <img
-                        :src="image.name"
+                        :src="product.images.name"
                         alt="Product"
                         class="product-img mt-1"
                         height="200"
                         width="300"
+                        href=""
                     />
                     <div class="caption"></div>
                 </div>
@@ -163,7 +164,6 @@ library.add(faCirclePlus, faFloppyDisk, faXmark);
 
 onBeforeMount(() => {
     getProductdata();
-    getImagedata();
 });
 
 const props = defineProps({
@@ -173,66 +173,46 @@ const props = defineProps({
     },
 });
 
-const reload = async () => {
-    getProductdata();
-    getImagedata();
-};
+// const reload = async () => {
+//     getProductdata();
+// };
 
-const data = reactive({
-    form: new FormData(),
-    productImages: [],
-    productDetails: [],
+const productDetails = ref([]);
+const product =  ref([]);
+
+const state = reactive({
     images: [],
-    files: [],
-    validationErrors: [],
 });
 
 const clearImageField = async () => {
     document.getElementById("image-upload").value = [];
-    data.images = [];
+    state.images = [];
 }
 
 const getProductdata = async () => {
     try {
-        const res = (
+        const response = (
             await axios.get(route("product.image.getProducts", props.productId))
         ).data;
-        data.productDetails = res.data;
+        productDetails.value = response.data;
     } catch (error) {
         console.error("Error fetching Brands data:", error);
     }
 };
-const getImagedata = async () => {
-    try {
-        const res = (
-            await axios.get(route("product.image.getImages", props.productId))
-        ).data;
-        data.productImages = res.data;
-        //put status values to the productImages
-        for (let i = 0; i < data.productDetails.length; i++) {
-            if (data.productDetails[i].image_id == data.productImages[i].id) {
-                data.productImages[i].status = data.productDetails[i].status;
-            }
-            //console.log(data.productImages[i].status)
-        }
-    } catch (error) {
-        console.error("Error fetching Brands data:", error);
-    }
-};
+
 const onFileChange = (event) => {
     let selectedFiles = event.target.files;
 
     for (let i = 0; i < selectedFiles.length; i++) {
-        data.images.push(selectedFiles[i]);
+        state.images.push(selectedFiles[i]);
     }
-    //console.log(data.images);
 };
 
 const addImage = async () => {
     const formData = new FormData();
 
-    for (let i = 0; i < data.images.length; i++) {
-        formData.append("images[]", data.images[i]);
+    for (let i = 0; i < state.images.length; i++) {
+        formData.append("images[]", state.images[i]);
     }
 
     const config = {
@@ -331,7 +311,7 @@ const activeImageStatus = async (id) => {
     }).then((result) => {
         if (result.isConfirmed) {
             axios.get(route("product.productImage.activeStatus", id));
-            window.location.reload();
+             window.location.reload();
             //reload();
             Swal.fire(
                 "Update!",

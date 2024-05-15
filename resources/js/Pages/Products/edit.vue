@@ -61,9 +61,6 @@
                                 <div class="tab-pane fade show" id="image-management" role="tabpanel">
                                     <ImagesManagement :productId="props.product.id"  />
                                 </div>
-                                <!-- <div class="tab-pane fade show" id="tax-records" role="tabpanel">
-                                    <Images :productId="props.product.id" />
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -78,7 +75,6 @@ import EditFormVue from "@/Pages/Products/Components/Basic/EditForm.vue"
 import ImagesManagement from "@/Pages/Products/Components/MultipleImages/Images.vue"
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from "@inertiajs/vue3";
-import { computed , reactive } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import Swal from "sweetalert2";

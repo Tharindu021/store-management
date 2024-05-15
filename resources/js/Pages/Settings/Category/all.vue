@@ -64,7 +64,7 @@
                                         <input
                                             type="text"
                                             class="form-control form-control-sm"
-                                            v-model="data.search"
+                                            v-model="search"
                                             @keyup="getSearch"
                                         />
                                     </div>
@@ -74,11 +74,11 @@
                                         <select
                                             class="form-control form-control-sm per-page-entry"
                                             :value="25"
-                                            v-model="data.pageCount"
-                                            @change="data.perPageChange"
+                                            v-model="pageCount"
+                                            @change="perPageChange"
                                         >
                                             <option
-                                                v-for="perPageCount in data.perPage"
+                                                v-for="perPageCount in perPage"
                                                 :key="perPageCount"
                                                 :value="perPageCount"
                                                 v-text="perPageCount"
@@ -124,7 +124,7 @@
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('active_types')" -->
                                             <a @click.prevent="
-                                                activeSelectedItems(checkMatirialTypeItems)
+                                                activeSelectedItems(checkCategoryItems)
                                                 ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
@@ -136,7 +136,7 @@
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('inactive_types')"  -->
                                             <a @click.prevent="
-                                                inactiveSelectedItems(checkMatirialTypeItems)
+                                                inactiveSelectedItems(checkCategoryItems)
                                                 ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
@@ -148,7 +148,7 @@
                                         <div class="p-2 border icon_item">
                                             <!-- v-if="can('delete_types') && this.checkMatirialTypeItems.length > 0" -->
                                             <a href="javascript:void(0)" @click.prevent="
-                                                deleteSelectedItems(checkMatirialTypeItems)
+                                                deleteSelectedItems(checkCategoryItems)
                                                 ">
                                                 <font-awesome-icon
                                                     class="icon_item-icon"
@@ -174,40 +174,40 @@
                                             <th class="checkArea">
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="data.category.length > 0" :checked="data.checkAllItems.length==data.checkCategoryItems.length"  v-model="data.checkAllItems" />
+                                                    v-if="category.length > 0" :checked="checkAllItems.length==checkCategoryItems.length"  v-model="checkAllItems" />
                                                 </div>
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Name
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Code
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Status
                                             </th>
                                             <th
-                                                :class="data.textClassHead"
+                                                :class="textClassHead"
                                             ></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="categories in data.category"
+                                            v-for="categories in category"
                                             :key="categories.id"
-                                            :class="data.rowClass"
+                                            :class="rowClass"
                                         >
                                             <td class="checkArea">
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="data.checkCategoryItems" v-bind:value="categories"
+                                                        v-model="checkCategoryItems" v-bind:value="categories"
                                                         v-bind:id="categories.id" />
                                                 </div>
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ categories.name }}
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ categories.code }}
                                             </td>
                                             <td>
@@ -226,7 +226,7 @@
                                                     >Deactive</span
                                                 >
                                             </td>
-                                            <td :class="data.iconClassBody">
+                                            <td :class="iconClassBody">
                                                 <a
                                                     type="button"
                                                     class="p-2"
@@ -267,9 +267,9 @@
                                     role="status"
                                     aria-live="polite"
                                 >
-                                    Showing {{ data.pagination.from }} to
-                                    {{ data.pagination.to }} of
-                                    {{ data.pagination.total }} entries
+                                    Showing {{ pagination.from }} to
+                                    {{ pagination.to }} of
+                                    {{ pagination.total }} entries
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6 p-0">
@@ -285,7 +285,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page == 1
                                                         ? 'disabled'
                                                         : ''
@@ -296,7 +296,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page -
                                                                 1
                                                         )
@@ -308,18 +308,17 @@
                                                 </a>
                                             </li>
                                             <template
-                                                v-for="(page, index) in data
-                                                    .pagination.last_page"
+                                                v-for="(page, index) in pagination.last_page"
                                             >
                                                 <template
                                                     v-if="
                                                         page == 1 ||
                                                         page ==
-                                                            data.pagination
+                                                            pagination
                                                                 .last_page ||
                                                         Math.abs(
                                                             page -
-                                                                data.pagination
+                                                                pagination
                                                                     .current_page
                                                         ) < 5
                                                     "
@@ -328,7 +327,7 @@
                                                         class="page-item"
                                                         :key="index"
                                                         :class="
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page ==
                                                             page
                                                                 ? 'active'
@@ -348,9 +347,9 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page ==
-                                                    data.pagination.last_page
+                                                    pagination.last_page
                                                         ? 'disabled'
                                                         : ''
                                                 "
@@ -360,7 +359,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page +
                                                                 1
                                                         )
@@ -436,15 +435,15 @@
                                                     class="form-control form-control-sm"
                                                     name="name"
                                                     v-model="
-                                                        data.categories.name
+                                                        categories.name
                                                     "
                                                     id="name"
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{data.validationErrors.message}}
+                                                    {{validationErrors.message}}
                                                 </small>
                                             </div>
                                         </div>
@@ -461,15 +460,15 @@
                                                     class="form-control form-control-sm"
                                                     name="code"
                                                     v-model="
-                                                        data.categories.code
+                                                        categories.code
                                                     "
                                                     id="code"
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message}}
+                                                        validationErrors.message}}
                                                         </small>
                                             </div>
                                         </div>
@@ -543,7 +542,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        data.edit_category.name
+                                                        state.editForm.name
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -552,9 +551,9 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message
+                                                        validationErrors.message
                                                     }}</small>
                                             </div>
                                         </div>
@@ -568,7 +567,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        data.edit_category.code
+                                                        state.editForm.code
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -577,9 +576,9 @@
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message
+                                                        validationErrors.message
                                                     }}</small>
                                             </div>
                                         </div>
@@ -652,64 +651,68 @@ library.add(
     faPenToSquare,
     faPen
 );
-const loading_bar = ref(null);
-const data = reactive({
-    textClassHead: "text-start text-uppercase",
-    textClassBody: "text-start",
-    iconClassHead: "text-right",
-    iconClassBody: "text-right",
-    rowClass: "cursor-pointer",
-    search: null,
-    page: 1,
-    perPage: [25, 50, 100],
-    pageCount: 25,
-    pagination: {},
-    categories: {},
-    category: [],
-    edit_category: {},
-    checkAllItems: false,
-    checkCategoryItems: [],
-    validationErrors:{},
+
+const state = reactive({
+    editForm: {},
 });
+
+const loading_bar = ref(null);
+const textClassHead = ref("text-start text-uppercase");
+const textClassBody = ref("text-start");
+const iconClassHead = ref("text-right");
+const iconClassBody = ref("text-right");
+const rowClass = ref("cursor-pointer");
+const search = ref(null);
+const page = ref(1);
+const perPage = ref([25, 50, 100]);
+const pageCount = ref(25);
+const pagination = ref({});
+const categories = ref({});
+//category data fetching from the tabl
+const category = ref([]);
+const checkAllItems = ref(false);
+const checkCategoryItems = ref([]); 
+const validationErrors = ref({});
+
 
 onBeforeMount(() => {
     getCategoryData();
 });
 
 watch(
-    () => data.checkAllItems,(newX,oldX) => {
-    data.category.forEach((item, index) => {
+    () => checkAllItems.value,(newX,oldX) => {
+    category.value.forEach((item, index) => {
         if (index !== 0) {
             //console.log(item)
             item.selected = newX;
         }
     });
-    if (data.checkCategoryItems.length == data.category.length) {
-        data.checkCategoryItems = [];
-        //console.log("1.1",data.checkBrandItems.length)
+    if (checkCategoryItems.value.length == category.value.length) {
+        checkCategoryItems.value = [];
+        //console.log("1.1",checkBrandItems.length)
     } else {
-        //console.log("1.2",data.checkBrandItems.length)
-        data.checkCategoryItems = data.category;
-        //console.log("1.2",data.checkBrandItems.length)
+        //console.log("1.2",checkBrandItems.length)
+        checkCategoryItems.value = category.value;
+        //console.log("1.2",checkBrandItems.length)
     }
 })
 
 watch(
-    () => data.checkCategoryItems,(newX,oldX) => {
-    if (data.checkCategoryItems.length != data.category.length) {
-        data.checkAllItems = false;
-        //console.log("2",data.checkBrandItems.length)
+    () => checkCategoryItems.value,(newX,oldX) => {
+    if (checkCategoryItems.value.length != category.value.length) {
+        checkAllItems.value = false;
+        //console.log("2",checkBrandItems.length)
     }
 })
 
 
 const setPage = async (page) => {
-    data.page = page;
+    page.value = page;
     reload();
 };
 
 const getSearch = async () => {
-    data.page = 1;
+    page.value = 1;
     reload();
 };
 
@@ -718,11 +721,11 @@ const perPageChange = async () => {
 };
 
 const resetValidationErrors = () => {
-    data.validationErrors = []
+    validationErrors.value = []
 }
 
 const convertValidationNotification = (error) =>{
-    data.validationErrors.message = error.message;
+    validationErrors.value.message = error.message;
 }
 
 const reload = async () => {
@@ -732,14 +735,14 @@ const reload = async () => {
     try {
         const res = (await axios.get(route("category.all"),{
             params: {
-                    page: data.page,
-                    per_page: data.pageCount,
-                    "filter[search]": data.search,
+                    page: page.value,
+                    per_page: pageCount.value,
+                    "filter[search]": search.value,
                 },
         })).data;
-        data.category = res.data;
-        data.pagination = res.meta;
-        data.checkCategoryItems = [];
+        category.value = res.data;
+        pagination.value = res.meta;
+        checkCategoryItems.value = [];
         loading_bar.value.finish();
     } catch (error) {
         console.error("Error reloading category data:", error);
@@ -752,8 +755,8 @@ const getCategoryData = async () => {
     });
     try {
         const res = (await axios.get(route("category.all"))).data;
-        data.category = res.data;
-        data.pagination = res.meta;
+        category.value = res.data;
+        pagination.value = res.meta;
         loading_bar.value.finish();
     } catch (error) {
         console.error("Error fetching category data:", error);
@@ -763,9 +766,9 @@ const getCategoryData = async () => {
 const createCategory = async () => {
     resetValidationErrors();
     try {
-        await axios.post(route("category.store"), data.categories);
+        await axios.post(route("category.store"), categories.value);
         $("#newCategoryModal").modal("hide");
-        data.categories = {};
+        categories.value = {};
         $("#newCategoryModal").modal("hide");
         reload();
     } catch (error) {
@@ -779,7 +782,7 @@ const editCategory = async (id) => {
         console.log(id);
         const edit_category = await axios.get(route("category.get", id));
         console.log(edit_category);
-        data.edit_category = edit_category.data;
+        state.editForm = edit_category.data;
         $("#editCategoryModal").modal("show");
         reload();
     } catch (error) {
@@ -791,12 +794,12 @@ const updateCategorys = async (id) => {
     resetValidationErrors();
     try {
         await axios.post(
-            route("category.update", data.edit_category.id),
-            data.edit_category
+            route("category.update", state.edit.id),
+            state.edit
         );
         reload();
         $("#editCategoryModal").modal("hide");
-        data.edit_category = {};
+        state.editForm = {};
         Swal.fire({
             title: "Category updated successfully",
             icon: "success",
@@ -844,14 +847,14 @@ const deleteSelectedItems = async (checkCategoryItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                const ids = data.checkCategoryItems.map(
+                const ids = checkCategoryItems.map(
                     (categories) => categories.id
                 );
                 axios
                     .post(
                         route(
                             "category.delete.selected",
-                            data.checkCategoryItems
+                            checkCategoryItems.value
                         ),
                         { ids }
                     )
@@ -868,20 +871,20 @@ const deleteSelectedItems = async (checkCategoryItems) => {
 };
 
 const inactiveSelectedItems = async (checkCategoryItems) => {
-    const ids = data.checkCategoryItems.map((categories) => categories.id);
+    const ids = checkCategoryItems.map((categories) => categories.id);
     axios
         .post(route("category.inactive.selected"), { ids })
         .then((response) => {
-            data.checkCategoryItems = [];
+            checkCategoryItems.value = [];
             reload();
         });
         reload();
 };
 
-const activeSelectedItems = async (checkMatirialTypeItems) => {
-    const ids = data.checkCategoryItems.map((categories) => categories.id);
+const activeSelectedItems = async (checkCategoryItems) => {
+    const ids = checkCategoryItems.map((categories) => categories.id);
     axios.post(route("category.active.selected"), { ids }).then((response) => {
-        data.checkCategoryItems = [];
+        checkCategoryItems.value = [];
         reload();
     });
     

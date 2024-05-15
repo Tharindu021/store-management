@@ -66,7 +66,7 @@
                                     class="form-control form-control-sm"
                                     name="code"
                                     id="code"
-                                    v-model="data.search_product.code"
+                                    v-model="search_product.code"
                                     placeholder="Code"
                                     @keyup="getSearch"
                                 />
@@ -82,7 +82,7 @@
                                     class="form-control form-control-sm"
                                     name="name"
                                     id="name"
-                                    v-model="data.search_product.name"
+                                    v-model="search_product.name"
                                     placeholder="Product Name"
                                     @keyup="getSearch"
                                 />
@@ -94,8 +94,8 @@
                                     BRAND
                                 </div>
                                 <Multiselect
-                                    v-model="data.select_search_brand"
-                                    :options="data.brands"
+                                    v-model="select_search_brand"
+                                    :options="brands"
                                     class="z__index"
                                     :showLabels="false"
                                     :close-on-select="true"
@@ -113,8 +113,8 @@
                                     CATEGORY
                                 </div>
                                 <Multiselect
-                                    v-model="data.select_search_category"
-                                    :options="data.categories"
+                                    v-model="select_search_category"
+                                    :options="categories"
                                     class="z__index"
                                     :showLabels="false"
                                     :close-on-select="true"
@@ -139,13 +139,13 @@
                                     <select
                                         class="form-control form-control-sm per-page-entry mt-2"
                                         :value="100"
-                                        v-model="data.pageCount"
+                                        v-model="pageCount"
                                         @change="perPageChange"
                                         name="PageData"
                                         id="pageData"
                                     >
                                         <option
-                                            v-for="perPageCount in data.perPage"
+                                            v-for="perPageCount in perPage"
                                             :key="perPageCount"
                                             :value="perPageCount"
                                             v-text="perPageCount"
@@ -204,52 +204,52 @@
                                             <th class="checkArea">
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox" @click="selectAll"
-                                                    v-if="data.product.length > 0" :checked="data.checkAllItems.length==data.checkProductItems.length"  v-model="data.checkAllItems" />
+                                                    v-if="product.length > 0" :checked="checkAllItems.length==checkProductItems.length"  v-model="checkAllItems" />
                                                 </div>
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Code
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Brand Name
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Category Name
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Name
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Status
                                             </th>
                                             <th
-                                                :class="data.textClassHead"
+                                                :class="textClassHead"
                                             ></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="products in data.product"
+                                            v-for="products in product"
                                             :key="products.id"
-                                            :class="data.rowClass"
+                                            :class="rowClass"
                                         >
                                             <td class="checkArea">
                                                 <div class="form-check mb-4">
                                                     <input class="form-check-input" type="checkbox"
-                                                        v-model="data.checkProductItems" v-bind:value="products"
+                                                        v-model="checkProductItems" v-bind:value="products"
                                                         v-bind:id="products.id" />
                                                 </div>
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ products.code }}
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ products.brand_name }}
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ products.category_name }}
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ products.name }}
                                             </td>
                                             <td>
@@ -264,7 +264,7 @@
                                                     >Deactive</span
                                                 >
                                             </td>
-                                            <td :class="data.iconClassBody">
+                                            <td :class="iconClassBody">
                                                 <a
                                                     type="button"
                                                     class="p-2"
@@ -291,9 +291,9 @@
                                     role="status"
                                     aria-live="polite"
                                 >
-                                    Showing {{ data.pagination.from }} to
-                                    {{ data.pagination.to }} of
-                                    {{ data.pagination.total }} entries
+                                    Showing {{ pagination.from }} to
+                                    {{ pagination.to }} of
+                                    {{ pagination.total }} entries
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6 p-0">
@@ -309,7 +309,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page == 1
                                                         ? 'disabled'
                                                         : ''
@@ -320,7 +320,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page -
                                                                 1
                                                         )
@@ -332,18 +332,17 @@
                                                 </a>
                                             </li>
                                             <template
-                                                v-for="(page, index) in data
-                                                    .pagination.last_page"
+                                                v-for="(page, index) in pagination.last_page"
                                             >
                                                 <template
                                                     v-if="
                                                         page == 1 ||
                                                         page ==
-                                                            data.pagination
+                                                            pagination
                                                                 .last_page ||
                                                         Math.abs(
                                                             page -
-                                                                data.pagination
+                                                                pagination
                                                                     .current_page
                                                         ) < 5
                                                     "
@@ -352,7 +351,7 @@
                                                         class="page-item"
                                                         :key="index"
                                                         :class="
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page ==
                                                             page
                                                                 ? 'active'
@@ -372,9 +371,9 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page ==
-                                                    data.pagination.last_page
+                                                    pagination.last_page
                                                         ? 'disabled'
                                                         : ''
                                                 "
@@ -384,7 +383,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page +
                                                                 1
                                                         )
@@ -459,14 +458,14 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="name"
-                                                    v-model="data.products.name"
+                                                    v-model="products.name"
                                                     id="name"
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{data.validationErrors.message}}
+                                                    {{validationErrors.message}}
                                                 </small>
                                             </div>
                                         </div>
@@ -482,14 +481,14 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="slug"
-                                                    v-model="data.products.code"
+                                                    v-model="products.code"
                                                     id="code"
                                                     placeholder="Code"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message}}
+                                                        validationErrors.message}}
                                                         </small>
                                             </div>
                                         </div>
@@ -502,8 +501,8 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <Multiselect
-                                                    v-model="data.select_brand"
-                                                    :options="data.brands"
+                                                    v-model="select_brand"
+                                                    :options="brands"
                                                     :showLabels="false"
                                                     :close-on-select="true"
                                                     :clear-on-select="false"
@@ -515,9 +514,9 @@
                                                     track-by="id"
                                                 />
 
-                                                <small v-if="data.validationErrors.country_id" id="msg_country_id"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.country_id }}</small>
+                                                        validationErrors.message }}</small>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
@@ -530,9 +529,9 @@
                                             <div class="col-md-9">
                                                 <Multiselect
                                                     v-model="
-                                                        data.select_category
+                                                        select_category
                                                     "
-                                                    :options="data.categories"
+                                                    :options="categories"
                                                     :showLabels="false"
                                                     :close-on-select="true"
                                                     :clear-on-select="false"
@@ -543,9 +542,9 @@
                                                     name="category"
                                                     track-by="id"
                                                 />
-                                                <small v-if="data.validationErrors.currency_id" id="msg_currency_id"
+                                                <small v-if="validationErrors.message" id="message"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.currency_id }}</small>
+                                                        validationErrors.message }}</small>
                                             </div>
                                         </div>
                                         <div class="text-right mt-2">
@@ -618,37 +617,32 @@ library.add(
     faPenToSquare,
     faPen
 );
+
 const loading_bar = ref(null);
-const data = reactive({
-    textClassHead: "text-start text-uppercase",
-    textClassBody: "text-start",
-    iconClassHead: "text-right",
-    iconClassBody: "text-right",
-    rowClass: "cursor-pointer",
+const textClassHead = ref("text-start text-uppercase");
+const textClassBody = ref("text-start");
+const iconClassHead = ref("text-right");
+const iconClassBody = ref("text-right");
+const rowClass = ref("cursor-pointer");
+const search = ref(null);
+const page = ref(1);
+const perPage = ref([25, 50, 100]);
+const pageCount = ref(25);
+const pagination = ref({});
+const search_product = ref({});
+const select_search_brand = ref(null);
+const select_search_category = ref(null);
+const brands = ref([]);
+const categories = ref([]);
+const select_brand = ref(null);
+const select_category = ref(null);
+const products = ref({});
+const product = ref([]);
+const edit_product = ref({});
+const checkAllItems = ref(false);
+const checkProductItems = ref([]);
+const validationErrors = ref({});
 
-    search: null,
-    search_product: {},
-    select_search_brand: null,
-    select_search_category: null,
-    brands: [],
-    categories: [],
-
-    page: 1,
-    perPage: [25, 50, 100],
-    pageCount: 25,
-    pagination: {},
-
-    select_brand: null,
-    select_category: null,
-    products: {},
-    product: [],
-    edit_product: {},
-
-    checkAllItems: false,
-    checkProductItems: [],
-
-    validationErrors:{}
-});
 
 onBeforeMount(() => {
     getProductData();
@@ -658,42 +652,42 @@ onBeforeMount(() => {
 });
 
 watch(
-    () => data.checkAllItems,(newX,oldX) => {
-    data.product.forEach((item, index) => {
+    () => checkAllItems.value,(newX,oldX) => {
+    product.value.forEach((item, index) => {
         if (index !== 0) {
             item.selected = newX;
         }
     });
-    if (data.checkProductItems.length == data.product.length) {
-        data.checkProductItems = [];
-        console.log("1.1",data.checkProductItems.length)
+    if (checkProductItems.value.length == product.value.length) {
+        checkProductItems.value = [];
+        console.log("1.1",checkProductItems.value.length)
     } else {
-        //console.log("1.2",data.checkBrandItems.length)
-        data.checkProductItems = data.product;
-        console.log("1.2",data.checkProductItems.length)
+        //console.log("1.2",checkBrandItems.length)
+        checkProductItems.value = product.value;
+        console.log("1.2",checkProductItems.value.length)
     }
 })
 
 watch(
-    () => data.checkProductItems,(newX,oldX) => {
-    if (data.checkProductItems.length != data.product.length) {
-        data.checkAllItems = false;
-        console.log("2",data.checkProductItems.length)
+    () => checkProductItems.value,(newX,oldX) => {
+    if (checkProductItems.value.length != product.value.length) {
+        checkAllItems.value = false;
+        console.log("2",checkProductItems.value.length)
     }
 })
 
 watch(
-    () => data.select_search_brand,
+    () => select_search_brand.value,
     (newX, oldX) => {
-        data.search_product.brand = newX ? newX.id : null;
+        search_product.value.brand = newX ? newX.id : null;
         getSearch();
     }
 );
 
 watch(
-    () => data.select_search_category,
+    () => select_search_category.value,
     (newX, oldX) => {
-        data.search_product.category = newX ? newX.id : null;
+        search_product.value.category = newX ? newX.id : null;
         getSearch();
     }
 );
@@ -701,23 +695,23 @@ watch(
 
 const selectAll = (event) => {
     if (event.target.checked == false) {
-        data.checkProductItems = [];
+        checkProductItems.value = [];
     } else {
-        data.product.forEach((products) => {
-            data.checkProductItems.push(products.id);
-            console.log("3",data.checkProductItems.length)
+        product.value.forEach((products) => {
+            checkProductItems.push(products.id);
+            console.log("3",checkProductItems.length)
         });
     }
 };
 
 
 const setPage = async (page) => {
-    data.page = page;
+    page.value = page;
     reload();
 };
 
 const getSearch = async () => {
-    data.page = 1;
+    page.value = 1;
     reload();
 };
 
@@ -726,17 +720,17 @@ const perPageChange = async () => {
 };
 
 const resetValidationErrors = () => {
-    data.validationErrors = []
+    validationErrors.value = []
 }
 
 const convertValidationNotification = (error) =>{
-    data.validationErrors.message = error.message;
+    validationErrors.message = error.message;
 }
 
 const clearFilters = async () => {
-    data.select_search_brand = null;
-    data.select_search_category = null;
-    data.search_product = {};
+    select_search_brand.value = null;
+    select_search_category.value = null;
+    search_product.value = {};
     //this.reload();
 };
 
@@ -745,22 +739,22 @@ const reload = async () => {
         loading_bar.value.start();
     });
     try {
-        const res = (
+        const response = (
             await axios.get(route("product.all"), {
                 params: {
-                    page: data.page,
-                    per_page: data.pageCount,
-                    "filter[search]": data.search,
-                    search_product_code: data.search_product.code,
-                    search_product_name: data.search_product.name,
-                    search_product_brand: data.search_product.brand,
-                    search_product_category: data.search_product.category,
+                    page: page.value,
+                    per_page: pageCount.value,
+                    "filter[search]": search.value,
+                    search_product_code: search_product.value.code,
+                    search_product_name: search_product.value.name,
+                    search_product_brand: search_product.value.brand,
+                    search_product_category: search_product.value.category,
                 },
             })
         ).data;
-        data.product = res.data;
-        console.log(data.product);
-        data.pagination = res.meta;
+        product.value = response.data;
+        //console.log(product.value);
+        pagination.value = response.meta;
         loading_bar.value.finish();
     } catch (error) {
         console.log("Error reloading product data:", error);
@@ -772,8 +766,8 @@ const getBrandData = async () => {
         loading_bar.value.start();
     });
     try {
-        const res = (await axios.get(route("brand.all"))).data;
-        data.brands = res.data;
+        const response = (await axios.get(route("brand.all"))).data;
+        brands.value = response.data;
         loading_bar.value.finish();
     } catch (error) {
         console.log("Error fetching Brands data:", error);
@@ -782,8 +776,8 @@ const getBrandData = async () => {
 
 const getCategorytData = async () => {
     try {
-        const res = (await axios.get(route("category.all"))).data;
-        data.categories = res.data;
+        const response = (await axios.get(route("category.all"))).data;
+        categories.value = response.data;
     } catch (error) {
         console.log("Error fetching Category data:", error);
     }
@@ -791,9 +785,9 @@ const getCategorytData = async () => {
 
 const getProductData = async () => {
     try {
-        const res = (await axios.get(route("product.all"))).data;
-        data.product = res.data;
-        data.pagination = res.meta;
+        const response = (await axios.get(route("product.all"))).data;
+        product.value = response.data;
+        pagination.value = response.meta;
     } catch (error) {
         console.log("Error fetching product data:", error);
     }
@@ -802,19 +796,19 @@ const getProductData = async () => {
 const createProduct = async () => {
     resetValidationErrors();
     try {
-        if (data.select_brand) {
-            data.products.brand_id = data.select_brand.id;
+        if (select_brand.value) {
+            products.value.brand_id = select_brand.value.id;
         }
-        if (data.select_category) {
-            data.products.category_id = data.select_category.id;
+        if (select_category.value) {
+            products.value.category_id = select_category.value.id;
         }
-        const vendor = (await axios.post(route("product.store"), data.products))
+        const vendor = (await axios.post(route("product.store"), products.value))
             .data;
         //window.location.href = route("vendors.edit", vendor.id);
         $("#newProductModal").modal("hide");
-        data.products = {};
-        data.select_brand = {};
-        data.select_category = {};
+        products.value = {};
+        select_brand.value = {};
+        select_category.value = {};
         // this.$root.notify.success({
         //     title: "Success",
         //     message: "Vendor created successfully",
@@ -831,9 +825,9 @@ const editProduct = async (id) => {
 
 const newProduct = () => {
     // this.$root.loader.start();
-    data.select_category = null;
-    data.select_brand = null;
-    data.products = {};
+    select_category.value = null;
+    select_brand.value = null;
+    products.value = {};
     $("#newProductModal").modal("show");
     //this.$root.loader.finish();
 };
@@ -874,15 +868,15 @@ const deleteSelectedItems = async (checkProductItems) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const ids = checkProductItems.map(
-                    (products) => data.products.id
+                    (products) => products.id
                 );
                 console.log(ids);
-                console.log(data.checkProductItems);
+                console.log(checkProductItems.value);
                 axios
                     .post(
                         route(
                             "product.delete.selected",
-                            data.checkProductItems
+                            checkProductItems.value
                         ),
                         {
                             ids,
@@ -902,7 +896,7 @@ const deleteSelectedItems = async (checkProductItems) => {
 
 const inactiveSelectedItems = async (checkProductItems) => {
     //this.$root.loader.start();
-    const ids = checkProductItems.map((products) => data.products.id);
+    const ids = checkProductItems.map((products) => products.id);
     axios.post(route("product.inactive.selected"), { ids }).then((response) => {
         this.checkProductItems = [];
         reload();
@@ -912,9 +906,9 @@ const inactiveSelectedItems = async (checkProductItems) => {
 
 const activeSelectedItems = async (checkProductItems) => {
     //this.$root.loader.start();
-    const ids = checkProductItems.map((products) => data.products.id);
+    const ids = checkProductItems.map((products) => products.id);
     axios.post(route("product.active.selected"), { ids }).then((response) => {
-        data.checkProductItems = [];
+        checkProductItems.value = [];
         reload();
     });
     //this.$root.loader.finish();

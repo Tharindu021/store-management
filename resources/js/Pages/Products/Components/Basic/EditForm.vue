@@ -17,15 +17,9 @@
                             class="form-control form-control-sm"
                             name="code"
                             id="code"
-                            v-model="data.products.code"
+                            v-model="state.edit.code"
                             required
                         />
-                        <!-- <small
-              v-if="data.validationErrors.code"
-              id="msg_code"
-              class="text-danger form-text text-error-msg error"
-              >{{ data.validationErrors.co }}</small
-            > -->
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -34,8 +28,8 @@
                     </div>
                     <div class="col-md-10">
                         <Multiselect
-                            v-model="data.select_brands"
-                            :options="data.brands"
+                            v-model="select_brands"
+                            :options="brands"
                             :close-on-select="true"
                             :showLabels="false"
                             :clear-on-select="false"
@@ -44,12 +38,6 @@
                             label="name"
                             track-by="id"
                         />
-                        <!-- <small
-              v-if="data.validationErrors.brand_id"
-              id="msg_brand_id"
-              class="text-danger form-text text-error-msg error"
-              >{{ data.validationErrors.brand_id }}</small
-            > -->
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -58,8 +46,8 @@
                     </div>
                     <div class="col-md-10">
                         <Multiselect
-                            v-model="data.select_category"
-                            :options="data.categories"
+                            v-model= select_category
+                            :options="categories"
                             :close-on-select="true"
                             :showLabels="false"
                             :clear-on-select="false"
@@ -68,12 +56,6 @@
                             label="name"
                             track-by="id"
                         />
-                        <!-- <small
-              v-if="data.validationErrors.category_id"
-              id="msg_category_id"
-              class="text-danger form-text text-error-msg error"
-              >{{ validationErrors.category_id }}</small
-            > -->
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -84,15 +66,9 @@
                             class="form-control form-control-sm"
                             name="name"
                             id="name"
-                            v-model="data.products.name"
+                            v-model="state.edit.name"
                             required
                         />
-                        <!-- <small
-              v-if="validationErrors.name"
-              id="msg_name"
-              class="text-danger form-text text-error-msg error"
-              >{{ validationErrors.name }}</small
-            > -->
                     </div>
                 </div>
                 <div class="row mb-1">
@@ -103,15 +79,9 @@
                             class="form-control form-control-sm"
                             name="name"
                             id="name"
-                            v-model="data.products.price"
+                            v-model="state.edit.price"
                             required
                         />
-                        <!-- <small
-              v-if="validationErrors.name"
-              id="msg_name"
-              class="text-danger form-text text-error-msg error"
-              >{{ validationErrors.name }}</small
-            > -->
                     </div>
                 </div>
                 <div class="text-right">
@@ -148,7 +118,7 @@ import {
     faFloppyDisk,
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { onBeforeMount, reactive } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
 
 library.add(faHouse, faFloppyDisk, faTrash);
 
@@ -159,46 +129,40 @@ const props = defineProps({
     },
 });
 
-const data = reactive({
-    products: {},
-    select_brands: null,
-    select_category: null,
-    brands: [],
-    categories: [],
+const state = reactive({
+    edit: {},
 });
 
+const select_brands = ref(null);
+const select_category = ref(null);
+const brands = ref([]);
+const categories = ref([]);
+
+
 onBeforeMount(() => {
-    console.log("Before Mount");
     getCategorytData();
     getBrandData();
     getProduct();
 });
 
 const getProduct = async () => {
-    // data.$nextTick(() => {
-    //   //$root.loader.start();
-    // });
     const products = (await axios.get(route("product.get", props.productId)))
         .data;
-    data.products = products;
+    state.edit = products;
     const select_brands = (
-        await axios.get(route("brand.get", data.products.brand_id))
+        await axios.get(route("brand.get", state.edit.brand_id))
     ).data;
-    data.select_brands = select_brands;
-
+    select_brands.value = select_brands;
     const select_category = (
-        await axios.get(route("category.get", data.products.category_id))
+        await axios.get(route("category.get", state.edit.category_id))
     ).data;
-    data.select_category = select_category;
-    // data.$nextTick(() => {
-    //   //$root.loader.finish();
-    // });
+    select_category.value = select_category;
 };
 
 const getBrandData = async () => {
     try {
-        const res = (await axios.get(route("brand.all"))).data;
-        data.brands = res.data;
+        const response = (await axios.get(route("brand.all"))).data;
+        brands.value = response.data;
     } catch (error) {
         console.error("Error fetching Brands data:", error);
     }
@@ -206,25 +170,25 @@ const getBrandData = async () => {
 
 const getCategorytData = async () => {
     try {
-        const res = (await axios.get(route("category.all"))).data;
-        data.categories = res.data;
+        const response = (await axios.get(route("category.all"))).data;
+        categories.value = response.data;
     } catch (error) {
         console.error("Error fetching Category data:", error);
     }
 };
 
 const updateBasicData = async () => {
-    //data.resetValidationErrors();
     try {
-        if (data.select_brands) {
-            data.products.brand_id = data.select_brands.id;
+        if (select_brands.value) {
+            state.edit.brand_id = select_brands.value.id;
         }
-        if (data.select_category) {
-            data.products.category_id = data.select_category.id;
+        if (select_category.value) {
+            state.edit.category_id = select_category.value.id;
         }
+        console.log(state.edit);
         await axios.post(
             route("products.basic.update", props.productId),
-            data.products
+            state.edit
         );
         Swal.fire({
             title: "Products updated successfully",
@@ -232,12 +196,9 @@ const updateBasicData = async () => {
             showCancelButton: true,
             confirmButtonColor: "#6CA925", // Green,
         });
-        // data.$root.notify.success({
-        //   title: "Success",
-        //   message: "Products updated successfully",
-        // });
+
     } catch (error) {
-        //data.convertValidationError(error);
+        //convertValidationError(error);
     }
 };
 
@@ -254,14 +215,14 @@ const deleteProduct = async () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete(route("products.basic.delete", data.products.id))
+                    .delete(route("products.basic.delete", state.edit.id))
                     .then((response) => {
                         router.visit(route("product.index"));
                     });
             }
         });
     } catch (error) {
-        //data.convertValidationNotification(error);
+        //convertValidationNotification(error);
     }
 };
 </script>

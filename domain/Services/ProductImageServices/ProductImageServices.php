@@ -38,40 +38,28 @@ class ProductImageServices
     public function getProdoucts($id)
     {
         $productimages = $this->productimage->where('product_id', $id)->get();
+        $productimages->load('images');
         return  $productimages;
-    }
-
-    public function getImages($id)
-    {
-        $productimages = $this->productimage->where('product_id', $id)->get();
-        $imageNames = [];
-        foreach ($productimages as $productimage) {
-            $image = $productimage->images()->first();
-            if ($image) {
-                $imageNames[] = $image;
-            }
-        }
-        return  $imageNames;
     }
 
     public function delete($id)
     {
-        ProductImages::where('image_id', $id)->delete();
+        ProductImages::where('id', $id)->delete();
     }
 
-    public function update($id)
-    {
+    public function update($id){
         $this->productimage->where('status', 0)->update(['status' => 1]);
-        return $this->productimage->where('image_id', $id)->update(['status' => 0]);
+        return $this->productimage->where('id', $id)->update(['status' => 0]);
     }
 
     public function deactive($id)
     {
-        return $this->productimage->where('image_id', $id)->update(['status' => 2]);
+         
+        return $this->productimage->where('id', $id)->update(['status' => 2]);
     }
 
     public function active($id)
     {
-        return $this->productimage->where('image_id', $id)->update(['status' => 1]);
+        return $this->productimage->where('id', $id)->update(['status' => 1]);
     }
 }

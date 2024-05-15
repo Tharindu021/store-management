@@ -64,7 +64,7 @@
                                         <input
                                             type="text"
                                             class="form-control form-control-sm"
-                                            v-model="data.search"
+                                            v-model="search"
                                             @keyup="getSearch"
                                         />
                                     </div>
@@ -74,11 +74,11 @@
                                         <select
                                             class="form-control form-control-sm per-page-entry"
                                             :value="25"
-                                            v-model="data.pageCount"
-                                            @change="data.perPageChange"
+                                            v-model="pageCount"
+                                            @change="perPageChange"
                                         >
                                             <option
-                                                v-for="perPageCount in data.perPage"
+                                                v-for="perPageCount in perPage"
                                                 :key="perPageCount"
                                                 :value="perPageCount"
                                                 v-text="perPageCount"
@@ -126,7 +126,7 @@
                                             <a
                                                 @click.prevent="
                                                     activeSelectedItems(
-                                                        data.checkBrandItems
+                                                        checkBrandItems
                                                     )
                                                 "
                                             >
@@ -142,7 +142,7 @@
                                             <a
                                                 @click.prevent="
                                                     inactiveSelectedItems(
-                                                        data.checkBrandItems
+                                                        checkBrandItems
                                                     )
                                                 "
                                             >
@@ -163,7 +163,7 @@
                                                 href="javascript:void(0)"
                                                 @click.prevent="
                                                     deleteSelectedItems(
-                                                        data.checkBrandItems
+                                                        checkBrandItems
                                                     )
                                                 "
                                             >
@@ -195,31 +195,31 @@
                                                         class="form-check-input"
                                                         type="checkbox"
                                                         @click="selectAll"
-                                                        v-if="data.brand.length >0"
-                                                        :checked="data.checkAllItems.length ==data.checkBrandItems.length"
-                                                        v-model="data.checkAllItems"
+                                                        v-if="brand.length >0"
+                                                        :checked="checkAllItems.length ==checkBrandItems.length"
+                                                        v-model="checkAllItems"
                                                     />
                                                 </div>
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Name
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Slug
                                             </th>
-                                            <th :class="data.textClassHead">
+                                            <th :class="textClassHead">
                                                 Status
                                             </th>
                                             <th
-                                                :class="data.textClassHead"
+                                                :class="textClassHead"
                                             ></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="brands in data.brand"
+                                            v-for="brands in brand"
                                             :key="brands.id"
-                                            :class="data.rowClass"
+                                            :class="rowClass"
                                         >
                                             <td class="checkArea">
                                                 <div class="form-check mb-4">
@@ -227,17 +227,17 @@
                                                         class="form-check-input"
                                                         type="checkbox"
                                                         v-model="
-                                                            data.checkBrandItems
+                                                            checkBrandItems
                                                         "
                                                         v-bind:value="brands"
                                                         v-bind:id="brands.id"
                                                     />
                                                 </div>
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ brands.name }}
                                             </td>
-                                            <td :class="data.textClassBody">
+                                            <td :class="textClassBody">
                                                 {{ brands.slug }}
                                             </td>
                                             <td>
@@ -252,7 +252,7 @@
                                                     >Deactive</span
                                                 >
                                             </td>
-                                            <td :class="data.iconClassBody">
+                                            <td :class="iconClassBody">
                                                 <a
                                                     type="button"
                                                     class="p-2"
@@ -289,9 +289,9 @@
                                     role="status"
                                     aria-live="polite"
                                 >
-                                    Showing {{ data.pagination.from }} to
-                                    {{ data.pagination.to }} of
-                                    {{ data.pagination.total }} entries
+                                    Showing {{ pagination.from }} to
+                                    {{ pagination.to }} of
+                                    {{ pagination.total }} entries
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6 p-0">
@@ -307,7 +307,7 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page == 1
                                                         ? 'disabled'
                                                         : ''
@@ -318,7 +318,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page -
                                                                 1
                                                         )
@@ -330,18 +330,17 @@
                                                 </a>
                                             </li>
                                             <template
-                                                v-for="(page, index) in data
-                                                    .pagination.last_page"
+                                                v-for="(page, index) in pagination.last_page"
                                             >
                                                 <template
                                                     v-if="
                                                         page == 1 ||
                                                         page ==
-                                                            data.pagination
+                                                            pagination
                                                                 .last_page ||
                                                         Math.abs(
                                                             page -
-                                                                data.pagination
+                                                                pagination
                                                                     .current_page
                                                         ) < 5
                                                     "
@@ -350,7 +349,7 @@
                                                         class="page-item"
                                                         :key="index"
                                                         :class="
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page ==
                                                             page
                                                                 ? 'active'
@@ -370,9 +369,9 @@
                                             <li
                                                 class="page-item"
                                                 :class="
-                                                    data.pagination
+                                                    pagination
                                                         .current_page ==
-                                                    data.pagination.last_page
+                                                    pagination.last_page
                                                         ? 'disabled'
                                                         : ''
                                                 "
@@ -382,7 +381,7 @@
                                                     href="javascript:void(0)"
                                                     @click="
                                                         setPage(
-                                                            data.pagination
+                                                            pagination
                                                                 .current_page +
                                                                 1
                                                         )
@@ -445,7 +444,8 @@
                                         @submit.prevent="createBrand"
                                         enctype="multipart/form-data"
                                     >
-                                        <div class="row mb-1">
+                                        <div class="row mb-1"
+                                        >
                                             <div
                                                 for="name"
                                                 class="col-md-3 col-form-label col-form-label"
@@ -457,14 +457,14 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="name"
-                                                    v-model="data.brands.name"
+                                                    v-model="brands.name"
                                                     id="name"
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">
-                                                    {{data.validationErrors.message}}
+                                                    {{validationErrors.message}}
                                                 </small>
                                             </div>
                                         </div>
@@ -480,14 +480,14 @@
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="slug"
-                                                    v-model="data.brands.slug"
+                                                    v-model="brands.slug"
                                                     id="slug"
                                                     placeholder="Slug"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message}}
+                                                        validationErrors.message}}
                                                         </small>
                                             </div>
                                         </div>
@@ -560,9 +560,7 @@
                                             </div>
                                             <div class="col-md-9">
                                                 <input
-                                                    v-model="
-                                                        data.edit_brand.name
-                                                    "
+                                                    v-model="state.edit.name"
                                                     type="text"
                                                     class="form-control form-control-sm"
                                                     name="name"
@@ -570,9 +568,9 @@
                                                     placeholder="Name"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message
+                                                        validationErrors.message
                                                     }}</small>
                                             </div>
                                         </div>
@@ -586,7 +584,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        data.edit_brand.slug
+                                                        state.edit.slug
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -595,9 +593,9 @@
                                                     placeholder="Slug"
                                                     required
                                                 />
-                                                <small v-if="data.validationErrors.message" id="msg_code"
+                                                <small v-if="validationErrors.message" id="msg_code"
                                                     class="text-danger form-text text-error-msg error">{{
-                                                        data.validationErrors.message
+                                                        validationErrors.message
                                                     }}</small>
                                             </div>
                                         </div>
@@ -672,25 +670,27 @@ library.add(
     faPenToSquare,
     faPen
 );
-const loading_bar = ref(null);
-const data = reactive({
-    textClassHead: "text-start text-uppercase",
-    textClassBody: "text-start",
-    iconClassHead: "text-right",
-    iconClassBody: "text-right",
-    rowClass: "cursor-pointer",
-    search: null,
-    page: 1,
-    perPage: [25, 50, 100],
-    pageCount: 25,
-    pagination: {},
-    brands: {},
-    brand: [],
-    edit_brand: {},
-    checkAllItems: false,
-    checkBrandItems: [],
-    validationErrors: {},
+
+const state = reactive({
+    edit: {},
 });
+
+const loading_bar = ref(null);
+const textClassHead = ref("text-start text-uppercase");
+const textClassBody = ref("text-start");
+const iconClassHead = ref("text-right");
+const iconClassBody = ref("text-right");
+const rowClass = ref("cursor-pointer");
+const search = ref(null);
+const page = ref(1);
+const perPage = ref([25, 50, 100]);
+const pageCount = ref(25);
+const pagination = ref({});
+const brands = ref({});
+const brand = ref([]);
+const checkAllItems = ref(false);
+const checkBrandItems = ref([]);
+const validationErrors = ref({});
 
 onBeforeMount(() => {
     getBrandData();
@@ -698,49 +698,38 @@ onBeforeMount(() => {
 });
 
 watch(
-    () => data.checkAllItems,(newX,oldX) => {
-    data.brand.forEach((item, index) => {
+    () => checkAllItems.value,(newX,oldX) => {
+    brand.value.forEach((item, index) => {
         if (index !== 0) {
             console.log(item)
             item.selected = newX;
         }
     });
-    if (data.checkBrandItems.length == data.brand.length) {
-        data.checkBrandItems = [];
-        //console.log("1.1",data.checkBrandItems.length)
+    if (checkBrandItems.value.length == brand.value.length) {
+        checkBrandItems.value = [];
+        //console.log("1.1",checkBrandItems.length)
     } else {
-        //console.log("1.2",data.checkBrandItems.length)
-        data.checkBrandItems = data.brand;
-        //console.log("1.2",data.checkBrandItems.length)
+        //console.log("1.2",checkBrandItems.length)
+        checkBrandItems.value = brand.value;
+        //console.log("1.2",checkBrandItems.length)
     }
 })
 
 watch(
-    () => data.checkBrandItems,(newX,oldX) => {
-    if (data.checkBrandItems.length != data.brand.length) {
-        data.checkAllItems = false;
-        //console.log("2",data.checkBrandItems.length)
+    () => checkBrandItems.value,(newX,oldX) => {
+    if (checkBrandItems.value.length != brand.value.length) {
+        checkAllItems.value = false;
+        //console.log("2",checkBrandItems.length)
     }
 })
 
-// const selectAll = (event) => {
-//     if (event.target.checked == false) {
-//         data.checkBrandItems = [];
-//     } else {
-//         data.brand.forEach((brands) => {
-//             data.checkBrandItems.push(brands.id);
-//             //console.log("3",data.checkBrandItems.length)
-//         });
-//     }
-// };
-
 const setPage = async (page) => {
-    data.page = page;
+    page.value = page;
     reload();
 };
 
 const getSearch = async () => {
-    data.page = 1;
+    page.value = 1;
     reload();
 };
 
@@ -749,11 +738,11 @@ const perPageChange = async () => {
 };
 
 const resetValidationErrors = () => {
-    data.validationErrors = []
+    validationErrors.value = []
 }
 
 const convertValidationNotification = (error) =>{
-    data.validationErrors.message = error.message;
+    validationErrors.value.message = error.message;
 }
 
 const reload = async () => {
@@ -761,16 +750,16 @@ const reload = async () => {
         loading_bar.value.start();
     });
     try {
-        const res = (await axios.get(route("brand.all"),{
+        const response = (await axios.get(route("brand.all"),{
             params: {
-                    page: data.page,
-                    per_page: data.pageCount,
-                    "filter[search]": data.search,
+                    page: page.value,
+                    per_page: pageCount.value,
+                    "filter[search]": search.value,
                 },
         })).data;
-        data.brand = res.data;
-        data.pagination = res.meta;
-        data.checkBrandItems = [];
+        brand.value = response.data;
+        pagination.value = response.meta;
+        checkBrandItems.value = [];
         nextTick(()=>{
         loading_bar.value.finish();
     });
@@ -784,9 +773,9 @@ const getBrandData = async () => {
         loading_bar.value.start();
     });
     try {
-        const res = (await axios.get(route("brand.all"))).data;
-        data.brand = res.data;
-        data.pagination = res.meta;
+        const response = (await axios.get(route("brand.all"))).data;
+        brand.value = response.data;
+        pagination.value = response.meta;
         nextTick(()=>{
         loading_bar.value.finsh();
     });
@@ -798,9 +787,9 @@ const getBrandData = async () => {
 const createBrand = async () => {
     resetValidationErrors();
     try {
-        await axios.post(route("brand.store"), data.brands);
+        await axios.post(route("brand.store"), brands.value);
         $("#newBrandModal").modal("hide");
-        data.brands = {};
+        brands.value = {};
         $("#newBrandModal").modal("hide");
         reload();
     } catch (error) {
@@ -811,9 +800,9 @@ const createBrand = async () => {
 const editBrand = async (id) => {
     resetValidationErrors();
     try {
-        console.log(id);
         const edit_brand = await axios.get(route("brand.get", id));
-        data.edit_brand = edit_brand.data;
+        state.edit = edit_brand.data;
+        console.log(state.edit);
         $("#editBrandModal").modal("show");
     } catch (error) {
         convertValidationNotification(error);
@@ -824,12 +813,12 @@ const updateBrands = async (id) => {
     resetValidationErrors();
     try {
         await axios.post(
-            route("brand.update", data.edit_brand.id),
-            data.edit_brand
+            route("brand.update", state.edit.id),
+            state.edit
         );
         reload();
         $("#editBrandModal").modal("hide");
-        data.edit_brand = {};
+        state.edit = {};
         Swal.fire({
             title: "Brand updated successfully",
             icon: "success",
@@ -877,14 +866,14 @@ const deleteSelectedItems = async (checkBrandItems) => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                // console.log(data.checkBrandItems.data);
-                const ids = data.checkBrandItems.map(
+                // console.log(checkBrandItems.data);
+                const ids = checkBrandItems.map(
                     (brands) => brands.id
                 );
                 //console.log(ids);
                 axios
                     .post(
-                        route("brand.delete.selected", data.checkBrandItems),
+                        route("brand.delete.selected", checkBrandItems.value),
                         { ids }
                     )
                     .then((response) => {
@@ -899,17 +888,17 @@ const deleteSelectedItems = async (checkBrandItems) => {
 };
 
 const inactiveSelectedItems = async (checkBrandItems) => {
-    const ids = data.checkBrandItems.map((brands) => brands.id);
+    const ids = checkBrandItems.map((brands) => brands.id);
     axios.post(route("brand.inactive.selected"), { ids }).then((response) => {
-        data.checkBrandItems = [];
+        checkBrandItems.value = [];
         reload();
     });
 };
 
-const activeSelectedItems = async (checkMatirialTypeItems) => {
-    const ids = data.checkBrandItems.map((brands) => brands.id);
+const activeSelectedItems = async (checkBrandItems) => {
+    const ids = checkBrandItems.map((brands) => brands.id);
     axios.post(route("brand.active.selected"), { ids }).then((response) => {
-        data.checkBrandItems = [];
+        checkBrandItems.value = [];
         reload();
     });
 };
