@@ -21,12 +21,6 @@ class ProductImageController extends ParentController
         return DataResource::collection($productsdata);
     }
 
-    public function getImages($product_id)
-    {
-        $productimage = ProductImageFacade::getImages($product_id);
-        return DataResource::collection($productimage);
-    }
-
     public function deleteImage($image_id)
     {
         ProductImageFacade::delete($image_id);

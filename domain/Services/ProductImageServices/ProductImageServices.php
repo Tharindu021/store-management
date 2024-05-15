@@ -30,6 +30,7 @@ class ProductImageServices
                     'product_id' => $product_id,
                     'image_id' => $imageid,
                 ]);
+                
             };
         }
     }
@@ -46,15 +47,14 @@ class ProductImageServices
         ProductImages::where('id', $id)->delete();
     }
 
-    public function update($id)
-    {
+    public function update($id){
         $this->productimage->where('status', 0)->update(['status' => 1]);
         return $this->productimage->where('id', $id)->update(['status' => 0]);
     }
 
     public function deactive($id)
     {
-
+         
         return $this->productimage->where('id', $id)->update(['status' => 2]);
     }
 

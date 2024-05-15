@@ -567,7 +567,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        state.editForm.name
+                                                        editForm.name
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -598,7 +598,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        state.editForm.code
+                                                        editForm.code
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -689,10 +689,7 @@ library.add(
     faPen
 );
 
-const state = reactive({
-    editForm: {},
-});
-
+const editForm = ref({});
 const loading_bar = ref(null);
 const textClassHead = ref("text-start text-uppercase");
 const textClassBody = ref("text-start");
@@ -705,7 +702,6 @@ const perPage = ref([25, 50, 100]);
 const pageCount = ref(25);
 const pagination = ref({});
 const category = ref({});
-//categories data fetching
 const categories = ref([]);
 const checkAllItems = ref(false);
 const checkCategoryItems = ref([]);
@@ -823,7 +819,7 @@ const editCategory = async (id) => {
         console.log(id);
         const edit_category = await axios.get(route("category.get", id));
         console.log(edit_category);
-        state.editForm = edit_category.data;
+        editForm.value = edit_category.data;
         $("#editCategoryModal").modal("show");
         reload();
     } catch (error) {
@@ -834,10 +830,10 @@ const editCategory = async (id) => {
 const updateCategorys = async (id) => {
     resetValidationErrors();
     try {
-        await axios.post(route("category.update", state.edit.id), state.edit);
+        await axios.post(route("category.update", editForm.value.id), editForm.value);
         reload();
         $("#editCategoryModal").modal("hide");
-        state.editForm = {};
+        editForm.value = {};
         Swal.fire({
             title: "Category updated successfully",
             icon: "success",

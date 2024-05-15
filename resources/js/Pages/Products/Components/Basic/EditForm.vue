@@ -17,7 +17,7 @@
                             class="form-control form-control-sm"
                             name="code"
                             id="code"
-                            v-model="state.edit.code"
+                            v-model="editForm.code"
                             required
                         />
                     </div>
@@ -66,7 +66,7 @@
                             class="form-control form-control-sm"
                             name="name"
                             id="name"
-                            v-model="state.edit.name"
+                            v-model="editForm.name"
                             required
                         />
                     </div>
@@ -79,7 +79,7 @@
                             class="form-control form-control-sm"
                             name="name"
                             id="name"
-                            v-model="state.edit.price"
+                            v-model="editForm.price"
                             required
                         />
                     </div>
@@ -129,10 +129,10 @@ const props = defineProps({
     },
 });
 
-const state = reactive({
-    edit: {},
-});
-
+// const state = reactive({
+//     edit: {},
+// });
+const editForm = ref({});
 const select_brands = ref(null);
 const select_category = ref(null);
 const brands = ref([]);
@@ -147,13 +147,13 @@ onBeforeMount(() => {
 const getProduct = async () => {
     const products = (await axios.get(route("product.get", props.productId)))
         .data;
-    state.edit = products;
+        editForm.value = products;
     const select_brands = (
-        await axios.get(route("brand.get", state.edit.brand_id))
+        await axios.get(route("brand.get", editForm.value.brand_id))
     ).data;
     select_brands.value = select_brands;
     const select_category = (
-        await axios.get(route("category.get", state.edit.category_id))
+        await axios.get(route("category.get", editForm.value.category_id))
     ).data;
     select_category.value = select_category;
 };
@@ -179,15 +179,15 @@ const getCategorytData = async () => {
 const updateBasicData = async () => {
     try {
         if (select_brands.value) {
-            state.edit.brand_id = select_brands.value.id;
+            editForm.value.brand_id = select_brands.value.id;
         }
         if (select_category.value) {
-            state.edit.category_id = select_category.value.id;
+            editForm.value.category_id = select_category.value.id;
         }
-        console.log(state.edit);
+        //console.log(state.edit);
         await axios.post(
             route("products.basic.update", props.productId),
-            state.edit
+            editForm.value
         );
         Swal.fire({
             title: "Products updated successfully",
@@ -213,7 +213,7 @@ const deleteProduct = async () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete(route("products.basic.delete", state.edit.id))
+                    .delete(route("products.basic.delete", editForm.value.id))
                     .then((response) => {
                         router.visit(route("product.index"));
                     });

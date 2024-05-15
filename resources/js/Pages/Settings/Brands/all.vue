@@ -565,7 +565,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        state.editForm.name
+                                                        editForm.name
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -596,7 +596,7 @@
                                             <div class="col-md-9">
                                                 <input
                                                     v-model="
-                                                        state.editForm.slug
+                                                        editForm.slug
                                                     "
                                                     type="text"
                                                     class="form-control form-control-sm"
@@ -689,10 +689,7 @@ library.add(
     faPen
 );
 
-const state = reactive({
-    editForm: {},
-});
-
+const editForm = ref({});
 const loading_bar = ref(null);
 const textClassHead = ref("text-start text-uppercase");
 const textClassBody = ref("text-start");
@@ -825,7 +822,7 @@ const editBrand = async (id) => {
     resetValidationErrors();
     try {
         const edit_brand = await axios.get(route("brand.get", id));
-        state.editForm = edit_brand.data;
+        editForm.value = edit_brand.data;
         //console.log(state.editForm);
         $("#editBrandModal").modal("show");
     } catch (error) {
@@ -837,12 +834,12 @@ const updateBrands = async (id) => {
     resetValidationErrors();
     try {
         await axios.post(
-            route("brand.update", state.editForm.id),
-            state.editForm
+            route("brand.update", editForm.value.id),
+            editForm.value
         );
         reload();
         $("#editBrandModal").modal("hide");
-        state.editForm = {};
+        editForm.value = {};
         Swal.fire({
             title: "Brand updated successfully",
             icon: "success",

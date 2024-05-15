@@ -24,7 +24,6 @@
                 :key="product.id"
             >
                 <div class="thumbnail">
-                    {{ product.images.name }}
                     <div v-if="product.status != 0 && product.status != 2">
                         <div>
                             <Link @click.prevent="deleteImage(product.id)">
